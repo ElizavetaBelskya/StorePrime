@@ -1,0 +1,29 @@
+
+POST http://localhost/customer
+Content-Type: application/json
+
+{
+  "email": "example@mail.ru",
+  "phoneNumber": "899999999",
+  "name": "Иван",
+  "surname": "Иванов",
+  "gender": "MALE",
+  "birthdayDate": "2000-01-01",
+  "addressDto": {
+    "street": "Спартаковская",
+    "house": 98,
+    "apartment": "6А",
+    "location": {
+      "country": "Россия",
+      "city": "Москва"
+    }
+  },
+  "passwordHash": "$2a$10$3nuOnmRVLv8hCSImbXh/kORKlP/zVHgfFZl2wXnEYC2NS8/imV3YO"
+}
+
+###
+POST http://localhost/auth/login
+Content-Type: application/x-www-form-urlencoded
+
+email=example@mail.ru&password=1234qwer
+
