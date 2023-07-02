@@ -1,6 +1,7 @@
 package ru.tinkoff.storePrime.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.storePrime.controller.api.ProductApi;
@@ -32,7 +33,7 @@ public class ProductController implements ProductApi {
     @Override
     public ResponseEntity<ProductDto> addProduct(UserDetailsImpl userDetailsImpl, NewOrUpdateProductDto newProduct) {
         Long sellerId = userDetailsImpl.getAccount().getId();
-        return ResponseEntity.ok(productService.addProduct(sellerId, newProduct));
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.addProduct(sellerId, newProduct));
     }
 
     @Override

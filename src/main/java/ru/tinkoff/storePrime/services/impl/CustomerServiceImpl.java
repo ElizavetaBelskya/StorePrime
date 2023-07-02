@@ -7,6 +7,7 @@ import ru.tinkoff.storePrime.converters.AddressConverter;
 import ru.tinkoff.storePrime.converters.CustomerConverter;
 import ru.tinkoff.storePrime.dto.CustomerDto;
 import ru.tinkoff.storePrime.dto.NewOrUpdateCustomerDto;
+import ru.tinkoff.storePrime.models.user.Account;
 import ru.tinkoff.storePrime.models.user.Customer;
 import ru.tinkoff.storePrime.repository.CustomerRepository;
 import ru.tinkoff.storePrime.security.exceptions.AlreadyExistsException;
@@ -50,7 +51,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDto deleteCustomer(Long customerId) {
-        customerRepository.deleteById(customerId);
+        Customer customer = customerRepository.findById(customerId).orElseThrow();
+        customer.setState(Account.State.DELETED);
+        customerRepository.save(customer);
         return new CustomerDto();
     }
 

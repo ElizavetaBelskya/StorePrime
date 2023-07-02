@@ -50,7 +50,7 @@ public class SellerController implements SellerApi {
 
     @Override
     public ResponseEntity<SellerDto> deleteSeller(UserDetailsImpl userDetailsImpl) {
-        SellerDto deletedSellerDto = sellerService.deleteSeller((Seller) userDetailsImpl.getAccount());
+        SellerDto deletedSellerDto = sellerService.deleteSeller(userDetailsImpl.getAccount().getId());
         return ResponseEntity.accepted().body(deletedSellerDto);
     }
 

@@ -7,6 +7,7 @@ import ru.tinkoff.storePrime.converters.SellerConverter;
 import ru.tinkoff.storePrime.dto.NewOrUpdateSellerDto;
 import ru.tinkoff.storePrime.dto.SellerDto;
 import ru.tinkoff.storePrime.models.Location;
+import ru.tinkoff.storePrime.models.user.Account;
 import ru.tinkoff.storePrime.models.user.Seller;
 import ru.tinkoff.storePrime.repository.SellerRepository;
 import ru.tinkoff.storePrime.security.exceptions.AlreadyExistsException;
@@ -31,8 +32,9 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public SellerDto deleteSeller(Seller seller) {
-        sellerRepository.delete(seller);
+    public SellerDto deleteSeller(Long sellerId) {
+        Seller seller = sellerRepository.findById(sellerId).orElseThrow();
+        seller.setState(Account.State.DELETED);
         return new SellerDto();
     }
 
