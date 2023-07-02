@@ -9,9 +9,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.storePrime.dto.NewOrUpdateProductDto;
 import ru.tinkoff.storePrime.dto.ProductDto;
+import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
+import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -31,8 +35,9 @@ public interface ProductApi {
                     }
             )
     })
+    @PreAuthorize("hasAuthority('SELLER')")
     @PostMapping
-    ResponseEntity<ProductDto> addProduct(
+    ResponseEntity<ProductDto> addProduct(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
             @Valid @RequestBody NewOrUpdateProductDto newProduct);
 
 
@@ -44,7 +49,11 @@ public interface ProductApi {
                                     schema = @Schema(implementation = ProductDto.class))
                     }
             ),
-            @ApiResponse(responseCode = "404", description = "Товар не найден")
+            @ApiResponse(responseCode = "404", description = "Товар не найден",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    })
     })
     @GetMapping("/{id}")
     ResponseEntity<ProductDto> getProductById(@PathVariable("id") Long id);
@@ -57,7 +66,11 @@ public interface ProductApi {
                                     schema = @Schema(implementation = ProductDto.class))
                     }
             ),
-            @ApiResponse(responseCode = "404", description = "Товары не найдены")
+            @ApiResponse(responseCode = "404", description = "Товары не найдены",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    })
     })
     @GetMapping("/seller/{sellerId}")
     ResponseEntity<List<ProductDto>> getProductsBySellerId(@PathVariable("sellerId") Long sellerId);
@@ -70,11 +83,37 @@ public interface ProductApi {
                                     schema = @Schema(implementation = ProductDto.class))
                     }
             ),
-            @ApiResponse(responseCode = "404", description = "Товар не найден")
+            @ApiResponse(responseCode = "404", description = "Товар не найден",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    })
     })
+    @PreAuthorize("hasAuthority('SELLER')")
     @PutMapping("/{id}")
-    ResponseEntity<ProductDto> updateProductById(@PathVariable("id") Long id,
-                                                 @Valid @RequestBody NewOrUpdateProductDto updatedProduct);
+    ResponseEntity<ProductDto> updateProductById(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+            @PathVariable("id") Long id, @Valid @RequestBody NewOrUpdateProductDto updatedProduct);
+
+    @Operation(summary = "Удаление товара по идентификатору")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Товар удален",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ProductDto.class))
+                    }
+            ),
+            @ApiResponse(responseCode = "404", description = "Товар не найден",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    })
+    })
+    @PreAuthorize("hasAuthority('SELLER')")
+    @DeleteMapping("/{id}")
+    ResponseEntity<ProductDto> deleteProductById(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+                                                 @PathVariable("id") Long productId);
+
+
 
 
 }

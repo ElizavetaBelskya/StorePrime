@@ -40,17 +40,10 @@ public class CustomerServiceImpl implements CustomerService {
         if (!updatedCustomerDto.getEmail().equals(customer.getEmail())) {
             if (accountService.isEmailUsed(updatedCustomerDto.getEmail())) {
                 throw new AlreadyExistsException("Account with email <" + updatedCustomerDto.getEmail() + "> already exists");
-            } else {
-                customer.setEmail(updatedCustomerDto.getEmail());
             }
         }
-        customer.setPhoneNumber(updatedCustomerDto.getPhoneNumber());
-        customer.setName(updatedCustomerDto.getName());
-        customer.setSurname(updatedCustomerDto.getSurname());
-        customer.setGender(updatedCustomerDto.getGender());
-        customer.setBirthdayDate(updatedCustomerDto.getBirthdayDate());
+        customer = CustomerConverter.getCustomerFromNewOrUpdateCustomerDto(updatedCustomerDto);
         customer.setPasswordHash(passwordEncoder.encode(updatedCustomerDto.getPasswordHash()));
-        customer.setAddress(AddressConverter.getAddressFromAddressDto(updatedCustomerDto.getAddressDto()));
         Customer updatedCustomer = customerRepository.save(customer);
         return CustomerDto.from(updatedCustomer);
     }

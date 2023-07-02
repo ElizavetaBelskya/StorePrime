@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.storePrime.controller.api.ProductApi;
 import ru.tinkoff.storePrime.dto.NewOrUpdateProductDto;
 import ru.tinkoff.storePrime.dto.ProductDto;
+import ru.tinkoff.storePrime.models.user.Seller;
+import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 import ru.tinkoff.storePrime.services.ProductService;
 
 import java.util.List;
@@ -18,11 +20,6 @@ public class ProductController implements ProductApi {
     private final ProductService productService;
 
     @Override
-    public ResponseEntity<ProductDto> addProduct(NewOrUpdateProductDto newProduct) {
-        return null;
-    }
-
-    @Override
     public ResponseEntity<ProductDto> getProductById(Long id) {
         return ResponseEntity.ok(productService.getProductById(id));
     }
@@ -33,8 +30,22 @@ public class ProductController implements ProductApi {
     }
 
     @Override
-    public ResponseEntity<ProductDto> updateProductById(Long id, NewOrUpdateProductDto updatedProduct) {
-        return null;
+    public ResponseEntity<ProductDto> addProduct(UserDetailsImpl userDetailsImpl, NewOrUpdateProductDto newProduct) {
+        Long sellerId = userDetailsImpl.getAccount().getId();
+        return ResponseEntity.ok(productService.addProduct(sellerId, newProduct));
+    }
+
+    @Override
+    public ResponseEntity<ProductDto> updateProductById(UserDetailsImpl userDetailsImpl,
+                                                        Long id, NewOrUpdateProductDto updatedProduct) {
+        Long sellerId = userDetailsImpl.getAccount().getId();
+        return ResponseEntity.ok(productService.updateProduct(id, sellerId, updatedProduct));
+    }
+
+    @Override
+    public ResponseEntity<ProductDto> deleteProductById(UserDetailsImpl userDetailsImpl, Long productId) {
+        Long sellerId = userDetailsImpl.getAccount().getId();
+        return ResponseEntity.ok(productService.deleteProduct(sellerId, productId));
     }
 
 }

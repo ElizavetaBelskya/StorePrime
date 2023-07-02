@@ -1,6 +1,7 @@
 package ru.tinkoff.storePrime.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.storePrime.converters.SellerConverter;
 import ru.tinkoff.storePrime.dto.NewOrUpdateSellerDto;
@@ -19,6 +20,8 @@ public class SellerServiceImpl implements SellerService {
     private final SellerRepository sellerRepository;
 
     private final AccountService accountService;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public SellerDto addSeller(NewOrUpdateSellerDto sellerDto) {
@@ -39,16 +42,10 @@ public class SellerServiceImpl implements SellerService {
         if (!updatedSellerDto.getEmail().equals(seller.getEmail())) {
             if (accountService.isEmailUsed(updatedSellerDto.getEmail())) {
                 throw new AlreadyExistsException("Account with email <" + updatedSellerDto.getEmail() + "> already exists");
-            } else {
-                seller.setEmail(updatedSellerDto.getEmail());
             }
         }
-        seller.setPhoneNumber(updatedSellerDto.getPhoneNumber());
-        seller.setName(updatedSellerDto.getName());
-        seller.setINN(updatedSellerDto.getINN());
-        seller.setLocation(new Location(updatedSellerDto.getLocationDto().getCountry(),
-                updatedSellerDto.getLocationDto().getCity()));
-        seller.setDescription(updatedSellerDto.getDescription());
+        seller = SellerConverter.getSellerFromNewOrUpdateSellerDto(updatedSellerDto);
+        seller.setPasswordHash(passwordEncoder.encode(seller.getPasswordHash()));
         Seller updatedSeller = sellerRepository.save(seller);
         return SellerDto.from(updatedSeller);
     }

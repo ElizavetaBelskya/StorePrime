@@ -1,15 +1,12 @@
 package ru.tinkoff.storePrime.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.storePrime.controller.api.SellerApi;
-import ru.tinkoff.storePrime.dto.CustomerDto;
 import ru.tinkoff.storePrime.dto.NewOrUpdateSellerDto;
 import ru.tinkoff.storePrime.dto.SellerDto;
-import ru.tinkoff.storePrime.models.user.Customer;
 import ru.tinkoff.storePrime.models.user.Seller;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 import ru.tinkoff.storePrime.security.exceptions.AlreadyExistsException;
