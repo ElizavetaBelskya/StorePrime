@@ -15,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.storePrime.dto.CustomerDto;
 import ru.tinkoff.storePrime.dto.NewOrUpdateCustomerDto;
+import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 
 
@@ -81,5 +82,20 @@ public interface CustomerApi {
     @PreAuthorize("hasAuthority('CUSTOMER')")
     @GetMapping
     ResponseEntity<CustomerDto> getThisCustomer(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
+
+
+    @Operation(summary = "Удаление аккаунта покупателя")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Аккаунт покупателя удален"),
+            @ApiResponse(responseCode = "404", description = "Сведения об ошибке",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            )
+    })
+    @DeleteMapping
+    ResponseEntity<CustomerDto> deleteCustomer(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
+
 
 }

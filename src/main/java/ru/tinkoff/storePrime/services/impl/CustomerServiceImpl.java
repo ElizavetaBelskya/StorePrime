@@ -55,4 +55,10 @@ public class CustomerServiceImpl implements CustomerService {
         return CustomerDto.from(updatedCustomer);
     }
 
+    @Override
+    public CustomerDto deleteCustomer(Customer customer) {
+        customerRepository.delete(customer);
+        return new CustomerDto();
+    }
+
 }
