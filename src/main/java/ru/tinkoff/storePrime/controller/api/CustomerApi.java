@@ -55,6 +55,12 @@ public interface CustomerApi {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = CustomerDto.class))
                     }
+            ),
+            @ApiResponse(responseCode = "401", description = "Сведения об ошибке",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
             )
     })
     @PutMapping("/{id}")
@@ -77,6 +83,12 @@ public interface CustomerApi {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = CustomerDto.class))
                     }
+            ),
+            @ApiResponse(responseCode = "401", description = "Сведения об ошибке",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
             )
     })
     @PreAuthorize("hasAuthority('CUSTOMER')")
@@ -92,8 +104,15 @@ public interface CustomerApi {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ExceptionDto.class))
                     }
+            ),
+            @ApiResponse(responseCode = "401", description = "Сведения об ошибке",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
             )
     })
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     @DeleteMapping
     ResponseEntity<CustomerDto> deleteCustomer(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
 
