@@ -43,4 +43,18 @@ public interface CartApi {
                                                  @RequestParam("quantity") Integer quantity);
 
 
+    @Operation(summary = "Получение всех товаров в корзине пользователя")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Добавленный в корзину товар",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = CartItemDto.class))
+                    }
+            )
+    })
+    @GetMapping
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    ResponseEntity<List<CartItemDto>> getCustomerCart(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
+
+
 }

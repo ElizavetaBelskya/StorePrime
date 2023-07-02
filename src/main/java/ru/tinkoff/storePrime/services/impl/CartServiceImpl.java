@@ -9,6 +9,7 @@ import ru.tinkoff.storePrime.repository.CustomerRepository;
 import ru.tinkoff.storePrime.repository.ProductRepository;
 import ru.tinkoff.storePrime.services.CartService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -39,6 +40,10 @@ public class CartServiceImpl implements CartService {
         return CartItemDto.from(newOrUpdatedCartItem);
     }
 
+    @Override
+    public List<CartItemDto> getCustomerCart(Long customerId) {
+        return CartItemDto.from(customerRepository.findById(customerId).orElseThrow().getCart());
+    }
 
 
 }

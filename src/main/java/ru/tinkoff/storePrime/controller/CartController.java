@@ -9,6 +9,8 @@ import ru.tinkoff.storePrime.dto.CartItemDto;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 import ru.tinkoff.storePrime.services.CartService;
 
+import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -21,6 +23,12 @@ public class CartController implements CartApi {
     public ResponseEntity<CartItemDto> addProductToCart(UserDetailsImpl userDetailsImpl, Long productId, Integer quantity) {
         Long customerId = userDetailsImpl.getAccount().getId();
         return ResponseEntity.status(HttpStatus.CREATED).body(cartService.addNewCartItem(customerId, productId, quantity));
+    }
+
+    @Override
+    public ResponseEntity<List<CartItemDto>> getCustomerCart(UserDetailsImpl userDetailsImpl) {
+        Long customerId = userDetailsImpl.getAccount().getId();
+        return ResponseEntity.ok(cartService.getCustomerCart(customerId));
     }
 
 

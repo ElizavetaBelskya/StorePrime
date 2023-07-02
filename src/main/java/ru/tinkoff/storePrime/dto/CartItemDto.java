@@ -7,6 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ru.tinkoff.storePrime.models.CartItem;
+import ru.tinkoff.storePrime.models.Product;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -29,6 +33,11 @@ public class CartItemDto {
                 .product(ProductDto.from(cartItem.getProduct()))
                 .customerId(cartItem.getCustomer().getId())
                 .build();
+    }
+
+    public static List<CartItemDto> from(List<CartItem> cartItems) {
+        return cartItems.stream().map(CartItemDto::from)
+                .collect(Collectors.toList());
     }
 
 

@@ -2,8 +2,11 @@ package ru.tinkoff.storePrime.services;
 
 import ru.tinkoff.storePrime.dto.CartItemDto;
 
+import java.util.List;
+
 public interface CartService {
 
     CartItemDto addNewCartItem(Long customerId, Long productId, Integer quantity);
 
+    List<CartItemDto> getCustomerCart(Long customerId);
 }
