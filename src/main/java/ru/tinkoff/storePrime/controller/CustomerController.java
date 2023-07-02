@@ -3,7 +3,6 @@ package ru.tinkoff.storePrime.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.storePrime.controller.api.CustomerApi;
 import ru.tinkoff.storePrime.dto.CustomerDto;
@@ -24,12 +23,13 @@ public class CustomerController implements CustomerApi {
     }
 
     @Override
-    public ResponseEntity<CustomerDto> updateCustomer(Long customerId, NewOrUpdateCustomerDto updatedCustomerDto) {
+    public ResponseEntity<CustomerDto> updateCustomer(UserDetailsImpl userDetailsImpl, NewOrUpdateCustomerDto updatedCustomerDto) {
+        Long customerId = userDetailsImpl.getAccount().getId();
         return ResponseEntity.accepted().body(customerService.updateCustomer(customerId, updatedCustomerDto));
     }
 
     @Override
-    public ResponseEntity<CustomerDto> getThisCustomer(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+    public ResponseEntity<CustomerDto> getThisCustomer(UserDetailsImpl userDetailsImpl) {
         return ResponseEntity.ok(CustomerDto.from((Customer) userDetailsImpl.getAccount()));
     }
 

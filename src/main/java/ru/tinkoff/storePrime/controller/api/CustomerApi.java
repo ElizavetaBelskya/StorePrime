@@ -63,10 +63,10 @@ public interface CustomerApi {
                     }
             )
     })
-    @PutMapping("/{id}")
+    @PutMapping
     @PreAuthorize("hasAuthority('CUSTOMER')")
     ResponseEntity<CustomerDto> updateCustomer(
-            @Parameter(description = "Идентификатор покупателя", example = "1642") @PathVariable("id") Long customerId,
+            @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
             @Valid @RequestBody NewOrUpdateCustomerDto updatedCustomer);
 
 
