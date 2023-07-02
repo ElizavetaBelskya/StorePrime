@@ -1,5 +1,6 @@
 package ru.tinkoff.storePrime.security.details;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,6 +11,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 @RequiredArgsConstructor
+@Getter
 public class UserDetailsImpl implements UserDetails {
 
     private final Account account;

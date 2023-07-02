@@ -18,7 +18,7 @@ Content-Type: application/json
       "city": "Москва"
     }
   },
-  "passwordHash": "$2a$10$3nuOnmRVLv8hCSImbXh/kORKlP/zVHgfFZl2wXnEYC2NS8/imV3YO"
+  "passwordHash": "1234qwer"
 }
 
 ###
@@ -26,4 +26,12 @@ POST http://localhost/auth/login
 Content-Type: application/x-www-form-urlencoded
 
 email=example@mail.ru&password=1234qwer
+###
+#{
+#  "accessToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQG1haWwucnUiLCJyb2xlIjoiQ1VTVE9NRVIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2F1dGgvbG9naW4iLCJleHAiOjE2ODgyOTM3ODV9.OC6rYjDwIDtrn9oZy9AaqnW9i-4_vIMJ2O9QLUPd07A",
+#  "refreshToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQG1haWwucnUiLCJyb2xlIjoiQ1VTVE9NRVIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2F1dGgvbG9naW4iLCJleHAiOjE2ODgzNzc3ODV9.HOb8cABBxqRjYL08iYsjNduRLJ2H4X0x5TWq06PDI54"
+#}
 
+###
+GET http://localhost:80/customer
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQG1haWwucnUiLCJyb2xlIjoiQ1VTVE9NRVIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2F1dGgvbG9naW4iLCJleHAiOjE2ODgyOTM3ODV9.OC6rYjDwIDtrn9oZy9AaqnW9i-4_vIMJ2O9QLUPd07A

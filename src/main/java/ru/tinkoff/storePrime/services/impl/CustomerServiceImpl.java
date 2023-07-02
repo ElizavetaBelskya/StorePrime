@@ -1,6 +1,7 @@
 package ru.tinkoff.storePrime.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.storePrime.converters.AddressConverter;
 import ru.tinkoff.storePrime.converters.CustomerConverter;
@@ -16,6 +17,8 @@ import ru.tinkoff.storePrime.services.CustomerService;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
+    private final PasswordEncoder passwordEncoder;
+
     private final AccountService accountService;
 
     private final CustomerRepository customerRepository;
@@ -25,6 +28,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (accountService.isEmailUsed(customerDto.getEmail())) {
             throw new AlreadyExistsException("Account with email <" + customerDto.getEmail() + "> already exists");
         }
+        customerDto.setPasswordHash(passwordEncoder.encode(customerDto.getPasswordHash()));
         Customer newCustomer = CustomerConverter.getCustomerFromNewOrUpdateCustomerDto(customerDto);
         Customer customer = customerRepository.save(newCustomer);
         return CustomerDto.from(customer);
@@ -45,7 +49,7 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setSurname(updatedCustomerDto.getSurname());
         customer.setGender(updatedCustomerDto.getGender());
         customer.setBirthdayDate(updatedCustomerDto.getBirthdayDate());
-        customer.setPasswordHash(updatedCustomerDto.getPasswordHash());
+        customer.setPasswordHash(passwordEncoder.encode(updatedCustomerDto.getPasswordHash()));
         customer.setAddress(AddressConverter.getAddressFromAddressDto(updatedCustomerDto.getAddressDto()));
         Customer updatedCustomer = customerRepository.save(customer);
         return CustomerDto.from(updatedCustomer);

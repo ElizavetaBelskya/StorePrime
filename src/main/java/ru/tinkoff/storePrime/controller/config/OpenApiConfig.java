@@ -110,7 +110,7 @@ public class OpenApiConfig {
 
 
     private Info buildInfo() {
-        return new Info().title("RuSteam API").version("0.1");
+        return new Info().title("StorePrime API").version("0.1");
     }
 
     private Components buildComponents() {

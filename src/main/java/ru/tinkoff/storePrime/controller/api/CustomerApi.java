@@ -11,9 +11,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.storePrime.dto.CustomerDto;
 import ru.tinkoff.storePrime.dto.NewOrUpdateCustomerDto;
+import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 
 
 import javax.annotation.security.PermitAll;
@@ -55,11 +57,29 @@ public interface CustomerApi {
             )
     })
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('SELLER')")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     ResponseEntity<CustomerDto> updateCustomer(
             @Parameter(description = "Идентификатор покупателя", example = "1642") @PathVariable("id") Long customerId,
             @Valid @RequestBody NewOrUpdateCustomerDto updatedCustomer);
 
 
+    @Operation(summary = "Получение аккаунта покупателя")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Информация об аккаунте покупателя",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = CustomerDto.class))
+                    }
+            ),
+            @ApiResponse(responseCode = "404", description = "Сведения об ошибке",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = CustomerDto.class))
+                    }
+            )
+    })
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    @GetMapping
+    ResponseEntity<CustomerDto> getThisCustomer(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
 
 }

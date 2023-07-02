@@ -28,6 +28,8 @@ public class CustomerDto extends AccountDto {
     @Schema(description = "Дата рождения", example = "2000-01-01")
     private LocalDate birthdayDate;
 
+    private AddressDto addressDto;
+
     public static CustomerDto from(Customer customer) {
         return CustomerDto.builder()
                 .id(customer.getId())
@@ -38,6 +40,7 @@ public class CustomerDto extends AccountDto {
                 .surname(customer.getSurname())
                 .gender(customer.getGender())
                 .birthdayDate(customer.getBirthdayDate())
+                .addressDto(AddressDto.from(customer.getAddress()))
                 .build();
     }
 

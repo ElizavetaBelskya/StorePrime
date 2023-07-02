@@ -23,9 +23,12 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @OneToOne
     private Product product;
+
     private Integer amount;
+
     private Status status;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
