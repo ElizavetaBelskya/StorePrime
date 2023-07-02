@@ -53,6 +53,11 @@ public class SellerServiceImpl implements SellerService {
         return SellerDto.from(updatedSeller);
     }
 
+    @Override
+    public SellerDto getSeller(Long id) {
+        return SellerDto.from(sellerRepository.findById(id).orElseThrow());
+    }
+
 
 //    public boolean isEmailUsed(String email) {
 //        return sellerRepository.findByEmail(email).isPresent();

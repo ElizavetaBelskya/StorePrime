@@ -11,4 +11,6 @@ public interface SellerService {
     SellerDto deleteSeller(Seller seller);
 
     SellerDto updateSeller(Long id, NewOrUpdateSellerDto updatedSeller);
+
+    SellerDto getSeller(Long id);
 }
