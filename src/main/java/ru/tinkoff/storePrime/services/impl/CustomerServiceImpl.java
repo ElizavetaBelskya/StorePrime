@@ -49,9 +49,16 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDto deleteCustomer(Customer customer) {
-        customerRepository.delete(customer);
+    public CustomerDto deleteCustomer(Long customerId) {
+        customerRepository.deleteById(customerId);
         return new CustomerDto();
+    }
+
+    @Override
+    public CustomerDto updateCardBalance(Long customerId, Integer replenishment) {
+        Customer customer = customerRepository.findById(customerId).orElseThrow();
+        customer.setCardBalance(customer.getCardBalance() + replenishment);
+        return CustomerDto.from(customerRepository.save(customer));
     }
 
 }

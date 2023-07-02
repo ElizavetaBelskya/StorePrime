@@ -12,5 +12,7 @@ public interface CustomerService {
 
     CustomerDto updateCustomer(Long id, NewOrUpdateCustomerDto updatedCustomerDto);
 
-    CustomerDto deleteCustomer(Customer customer);
+    CustomerDto deleteCustomer(Long id);
+
+    CustomerDto updateCardBalance(Long customerId, Integer replenishment);
 }

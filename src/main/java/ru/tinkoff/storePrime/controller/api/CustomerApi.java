@@ -53,7 +53,7 @@ public interface CustomerApi {
             @ApiResponse(responseCode = "404", description = "Сведения об ошибке",
                     content = {
                             @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = CustomerDto.class))
+                                    schema = @Schema(implementation = ExceptionDto.class))
                     }
             ),
             @ApiResponse(responseCode = "401", description = "Сведения об ошибке",
@@ -81,7 +81,7 @@ public interface CustomerApi {
             @ApiResponse(responseCode = "404", description = "Сведения об ошибке",
                     content = {
                             @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = CustomerDto.class))
+                                    schema = @Schema(implementation = ExceptionDto.class))
                     }
             ),
             @ApiResponse(responseCode = "401", description = "Сведения об ошибке",
@@ -115,6 +115,35 @@ public interface CustomerApi {
     @PreAuthorize("hasAuthority('CUSTOMER')")
     @DeleteMapping
     ResponseEntity<CustomerDto> deleteCustomer(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
+
+
+    @Operation(summary = "Пополнение счета покупателя")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Обновленный аккаунт покупателя",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = CustomerDto.class))
+                    }
+            ),
+            @ApiResponse(responseCode = "404", description = "Сведения об ошибке",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            ),
+            @ApiResponse(responseCode = "401", description = "Сведения об ошибке",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            )
+    })
+    @PatchMapping
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    ResponseEntity<CustomerDto> updateCustomer(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+                                               @RequestBody Integer replenishment);
+
+
 
 
 }
