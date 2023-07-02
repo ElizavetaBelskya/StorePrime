@@ -45,5 +45,12 @@ public class CartServiceImpl implements CartService {
         return CartItemDto.from(customerRepository.findById(customerId).orElseThrow().getCart());
     }
 
+    @Override
+    public CartItemDto deleteProductFromCart(Long customerId, Long productId) {
+        CartItem foundCartItem = cartRepository.findByCustomer_IdAndProduct_Id(customerId, productId).orElseThrow();
+        cartRepository.delete(foundCartItem);
+        return new CartItemDto();
+    }
+
 
 }

@@ -27,7 +27,7 @@ import java.util.List;
 @RequestMapping("/carts")
 public interface CartApi {
 
-    @Operation(summary = "Добавление товара в корзину")
+    @Operation(summary = "Добавление или изменение количества товара в корзину")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Добавленный в корзину товар",
                     content = {
@@ -55,6 +55,26 @@ public interface CartApi {
     @GetMapping
     @PreAuthorize("hasAuthority('CUSTOMER')")
     ResponseEntity<List<CartItemDto>> getCustomerCart(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
+
+
+    @Operation(summary = "Удаление товара из корзины")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Товар удален из корзины",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = CartItemDto.class))
+                    }
+            ),
+            @ApiResponse(responseCode = "404", description = "Товар не найден в корзине",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    })
+    })
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    @DeleteMapping("/{productId}")
+    ResponseEntity<CartItemDto> deleteProductFromCart(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+                                                 @PathVariable("productId") Long productId);
 
 
 }
