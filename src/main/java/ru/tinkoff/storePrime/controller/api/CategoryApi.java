@@ -9,9 +9,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.tinkoff.storePrime.dto.ProductDto;
+import ru.tinkoff.storePrime.dto.product.ProductDto;
 import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package ru.tinkoff.storePrime.dto;
+package ru.tinkoff.storePrime.dto.location;
 
 
 

@@ -5,10 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.storePrime.controller.api.ProductApi;
-import ru.tinkoff.storePrime.dto.NewOrUpdateProductDto;
-import ru.tinkoff.storePrime.dto.ProductDto;
-import ru.tinkoff.storePrime.dto.ProductsPage;
-import ru.tinkoff.storePrime.models.user.Seller;
+import ru.tinkoff.storePrime.dto.product.NewOrUpdateProductDto;
+import ru.tinkoff.storePrime.dto.product.ProductDto;
+import ru.tinkoff.storePrime.dto.product.ProductsPage;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 import ru.tinkoff.storePrime.services.ProductService;
 

@@ -2,7 +2,6 @@ package ru.tinkoff.storePrime.controller.api;
 
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,8 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import ru.tinkoff.storePrime.dto.CustomerDto;
-import ru.tinkoff.storePrime.dto.NewOrUpdateCustomerDto;
+import ru.tinkoff.storePrime.dto.user.CustomerDto;
+import ru.tinkoff.storePrime.dto.user.NewOrUpdateCustomerDto;
 import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 

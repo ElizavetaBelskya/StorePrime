@@ -1,4 +1,4 @@
-package ru.tinkoff.storePrime.dto;
+package ru.tinkoff.storePrime.dto.location;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
 package ru.tinkoff.storePrime.services;
 
-import ru.tinkoff.storePrime.dto.CartItemDto;
+import ru.tinkoff.storePrime.dto.cart.CartItemDto;
 
 import java.util.List;
 

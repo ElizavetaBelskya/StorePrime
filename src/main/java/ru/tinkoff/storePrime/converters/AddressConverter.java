@@ -1,6 +1,6 @@
 package ru.tinkoff.storePrime.converters;
 
-import ru.tinkoff.storePrime.dto.AddressDto;
+import ru.tinkoff.storePrime.dto.location.AddressDto;
 import ru.tinkoff.storePrime.models.Address;
 import ru.tinkoff.storePrime.models.Location;
 

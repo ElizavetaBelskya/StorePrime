@@ -1,7 +1,6 @@
 package ru.tinkoff.storePrime.converters;
 
-import ru.tinkoff.storePrime.dto.NewOrUpdateProductDto;
-import ru.tinkoff.storePrime.models.Category;
+import ru.tinkoff.storePrime.dto.product.NewOrUpdateProductDto;
 import ru.tinkoff.storePrime.models.Product;
 
 public class ProductConverter {

@@ -1,8 +1,9 @@
-package ru.tinkoff.storePrime.dto;
+package ru.tinkoff.storePrime.dto.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import ru.tinkoff.storePrime.dto.location.LocationDto;
 
 
 @Data

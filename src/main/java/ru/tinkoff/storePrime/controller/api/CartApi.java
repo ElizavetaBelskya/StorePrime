@@ -12,11 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import ru.tinkoff.storePrime.dto.CartItemDto;
+import ru.tinkoff.storePrime.dto.cart.CartItemDto;
 import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Tags(value = {

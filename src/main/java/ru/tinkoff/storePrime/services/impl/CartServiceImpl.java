@@ -2,7 +2,7 @@ package ru.tinkoff.storePrime.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.storePrime.dto.CartItemDto;
+import ru.tinkoff.storePrime.dto.cart.CartItemDto;
 import ru.tinkoff.storePrime.models.CartItem;
 import ru.tinkoff.storePrime.repository.CartRepository;
 import ru.tinkoff.storePrime.repository.CustomerRepository;

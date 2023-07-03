@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.storePrime.controller.api.CartApi;
-import ru.tinkoff.storePrime.dto.CartItemDto;
+import ru.tinkoff.storePrime.dto.cart.CartItemDto;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 import ru.tinkoff.storePrime.services.CartService;
 

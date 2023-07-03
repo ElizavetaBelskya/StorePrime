@@ -1,6 +1,6 @@
 package ru.tinkoff.storePrime.converters;
 
-import ru.tinkoff.storePrime.dto.NewOrUpdateSellerDto;
+import ru.tinkoff.storePrime.dto.user.NewOrUpdateSellerDto;
 import ru.tinkoff.storePrime.models.Location;
 import ru.tinkoff.storePrime.models.user.Account;
 import ru.tinkoff.storePrime.models.user.Seller;

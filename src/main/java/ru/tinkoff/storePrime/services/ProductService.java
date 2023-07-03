@@ -1,9 +1,8 @@
 package ru.tinkoff.storePrime.services;
 
-import ru.tinkoff.storePrime.dto.NewOrUpdateProductDto;
-import ru.tinkoff.storePrime.dto.ProductDto;
-import ru.tinkoff.storePrime.dto.ProductsPage;
-import ru.tinkoff.storePrime.models.user.Seller;
+import ru.tinkoff.storePrime.dto.product.NewOrUpdateProductDto;
+import ru.tinkoff.storePrime.dto.product.ProductDto;
+import ru.tinkoff.storePrime.dto.product.ProductsPage;
 
 import java.util.List;
 

@@ -2,8 +2,6 @@ package ru.tinkoff.storePrime.models.user;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import ru.tinkoff.storePrime.dto.NewOrUpdateSellerDto;
-import ru.tinkoff.storePrime.dto.SellerDto;
 import ru.tinkoff.storePrime.models.Location;
 
 import javax.persistence.*;
