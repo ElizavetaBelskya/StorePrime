@@ -157,4 +157,9 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+    @Override
+    public List<ProductDto> getAllProductsByContentString(String content) {
+        return ProductDto.from(productRepository.findAllByContent("%" + content + "%"));
+    }
+
 }

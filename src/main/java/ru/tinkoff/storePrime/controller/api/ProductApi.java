@@ -148,6 +148,16 @@ public interface ProductApi {
             @Parameter(description = "Идентификатор продавца", example = "1") @RequestParam(value = "id", required = false) Long sellerId
     );
 
+    @Operation(summary = "Получение товара по названию")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Найденные товары",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDto.class))
+                    })
+    })
+    @GetMapping("/search")
+    ResponseEntity<List<ProductDto>> getProductsByContentString(@RequestParam("content") String content);
+
 
 
 

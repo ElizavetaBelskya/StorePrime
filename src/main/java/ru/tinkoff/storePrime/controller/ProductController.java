@@ -60,4 +60,9 @@ public class ProductController implements ProductApi {
         return ResponseEntity.ok(productService.getAllProducts(minPrice, maxPrice, category, sellerId));
     }
 
+    @Override
+    public ResponseEntity<List<ProductDto>> getProductsByContentString(String content) {
+        return ResponseEntity.ok(productService.getAllProductsByContentString(content));
+    }
+
 }

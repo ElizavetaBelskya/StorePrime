@@ -50,4 +50,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("select p from Product p")
     Page<Product> findPage(PageRequest pageRequest);
+
+    @Query(nativeQuery = true, value =
+            "SELECT * FROM product WHERE product.title ILIKE :content")
+    List<Product> findAllByContent(@Param("content") String content);
 }

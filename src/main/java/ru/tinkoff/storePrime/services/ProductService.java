@@ -21,4 +21,6 @@ public interface ProductService {
     List<ProductDto> getAllProducts(Double minPrice, Double maxPrice, String category, Long sellerId);
 
     ProductsPage getProductsPage(int page, Double minPrice, Double maxPrice, String category, Long sellerId);
+
+    List<ProductDto> getAllProductsByContentString(String content);
 }
