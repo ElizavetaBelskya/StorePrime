@@ -84,23 +84,26 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDto> getAllProducts(Double price, String category, Long sellerId) {
+    public List<ProductDto> getAllProducts(Double minPrice, Double maxPrice, String category, Long sellerId) {
         Optional<Category> categoryToSearch = categoryRepository.findByName(category);
         Collection<Category> categories = Collections.emptyList();
         if (categoryToSearch.isPresent()) {
             categories = Collections.singleton(categoryToSearch.get());
         }
-        if (sellerId != null && price != null) {
+        if (minPrice == null) {
+            minPrice = 0d;
+        }
+        if (sellerId != null && maxPrice != null) {
             if (!categories.isEmpty()) {
-                return ProductDto.from(productRepository.findBySellerAndPriceAndCategory(sellerId, price, categories));
+                return ProductDto.from(productRepository.findBySellerAndPriceAndCategory(sellerId, minPrice, maxPrice, categories));
             } else {
-                return ProductDto.from(productRepository.findBySellerAndPrice(sellerId, price));
+                return ProductDto.from(productRepository.findBySellerAndPrice(sellerId, minPrice, maxPrice));
             }
-        } else if (price != null) {
+        } else if (maxPrice != null) {
             if (!categories.isEmpty()) {
-                return ProductDto.from(productRepository.findByPriceAndCategory(price, categories));
+                return ProductDto.from(productRepository.findByPriceAndCategory(minPrice, maxPrice, categories));
             } else {
-                return ProductDto.from(productRepository.findByPrice(price));
+                return ProductDto.from(productRepository.findByPrice(minPrice, maxPrice));
             }
         } else {
             if (!categories.isEmpty()) {
@@ -112,29 +115,36 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductsPage getProductsPage(int page, Double price, String category, Long sellerId) {
+    public ProductsPage getProductsPage(int page, Double minPrice, Double maxPrice, String category, Long sellerId) {
         PageRequest pageRequest = PageRequest.of(page, defaultPageSize);
         Optional<Category> categoryToSearch = categoryRepository.findByName(category);
         Collection<Category> categories = Collections.emptyList();
         if (categoryToSearch.isPresent()) {
             categories = Collections.singleton(categoryToSearch.get());
         }
+        if (maxPrice == null && minPrice != null) {
+            maxPrice = Double.MAX_VALUE;
+            //TODO: тут бы заменить на чтото разумное
+        }
+        if (minPrice == null) {
+            minPrice = 0d;
+        }
         Page<Product> productsPage;
-        if (sellerId != null && price != null) {
+        if (sellerId != null && maxPrice != null) {
             if (!categories.isEmpty()) {
-                productsPage = productRepository.findPageBySellerAndPriceAndCategory(pageRequest, sellerId, price, categories);
+                productsPage = productRepository.findPageBySellerAndPriceAndCategory(pageRequest, sellerId, minPrice, maxPrice, categories);
             } else {
-                productsPage = productRepository.findPageBySellerAndPrice(pageRequest, sellerId, price);
+                productsPage = productRepository.findPageBySellerAndPrice(pageRequest, sellerId, minPrice, maxPrice);
             }
-        } else if (price != null) {
+        } else if (maxPrice != null) {
             if (!categories.isEmpty()) {
-                productsPage = productRepository.findPageByPriceAndCategory(pageRequest, price, categories);
+                productsPage = productRepository.findPageByPriceAndCategory(pageRequest, minPrice, maxPrice, categories);
             } else {
-                productsPage = productRepository.findPageByPrice(pageRequest, price);
+                productsPage = productRepository.findPageByPrice(pageRequest, minPrice, maxPrice);
             }
         } else {
             if (!categories.isEmpty()) {
-                productsPage = productRepository.findPageByCategory(categories);
+                productsPage = productRepository.findPageByCategory(pageRequest, categories);
             } else {
                 productsPage = productRepository.findPage(pageRequest);
             }

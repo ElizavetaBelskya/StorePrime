@@ -127,7 +127,8 @@ public interface ProductApi {
     @GetMapping("/pages")
     ResponseEntity<ProductsPage> getProducts(
             @Parameter(description = "Номер страницы", example = "1") @RequestParam("page") int page,
-            @Parameter(description = "Максимальная стоимость товара", example = "?price=1500") @RequestParam(value = "price", required = false) Double price,
+            @Parameter(description = "Минимальная стоимость товара", example = "?minPrice=1500") @RequestParam(value = "minPrice", required = false) Double minPrice,
+            @Parameter(description = "Максимальная стоимость товара", example = "?maxPrice=1500") @RequestParam(value = "maxPrice", required = false) Double maxPrice,
             @Parameter(description = "Категория товара", example = "?category=pets") @RequestParam(value = "category", required = false) String category,
             @Parameter(description = "Идентификатор продавца", example = "1") @RequestParam(value = "id", required = false) Long sellerId
     );
@@ -141,7 +142,8 @@ public interface ProductApi {
     })
     @GetMapping
     ResponseEntity<List<ProductDto>> getAllProducts(
-            @Parameter(description = "Максимальная стоимость товара", example = "?price=1500") @RequestParam(value = "price", required = false) Double price,
+            @Parameter(description = "Минимальная стоимость товара", example = "?minPrice=1500") @RequestParam(value = "minPrice", required = false) Double minPrice,
+            @Parameter(description = "Максимальная стоимость товара", example = "?maxPrice=1500") @RequestParam(value = "maxPrice", required = false) Double maxPrice,
             @Parameter(description = "Категория товара", example = "?category=pets") @RequestParam(value = "category", required = false) String category,
             @Parameter(description = "Идентификатор продавца", example = "1") @RequestParam(value = "id", required = false) Long sellerId
     );

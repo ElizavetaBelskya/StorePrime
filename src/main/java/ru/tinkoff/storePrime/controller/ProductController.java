@@ -51,13 +51,13 @@ public class ProductController implements ProductApi {
     }
 
     @Override
-    public ResponseEntity<ProductsPage> getProducts(int page, Double price, String category, Long sellerId) {
-        return ResponseEntity.ok(productService.getProductsPage(page, price, category, sellerId));
+    public ResponseEntity<ProductsPage> getProducts(int page, Double minPrice, Double maxPrice, String category, Long sellerId) {
+        return ResponseEntity.ok(productService.getProductsPage(page, minPrice, maxPrice, category, sellerId));
     }
 
     @Override
-    public ResponseEntity<List<ProductDto>> getAllProducts(Double price, String category, Long sellerId) {
-        return ResponseEntity.ok(productService.getAllProducts(price, category, sellerId));
+    public ResponseEntity<List<ProductDto>> getAllProducts(Double minPrice, Double maxPrice, String category, Long sellerId) {
+        return ResponseEntity.ok(productService.getAllProducts(minPrice, maxPrice, category, sellerId));
     }
 
 }
