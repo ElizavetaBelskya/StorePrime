@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
 import ru.tinkoff.storePrime.exceptions.NotFoundException;
 
+import java.util.NoSuchElementException;
+
 /**
  * @author Elizaveta Belskaya
  */
@@ -15,8 +17,8 @@ import ru.tinkoff.storePrime.exceptions.NotFoundException;
 @ControllerAdvice
 public class RestExceptionHandler {
 
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ExceptionDto> handleNotFound(NotFoundException ex) {
+    @ExceptionHandler({NotFoundException.class, NoSuchElementException.class})
+    public ResponseEntity<ExceptionDto> handleNotFound(Exception ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ExceptionDto.builder()
                         .message(ex.getMessage())

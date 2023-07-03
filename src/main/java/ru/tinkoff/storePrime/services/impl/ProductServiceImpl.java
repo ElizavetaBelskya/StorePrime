@@ -45,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto addProduct(Long sellerId, NewOrUpdateProductDto newProductDto) {
         Product newProduct = ProductConverter.getProductFromNewOrUpdateProductDto(newProductDto);
-        newProduct.setSeller(sellerRepository.findById(sellerId).get());
+        newProduct.setSeller(sellerRepository.findById(sellerId).orElseThrow());
         List<Category> categories = newProductDto.getCategories().stream()
                 .flatMap(name -> categoryRepository.findByName(name).stream())
                 .collect(Collectors.toList());

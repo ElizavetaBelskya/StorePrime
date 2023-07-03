@@ -46,6 +46,7 @@ public class Order {
 
     private Status status;
 
+
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Customer customer;
 
