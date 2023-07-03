@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.storePrime.controller.api.ProductApi;
 import ru.tinkoff.storePrime.dto.NewOrUpdateProductDto;
 import ru.tinkoff.storePrime.dto.ProductDto;
+import ru.tinkoff.storePrime.dto.ProductsPage;
 import ru.tinkoff.storePrime.models.user.Seller;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 import ru.tinkoff.storePrime.services.ProductService;
@@ -47,6 +48,16 @@ public class ProductController implements ProductApi {
     public ResponseEntity<ProductDto> deleteProductById(UserDetailsImpl userDetailsImpl, Long productId) {
         Long sellerId = userDetailsImpl.getAccount().getId();
         return ResponseEntity.ok(productService.deleteProduct(sellerId, productId));
+    }
+
+    @Override
+    public ResponseEntity<ProductsPage> getProducts(int page, Double price, String category, Long sellerId) {
+        return ResponseEntity.ok(productService.getProductsPage(page, price, category, sellerId));
+    }
+
+    @Override
+    public ResponseEntity<List<ProductDto>> getAllProducts(Double price, String category, Long sellerId) {
+        return ResponseEntity.ok(productService.getAllProducts(price, category, sellerId));
     }
 
 }

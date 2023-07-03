@@ -2,6 +2,7 @@ package ru.tinkoff.storePrime.controller.api;
 
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.storePrime.dto.NewOrUpdateProductDto;
 import ru.tinkoff.storePrime.dto.ProductDto;
+import ru.tinkoff.storePrime.dto.ProductsPage;
 import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 
@@ -112,6 +114,38 @@ public interface ProductApi {
     @DeleteMapping("/{id}")
     ResponseEntity<ProductDto> deleteProductById(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                                  @PathVariable("id") Long productId);
+
+
+
+    @Operation(summary = "Получение списка товаров")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Страница с товарами",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ProductsPage.class))
+                    })
+    })
+    @GetMapping("/pages")
+    ResponseEntity<ProductsPage> getProducts(
+            @Parameter(description = "Номер страницы", example = "1") @RequestParam("page") int page,
+            @Parameter(description = "Максимальная стоимость товара", example = "?price=1500") @RequestParam(value = "price", required = false) Double price,
+            @Parameter(description = "Категория товара", example = "?category=pets") @RequestParam(value = "category", required = false) String category,
+            @Parameter(description = "Идентификатор продавца", example = "1") @RequestParam(value = "id", required = false) Long sellerId
+    );
+
+    @Operation(summary = "Получение списка товаров")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Страница с товарами",
+                    content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDto.class))
+                    })
+    })
+    @GetMapping
+    ResponseEntity<List<ProductDto>> getAllProducts(
+            @Parameter(description = "Максимальная стоимость товара", example = "?price=1500") @RequestParam(value = "price", required = false) Double price,
+            @Parameter(description = "Категория товара", example = "?category=pets") @RequestParam(value = "category", required = false) String category,
+            @Parameter(description = "Идентификатор продавца", example = "1") @RequestParam(value = "id", required = false) Long sellerId
+    );
+
 
 
 

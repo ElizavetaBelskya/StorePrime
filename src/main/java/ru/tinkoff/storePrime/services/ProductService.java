@@ -2,6 +2,7 @@ package ru.tinkoff.storePrime.services;
 
 import ru.tinkoff.storePrime.dto.NewOrUpdateProductDto;
 import ru.tinkoff.storePrime.dto.ProductDto;
+import ru.tinkoff.storePrime.dto.ProductsPage;
 import ru.tinkoff.storePrime.models.user.Seller;
 
 import java.util.List;
@@ -16,4 +17,8 @@ public interface ProductService {
     ProductDto updateProduct(Long id, Long sellerId, NewOrUpdateProductDto updatedProductDto);
 
     ProductDto deleteProduct(Long sellerId, Long productId);
+
+    List<ProductDto> getAllProducts(Double price, String category, Long sellerId);
+
+    ProductsPage getProductsPage(int page, Double price, String category, Long sellerId);
 }
