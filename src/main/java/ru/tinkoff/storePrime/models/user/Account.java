@@ -1,14 +1,13 @@
 package ru.tinkoff.storePrime.models.user;
 
 import javax.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
-@Data
+@Getter
+@Setter
 @MappedSuperclass
 @AllArgsConstructor
 @NoArgsConstructor
@@ -47,11 +46,11 @@ public abstract class Account {
     private State state;
 
     public boolean isConfirmed() {
-        return this.state.equals(State.CONFIRMED);
+        return State.CONFIRMED.equals(this.state);
     }
 
     public boolean isBanned() {
-        return this.state.equals(State.BANNED);
+        return State.BANNED.equals(this.state);
     }
 
 }

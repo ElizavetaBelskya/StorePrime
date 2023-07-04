@@ -49,13 +49,13 @@ public interface CustomerApi {
                                     schema = @Schema(implementation = CustomerDto.class))
                     }
             ),
-            @ApiResponse(responseCode = "404", description = "Сведения об ошибке",
+            @ApiResponse(responseCode = "404", description = "Сведения об ошибке: пользователь не найден",
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ExceptionDto.class))
                     }
             ),
-            @ApiResponse(responseCode = "401", description = "Сведения об ошибке",
+            @ApiResponse(responseCode = "401", description = "Сведения об ошибке: пользователь не авторизован",
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ExceptionDto.class))
@@ -77,42 +77,42 @@ public interface CustomerApi {
                                     schema = @Schema(implementation = CustomerDto.class))
                     }
             ),
-            @ApiResponse(responseCode = "404", description = "Сведения об ошибке",
+            @ApiResponse(responseCode = "404", description = "Сведения об ошибке: пользователь не найден",
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ExceptionDto.class))
                     }
             ),
-            @ApiResponse(responseCode = "401", description = "Сведения об ошибке",
+            @ApiResponse(responseCode = "401", description = "Сведения об ошибке: пользователь не авторизован",
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ExceptionDto.class))
                     }
             )
     })
-    @PreAuthorize("hasAuthority('CUSTOMER')")
     @GetMapping
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     ResponseEntity<CustomerDto> getThisCustomer(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
 
 
     @Operation(summary = "Удаление аккаунта покупателя")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "202", description = "Аккаунт покупателя удален"),
-            @ApiResponse(responseCode = "404", description = "Сведения об ошибке",
+            @ApiResponse(responseCode = "404", description = "Сведения об ошибке: пользователь не найден",
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ExceptionDto.class))
                     }
             ),
-            @ApiResponse(responseCode = "401", description = "Сведения об ошибке",
+            @ApiResponse(responseCode = "401", description = "Сведения об ошибке: пользователь не авторизован",
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ExceptionDto.class))
                     }
             )
     })
-    @PreAuthorize("hasAuthority('CUSTOMER')")
     @DeleteMapping
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     ResponseEntity<CustomerDto> deleteCustomer(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
 
 
@@ -124,13 +124,13 @@ public interface CustomerApi {
                                     schema = @Schema(implementation = CustomerDto.class))
                     }
             ),
-            @ApiResponse(responseCode = "404", description = "Сведения об ошибке",
+            @ApiResponse(responseCode = "404", description = "Сведения об ошибке: пользователь не найден",
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ExceptionDto.class))
                     }
             ),
-            @ApiResponse(responseCode = "401", description = "Сведения об ошибке",
+            @ApiResponse(responseCode = "401", description = "Сведения об ошибке: пользователь не авторизован",
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ExceptionDto.class))

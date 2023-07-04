@@ -34,8 +34,8 @@ public interface OrderApi {
                     }
             )
     })
-    @PreAuthorize("hasAuthority('CUSTOMER')")
     @PostMapping
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     ResponseEntity<OrderDto> createOrder(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                          @RequestBody List<Long> pa);
 

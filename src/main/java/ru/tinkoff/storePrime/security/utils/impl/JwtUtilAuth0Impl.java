@@ -34,10 +34,10 @@ public class JwtUtilAuth0Impl implements JwtUtil {
     @Autowired
     private AccountService accountService;
 
-    @Value("${jwt.access_token.expires_time}")
+    @Value("${jwt.access_token.expires_time_millis}")
     private long ACCESS_TOKEN_EXPIRES_TIME;
 
-    @Value("${jwt.refresh_token.expires_time}")
+    @Value("${jwt.refresh_token.expires_time_millis}")
     private long REFRESH_TOKEN_EXPIRES_TIME;
 
     @Value("${jwt.secret}")

@@ -11,7 +11,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-@Data
+@Getter
+@Setter
 
 @Entity
 @Table(name = "seller")

@@ -29,8 +29,8 @@ public class CustomerServiceImpl implements CustomerService {
             throw new AlreadyExistsException("Account with email <" + customerDto.getEmail() + "> already exists");
         }
         customerDto.setPasswordHash(passwordEncoder.encode(customerDto.getPasswordHash()));
-        Customer newCustomer = CustomerConverter.getCustomerFromNewOrUpdateCustomerDto(customerDto);
-        Customer customer = customerRepository.save(newCustomer);
+        Customer customer = CustomerConverter.getCustomerFromNewOrUpdateCustomerDto(customerDto);
+        customer = customerRepository.save(customer);
         return CustomerDto.from(customer);
     }
 

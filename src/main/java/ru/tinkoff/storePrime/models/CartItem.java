@@ -2,16 +2,15 @@ package ru.tinkoff.storePrime.models;
 
 
 import javax.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 import ru.tinkoff.storePrime.models.user.Customer;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "cart_item")
 public class CartItem {

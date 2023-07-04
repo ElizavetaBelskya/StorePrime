@@ -33,8 +33,8 @@ public interface CartApi {
                     }
             )
     })
-    @PreAuthorize("hasAuthority('CUSTOMER')")
     @PostMapping("/{productId}")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     ResponseEntity<CartItemDto> addProductToCart(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                                  @PathVariable("productId") Long productId,
                                                  @RequestParam("quantity") Integer quantity);
@@ -68,8 +68,8 @@ public interface CartApi {
                                     schema = @Schema(implementation = ExceptionDto.class))
                     })
     })
-    @PreAuthorize("hasAuthority('CUSTOMER')")
     @DeleteMapping("/{productId}")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     ResponseEntity<CartItemDto> deleteProductFromCart(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                                  @PathVariable("productId") Long productId);
 

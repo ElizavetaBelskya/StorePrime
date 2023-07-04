@@ -41,8 +41,8 @@ public interface ProductApi {
                     }
             )
     })
-    @PreAuthorize("hasAuthority('SELLER')")
     @PostMapping
+    @PreAuthorize("hasAuthority('SELLER')")
     ResponseEntity<ProductDto> addProduct(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
             @Valid @RequestBody NewOrUpdateProductDto newProduct);
 
@@ -95,8 +95,8 @@ public interface ProductApi {
                                     schema = @Schema(implementation = ExceptionDto.class))
                     })
     })
-    @PreAuthorize("hasAuthority('SELLER')")
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('SELLER')")
     ResponseEntity<ProductDto> updateProductById(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
             @PathVariable("id") Long id, @Valid @RequestBody NewOrUpdateProductDto updatedProduct);
 
@@ -114,8 +114,8 @@ public interface ProductApi {
                                     schema = @Schema(implementation = ExceptionDto.class))
                     })
     })
-    @PreAuthorize("hasAuthority('SELLER')")
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('SELLER')")
     ResponseEntity<ProductDto> deleteProductById(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                                  @PathVariable("id") Long productId);
 

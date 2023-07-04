@@ -15,8 +15,8 @@ server.port=8080
 default.page-size=10
 
 jwt.secret=
-jwt.access_token.expires_time=
-jwt.refresh_token.expires_time=
+jwt.access_token.expires_time_millis=
+jwt.refresh_token.expires_time_millis=
 
 spring.redis.host=${REDIS_HOST}
 spring.redis.port=${REDIS_PORT}

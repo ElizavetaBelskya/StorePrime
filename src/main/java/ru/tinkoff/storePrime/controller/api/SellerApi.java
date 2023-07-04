@@ -89,8 +89,8 @@ public interface SellerApi {
                     }
             )
     })
-    @PreAuthorize("hasAuthority('SELLER')")
     @GetMapping
+    @PreAuthorize("hasAuthority('SELLER')")
     ResponseEntity<SellerDto> getThisSeller(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
 
     @Operation(summary = "Получение аккаунта продавца")
@@ -139,8 +139,8 @@ public interface SellerApi {
                     }
             )
     })
-    @PreAuthorize("hasAuthority('SELLER')")
     @DeleteMapping
+    @PreAuthorize("hasAuthority('SELLER')")
     ResponseEntity<SellerDto> deleteSeller(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
 
 

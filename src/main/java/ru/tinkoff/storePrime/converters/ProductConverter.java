@@ -5,6 +5,8 @@ import ru.tinkoff.storePrime.models.Product;
 
 public class ProductConverter {
 
+    private ProductConverter(){};
+
     public static Product getProductFromNewOrUpdateProductDto(NewOrUpdateProductDto productDto) {
         return Product.builder()
                 .title(productDto.getTitle())

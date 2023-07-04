@@ -1,10 +1,8 @@
 package ru.tinkoff.storePrime.models;
 
 import javax.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 import ru.tinkoff.storePrime.models.user.Seller;
 
 import java.util.List;
@@ -12,7 +10,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
+
 @Entity
 @Table(name = "product")
 public class Product {

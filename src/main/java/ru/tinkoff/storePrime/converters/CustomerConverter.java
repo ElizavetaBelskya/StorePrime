@@ -6,6 +6,7 @@ import ru.tinkoff.storePrime.models.user.Customer;
 
 public class CustomerConverter {
 
+    private CustomerConverter(){};
     public static Customer getCustomerFromNewOrUpdateCustomerDto(NewOrUpdateCustomerDto customerDto) {
         return Customer
                 .builder()

@@ -1,4 +1,4 @@
-package ru.tinkoff.storePrime.aspects;
+package ru.tinkoff.storePrime.controller.aspects;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -6,6 +6,8 @@ import ru.tinkoff.storePrime.models.Location;
 
 public class AddressConverter {
 
+
+    private AddressConverter(){};
     public static Address getAddressFromAddressDto(AddressDto addressDto) {
         return Address.builder().location(new Location(
                 addressDto.getLocation().getCountry(),

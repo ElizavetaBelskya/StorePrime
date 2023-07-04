@@ -7,20 +7,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.tinkoff.storePrime.aspects.RestExceptionHandler;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
+import ru.tinkoff.storePrime.controller.aspects.RestExceptionHandler;
+import ru.tinkoff.storePrime.dto.product.NewOrUpdateProductDto;
 import ru.tinkoff.storePrime.dto.product.ProductDto;
 import ru.tinkoff.storePrime.dto.product.ProductsPage;
 import ru.tinkoff.storePrime.services.ProductService;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -317,12 +321,12 @@ public class ProductControllerTest {
             when(productService.getProductsPage(page, minPrice, maxPrice, category, sellerId))
                     .thenThrow(IllegalArgumentException.class);
             mockMvc.perform(get("/products/pages")
-                        .param("page", String.valueOf(page))
-                        .param("minPrice", String.valueOf(minPrice))
-                        .param("maxPrice", String.valueOf(maxPrice))
-                        .param("category", category))
-                        .andDo(print())
-                        .andExpect(status().isBadRequest());
+                            .param("page", String.valueOf(page))
+                            .param("minPrice", String.valueOf(minPrice))
+                            .param("maxPrice", String.valueOf(maxPrice))
+                            .param("category", category))
+                    .andDo(print())
+                    .andExpect(status().isBadRequest());
         }
 
         @Test
@@ -338,16 +342,71 @@ public class ProductControllerTest {
                     .thenThrow(IllegalArgumentException.class);
 
             mockMvc.perform(get("/products/pages")
-                        .param("page", String.valueOf(page))
-                        .param("minPrice", String.valueOf(minPrice))
-                        .param("maxPrice", String.valueOf(maxPrice))
-                        .param("category", category)).andDo(print())
-                        .andExpect(status().isBadRequest());
+                            .param("page", String.valueOf(page))
+                            .param("minPrice", String.valueOf(minPrice))
+                            .param("maxPrice", String.valueOf(maxPrice))
+                            .param("category", category)).andDo(print())
+                    .andExpect(status().isBadRequest());
 
         }
 
     }
 
+
+    @Nested
+    @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+    @DisplayName("addProducts() is working")
+    class AddProductTest {
+
+        @Test
+        @WithMockUser(username = "user", password = "1234qwerty", authorities = "SELLER")
+        public void test_add_product() throws Exception {
+            NewOrUpdateProductDto newProduct = new NewOrUpdateProductDto();
+            newProduct.setTitle("Книга");
+            newProduct.setDescription("Отличная книга для чтения");
+            newProduct.setPrice(19.99);
+            newProduct.setCategories(Arrays.asList("Категория 1", "Категория 2"));
+            newProduct.setAmount(10);
+
+            ProductDto addedProduct = new ProductDto();
+            addedProduct.setId(1L);
+            addedProduct.setTitle("Книга");
+            addedProduct.setDescription("Отличная книга для чтения");
+            addedProduct.setPrice(19.99);
+            addedProduct.setCategories(Arrays.asList("Категория 1", "Категория 2"));
+            addedProduct.setAmount(10);
+            when(productService.addProduct(1L, newProduct)).thenReturn(addedProduct);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonBody = objectMapper.writeValueAsString(newProduct);
+
+            mockMvc.perform(post("/products")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(jsonBody))
+                    .andExpect(status().isCreated())
+                    .andExpect(jsonPath("$.id").value(1))
+                    .andExpect(jsonPath("$.title").value("Книга"))
+                    .andExpect(jsonPath("$.description").value("Отличная книга для чтения"));
+        }
+
+
+//        @Test
+//        void add_correct_product() {
+//            mockMvc.perform(post("/products")
+//                            .contentType(MediaType.APPLICATION_JSON)
+//                            .content(new ObjectMapper().writeValueAsString(newProduct)))
+//                    .andExpect(status().isCreated())
+//                    .andExpect(jsonPath("$.id", is(1)))
+//                    .andExpect(jsonPath("$.title", is("Книга")))
+//                    .andExpect(jsonPath("$.description", is("Отличная книга для чтения")))
+//                    .andExpect(jsonPath("$.price", is(19.99)))
+//                    .andExpect(jsonPath("$.categories", hasSize(2)))
+//                    .andExpect(jsonPath("$.categories[0]", is("Категория 1")))
+//                    .andExpect(jsonPath("$.categories[1]", is("Категория 2")))
+//                    .andExpect(jsonPath("$.amount", is(10)));
+//        }
+
+    }
 
 
 }

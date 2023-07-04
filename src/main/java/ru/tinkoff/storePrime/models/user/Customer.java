@@ -15,8 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-@Data
-
+@Getter
+@Setter
 @Entity
 @Table(name = "customer")
 public class Customer extends Account {

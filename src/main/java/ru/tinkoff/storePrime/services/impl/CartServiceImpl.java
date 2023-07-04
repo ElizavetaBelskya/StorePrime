@@ -3,7 +3,10 @@ package ru.tinkoff.storePrime.services.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.storePrime.dto.cart.CartItemDto;
+import ru.tinkoff.storePrime.exceptions.NotFoundException;
 import ru.tinkoff.storePrime.models.CartItem;
+import ru.tinkoff.storePrime.models.Product;
+import ru.tinkoff.storePrime.models.user.Customer;
 import ru.tinkoff.storePrime.repository.CartRepository;
 import ru.tinkoff.storePrime.repository.CustomerRepository;
 import ru.tinkoff.storePrime.repository.ProductRepository;
@@ -25,17 +28,18 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartItemDto addNewCartItem(Long customerId, Long productId, Integer quantity) {
         Optional<CartItem> foundCartItem = cartRepository.findByCustomer_IdAndProduct_Id(customerId, productId);
-        CartItem newCartItem;
-        if (foundCartItem.isPresent()) {
-            newCartItem = foundCartItem.get();
-            newCartItem.setQuantity(quantity);
-        } else {
-            newCartItem = CartItem.builder()
-                    .product(productRepository.findById(productId).orElseThrow())
-                    .customer(customerRepository.findById(customerId).orElseThrow())
+        CartItem newCartItem = foundCartItem.orElseGet(() -> {
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(() -> new NotFoundException("Product not found"));
+            Customer customer = customerRepository.findById(customerId)
+                    .orElseThrow(() -> new NotFoundException("Customer not found"));
+            return CartItem.builder()
+                    .product(product)
+                    .customer(customer)
                     .quantity(1)
                     .build();
-        }
+        });
+        newCartItem.setQuantity(quantity);
         CartItem newOrUpdatedCartItem = cartRepository.save(newCartItem);
         return CartItemDto.from(newOrUpdatedCartItem);
     }
