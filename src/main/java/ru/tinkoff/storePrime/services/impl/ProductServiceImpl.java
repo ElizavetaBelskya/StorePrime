@@ -54,14 +54,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto updateProduct(Long id, Long sellerId, NewOrUpdateProductDto updatedProductDto) {
-        Product product = productRepository.findById(id).orElseThrow();
+    public ProductDto updateProduct(Long productId, Long sellerId, NewOrUpdateProductDto updatedProductDto) {
+        Product product = productRepository.findById(productId).orElseThrow();
         if (!product.getSeller().getId().equals(sellerId)) {
             throw new IllegalArgumentException();
             //TODO: подумать что тут можно выбросить
         }
         Product updatedProduct = ProductConverter.getProductFromNewOrUpdateProductDto(updatedProductDto);
-        updatedProduct.setId(id);
+        updatedProduct.setId(productId);
         updatedProduct.setSeller(product.getSeller());
         List<Category> categories = updatedProductDto.getCategories().stream()
                 .flatMap(name -> categoryRepository.findByName(name).stream())

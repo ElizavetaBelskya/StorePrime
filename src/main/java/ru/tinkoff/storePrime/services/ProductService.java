@@ -13,7 +13,7 @@ public interface ProductService {
 
     ProductDto addProduct(Long sellerId, NewOrUpdateProductDto newProductDto);
 
-    ProductDto updateProduct(Long id, Long sellerId, NewOrUpdateProductDto updatedProductDto);
+    ProductDto updateProduct(Long productId, Long sellerId, NewOrUpdateProductDto updatedProductDto);
 
     ProductDto deleteProduct(Long sellerId, Long productId);
 
