@@ -83,13 +83,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> getAllProducts(Double minPrice, Double maxPrice, String category, Long sellerId) {
+        if (minPrice > maxPrice) {
+            throw new IllegalArgumentException("Минимальная цена больше максимальной");
+        }
         Optional<Category> categoryToSearch = categoryRepository.findByName(category);
         Collection<Category> categories = Collections.emptyList();
         if (categoryToSearch.isPresent()) {
             categories = Collections.singleton(categoryToSearch.get());
         }
         if (minPrice == null) {
-            minPrice = 0d;
+            minPrice = 0.0;
         }
         if (sellerId != null && maxPrice != null) {
             if (!categories.isEmpty()) {

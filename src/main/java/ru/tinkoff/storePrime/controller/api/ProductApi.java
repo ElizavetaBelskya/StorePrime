@@ -3,6 +3,7 @@ package ru.tinkoff.storePrime.controller.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -20,6 +21,9 @@ import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 
 import javax.validation.Valid;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Tags(value = {
@@ -65,7 +69,7 @@ public interface ProductApi {
             @ApiResponse(responseCode = "200", description = "Товары найдены",
                     content = {
                             @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ProductDto.class))
+                                    array = @ArraySchema(schema = @Schema(implementation = ProductDto.class)))
                     }
             ),
             @ApiResponse(responseCode = "404", description = "Товары не найдены",
@@ -126,18 +130,18 @@ public interface ProductApi {
     })
     @GetMapping("/pages")
     ResponseEntity<ProductsPage> getProducts(
-            @Parameter(description = "Номер страницы", example = "1") @RequestParam("page") int page,
-            @Parameter(description = "Минимальная стоимость товара", example = "?minPrice=1500") @RequestParam(value = "minPrice", required = false) Double minPrice,
+            @Parameter(description = "Номер страницы", example = "1") @Min(1) @RequestParam("page") int page,
+            @Parameter(description = "Минимальная стоимость товара", example = "?minPrice=1500") @DecimalMin("0") @RequestParam(value = "minPrice", required = false) Double minPrice,
             @Parameter(description = "Максимальная стоимость товара", example = "?maxPrice=1500") @RequestParam(value = "maxPrice", required = false) Double maxPrice,
-            @Parameter(description = "Категория товара", example = "?category=pets") @RequestParam(value = "category", required = false) String category,
-            @Parameter(description = "Идентификатор продавца", example = "1") @RequestParam(value = "id", required = false) Long sellerId
+            @Parameter(description = "Категория товара", example = "?category=pets") @Pattern(regexp = "[a-zA-Z]+") @RequestParam(value = "category", required = false) String category,
+            @Parameter(description = "Идентификатор продавца", example = "1") @Min(1) @RequestParam(value = "sellerId", required = false) Long sellerId
     );
 
     @Operation(summary = "Получение списка товаров")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Страница с товарами",
                     content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDto.class))
+                            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ProductDto.class)))
                     })
     })
     @GetMapping
@@ -148,15 +152,18 @@ public interface ProductApi {
             @Parameter(description = "Идентификатор продавца", example = "1") @RequestParam(value = "id", required = false) Long sellerId
     );
 
-    @Operation(summary = "Получение товара по названию")
+    @Operation(summary = "Получение товаров по названию")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Найденные товары",
+            @ApiResponse(responseCode = "200", description = "список товаров по названию",
                     content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ProductDto.class))
-                    })
+                            @Content(mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = ProductDto.class)))
+                    }
+            )
     })
     @GetMapping("/search")
     ResponseEntity<List<ProductDto>> getProductsByContentString(@RequestParam("content") String content);
+
 
 
 

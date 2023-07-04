@@ -45,7 +45,7 @@ public interface CartApi {
             @ApiResponse(responseCode = "201", description = "Добавленный в корзину товар",
                     content = {
                             @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = CartItemDto.class))
+                                    schema = @Schema(implementation = CartItemDto.class, type = "array"))
                     }
             )
     })

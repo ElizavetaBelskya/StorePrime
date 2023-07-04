@@ -26,6 +26,15 @@ public class RestExceptionHandler {
                         .build());
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ExceptionDto> handleIllegalArgument(Exception ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ExceptionDto.builder()
+                        .message(ex.getMessage())
+                        .status(HttpStatus.BAD_REQUEST.value())
+                        .build());
+    }
+
 //    @ExceptionHandler(Exception.class)
 //    public ResponseEntity<ExceptionDto> handleOther() {
 //        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
