@@ -31,6 +31,18 @@ public interface CartApi {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = CartItemDto.class))
                     }
+            ),
+            @ApiResponse(responseCode = "403", description = "Сведения об ошибке: доступ запрещен",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            ),
+            @ApiResponse(responseCode = "400", description = "Сведения об ошибке: неверный запрос",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
             )
     })
     @PostMapping("/{productId}")
@@ -46,6 +58,12 @@ public interface CartApi {
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = CartItemDto.class, type = "array"))
+                    }
+            ),
+            @ApiResponse(responseCode = "403", description = "Сведения об ошибке: доступ запрещен",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
                     }
             )
     })
@@ -66,7 +84,20 @@ public interface CartApi {
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ExceptionDto.class))
-                    })
+                }
+            ),
+            @ApiResponse(responseCode = "403", description = "Сведения об ошибке: доступ запрещен",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            ),
+            @ApiResponse(responseCode = "400", description = "Сведения об ошибке: неверный запрос",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            )
     })
     @DeleteMapping("/{productId}")
     @PreAuthorize("hasAuthority('CUSTOMER')")

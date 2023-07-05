@@ -41,12 +41,23 @@ services:
     depends_on:
       - database
       - redis
+      - mongo
     environment:
       - "SPRING_DATASOURCE_USERNAME=postgres"
       - "SPRING_DATASOURCE_PASSWORD=1234"
       - "SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/store-prime"
       - "REDIS_HOST=redis"
       - "REDIS_PORT=6380"
+  mongo:
+      image: mongo
+      ports:
+        - '27017:27017'
+      container_name: dkrcomp-mongo
+      networks:
+        - main
+      environment:
+        - "MONGO_INITDB_ROOT_USERNAME=mongoadmin"
+        - "MONGO_INITDB_ROOT_PASSWORD=1234"
 
 volumes:
   market_postgres_volume:

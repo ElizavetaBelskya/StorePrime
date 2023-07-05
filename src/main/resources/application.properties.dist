@@ -20,3 +20,11 @@ jwt.refresh_token.expires_time_millis=
 
 spring.redis.host=${REDIS_HOST}
 spring.redis.port=${REDIS_PORT}
+
+spring.data.mongodb.host=localhost
+spring.data.mongodb.port=27017
+spring.data.mongodb.database=springboot-mongo
+
+spring.servlet.multipart.max-file-size=256MB
+spring.servlet.multipart.max-request-size=256MB
+spring.servlet.multipart.enabled=true

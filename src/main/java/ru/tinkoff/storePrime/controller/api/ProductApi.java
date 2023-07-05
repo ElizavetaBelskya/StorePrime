@@ -39,6 +39,12 @@ public interface ProductApi {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ProductDto.class))
                     }
+            ),
+            @ApiResponse(responseCode = "403", description = "Сведения об ошибке: доступ запрещен",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
             )
     })
     @PostMapping
@@ -59,7 +65,13 @@ public interface ProductApi {
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ExceptionDto.class))
-                    })
+            }),
+            @ApiResponse(responseCode = "400", description = "Сведения об ошибке: неверный запрос",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            )
     })
     @GetMapping("/{id}")
     ResponseEntity<ProductDto> getProductById(@PathVariable("id") Long id);

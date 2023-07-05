@@ -33,7 +33,8 @@ public interface CategoryApi {
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ExceptionDto.class))
-                    })
+                }
+            )
     })
     @GetMapping("/all")
     ResponseEntity<List<String>> getAllCategories();

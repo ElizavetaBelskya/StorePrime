@@ -35,3 +35,6 @@ email=example@mail.ru&password=1234qwer
 ###
 GET http://localhost:80/customer
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQG1haWwucnUiLCJyb2xlIjoiQ1VTVE9NRVIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2F1dGgvbG9naW4iLCJleHAiOjE2ODgyOTM3ODV9.OC6rYjDwIDtrn9oZy9AaqnW9i-4_vIMJ2O9QLUPd07A
+
+###
+
