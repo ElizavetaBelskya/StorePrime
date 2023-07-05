@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.storePrime.dto.order.OrderDto;
+import ru.tinkoff.storePrime.exceptions.not_found.CartItemNotFoundException;
+import ru.tinkoff.storePrime.exceptions.not_found.CustomerNotFoundException;
+import ru.tinkoff.storePrime.exceptions.not_found.OrderNotFoundException;
 import ru.tinkoff.storePrime.models.CartItem;
 import ru.tinkoff.storePrime.models.Order;
 import ru.tinkoff.storePrime.models.Product;
@@ -37,10 +40,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderDto createNewOrder(Long customerId, List<Long> cartItemIdList) {
-        Customer customer = customerRepository.findById(customerId).orElseThrow();
+        Customer customer = customerRepository.findById(customerId).orElseThrow(
+                () -> new CustomerNotFoundException("Пользователь с id " + customerId + " не найден"));
         List<CartItem> items = new ArrayList<>();
         for (Long itemId: cartItemIdList) {
-            CartItem newItem = cartRepository.findById(itemId).orElseThrow();
+            CartItem newItem = cartRepository.findById(itemId).orElseThrow(
+                    () -> new CartItemNotFoundException("Товар в корзине с id " + customerId + " не найден"));
             if (!newItem.getCustomer().getId().equals(customerId)) {
                 throw new IllegalArgumentException();
                 //TODO: нормальное исключение
@@ -82,7 +87,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto changeStatus(Long sellerId, Long orderId, String status) {
         Order.Status newStatus = Order.Status.valueOf(status);
         //TODO: выбрасывает IllegalArgument
-        Order order = orderRepository.findById(orderId).orElseThrow();
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Заказ с id "+ orderId +" не найден"));
         for (Product product: order.getProducts()) {
             if (product.getSeller().getId().equals(sellerId)) {
                 order.setStatus(newStatus);
@@ -100,6 +105,11 @@ public class OrderServiceImpl implements OrderService {
             return OrderDto.from(orderRepository.save(order));
         }
         throw new IllegalArgumentException();
+    }
+
+    @Override
+    public List<OrderDto> getCancelledOrdersByCustomerId(Long customerId) {
+        return OrderDto.from(orderRepository.findByCustomer_IdAndStatus(customerId, Order.Status.CANCELLED));
     }
 
 }

@@ -15,4 +15,6 @@ public interface OrderService {
     OrderDto changeStatus(Long sellerId, Long orderId, String status);
 
     OrderDto cancelOrder(Long customerId, Long orderId);
+
+    List<OrderDto> getCancelledOrdersByCustomerId(Long customerId);
 }

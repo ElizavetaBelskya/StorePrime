@@ -61,9 +61,22 @@ public interface OrderApi {
                     }
             )
     })
-    @GetMapping("/all")
+    @GetMapping("/all/seller")
     @PreAuthorize("hasAuthority('SELLER')")
     ResponseEntity<List<OrderDto>> getAllOrderForSeller(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
+
+    @Operation(summary = "Получение всех отмененных заказов покупателя")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Заказы продавца",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = OrderDto.class)))
+                    }
+            )
+    })
+    @GetMapping("/cancelled")
+    @PreAuthorize("hasAuthority('СUSTOMER')")
+    ResponseEntity<List<OrderDto>> getCancelledProductsForCustomer(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
 
     @Operation(summary = "Изменение статуса заказа")
     @ApiResponses(value = {

@@ -9,6 +9,9 @@ import ru.tinkoff.storePrime.converters.ProductConverter;
 import ru.tinkoff.storePrime.dto.product.NewOrUpdateProductDto;
 import ru.tinkoff.storePrime.dto.product.ProductDto;
 import ru.tinkoff.storePrime.dto.product.ProductsPage;
+import ru.tinkoff.storePrime.exceptions.not_found.CategoryNotFoundException;
+import ru.tinkoff.storePrime.exceptions.not_found.ProductNotFoundException;
+import ru.tinkoff.storePrime.exceptions.not_found.SellerNotFoundException;
 import ru.tinkoff.storePrime.models.Category;
 import ru.tinkoff.storePrime.models.Product;
 import ru.tinkoff.storePrime.repository.CategoryRepository;
@@ -34,7 +37,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto getProductById(Long id) {
-        return ProductDto.from(productRepository.findById(id).orElseThrow());
+        return ProductDto.from(productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Товар с id " + id + " не найден")));
     }
 
     @Override
@@ -45,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto addProduct(Long sellerId, NewOrUpdateProductDto newProductDto) {
         Product newProduct = ProductConverter.getProductFromNewOrUpdateProductDto(newProductDto);
-        newProduct.setSeller(sellerRepository.findById(sellerId).orElseThrow());
+        newProduct.setSeller(sellerRepository.findById(sellerId).orElseThrow(() -> new SellerNotFoundException("")));
         List<Category> categories = newProductDto.getCategories().stream()
                 .flatMap(name -> categoryRepository.findByName(name).stream())
                 .collect(Collectors.toList());
@@ -55,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto updateProduct(Long productId, Long sellerId, NewOrUpdateProductDto updatedProductDto) {
-        Product product = productRepository.findById(productId).orElseThrow();
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Товар с id " + productId + " не найден"));
         if (!product.getSeller().getId().equals(sellerId)) {
             throw new IllegalArgumentException();
             //TODO: подумать что тут можно выбросить
@@ -72,7 +75,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long sellerId, Long productId) {
-        Product product = productRepository.findById(productId).orElseThrow();
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Товар с id " + productId + " не найден"));
         if (!product.getSeller().getId().equals(sellerId)) {
             throw new IllegalArgumentException();
             //TODO: подумать что тут можно выбросить
@@ -89,6 +92,8 @@ public class ProductServiceImpl implements ProductService {
         Collection<Category> categories = Collections.emptyList();
         if (categoryToSearch.isPresent()) {
             categories = Collections.singleton(categoryToSearch.get());
+        } else {
+            throw new CategoryNotFoundException("Эта категория не существует");
         }
         if (minPrice == null) {
             minPrice = 0.0;

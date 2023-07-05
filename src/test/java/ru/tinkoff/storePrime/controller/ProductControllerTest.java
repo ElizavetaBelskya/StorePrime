@@ -489,8 +489,11 @@ public class ProductControllerTest {
 
         @BeforeEach
         public void setUpUserDetails() {
-            userDetails = new UserDetailsImpl(Seller.builder().id(1L).email("myemail@mail.ru").passwordHash("1234qwer").role(Account.Role.SELLER).state(Account.State.CONFIRMED).build());
-            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(userDetails, null, Collections.singleton(new SimpleGrantedAuthority("SELLER"))));
+            userDetails = new UserDetailsImpl(Seller.builder().id(1L).email("myemail@mail.ru")
+                    .passwordHash("1234qwer").role(Account.Role.SELLER).state(Account.State.CONFIRMED).build());
+            SecurityContextHolder.getContext().setAuthentication(
+                    new UsernamePasswordAuthenticationToken(userDetails, null, Collections.singleton(
+                            new SimpleGrantedAuthority("SELLER"))));
         }
 
         @Test

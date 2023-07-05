@@ -37,6 +37,12 @@ public class OrderController implements OrderApi {
     }
 
     @Override
+    public ResponseEntity<List<OrderDto>> getCancelledProductsForCustomer(UserDetailsImpl userDetailsImpl) {
+        Long customerId = userDetailsImpl.getAccount().getId();
+        return ResponseEntity.ok(orderService.getCancelledOrdersByCustomerId(customerId));
+    }
+
+    @Override
     public ResponseEntity<OrderDto> changeStatus(UserDetailsImpl userDetailsImpl, Long orderId, String status) {
         Long sellerId = userDetailsImpl.getAccount().getId();
         return ResponseEntity.ok(orderService.changeStatus(sellerId, orderId, status));

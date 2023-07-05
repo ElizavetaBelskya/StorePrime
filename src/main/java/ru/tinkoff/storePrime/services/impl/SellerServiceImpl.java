@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.tinkoff.storePrime.converters.SellerConverter;
 import ru.tinkoff.storePrime.dto.user.NewOrUpdateSellerDto;
 import ru.tinkoff.storePrime.dto.user.SellerDto;
-import ru.tinkoff.storePrime.exceptions.NotFoundException;
+import ru.tinkoff.storePrime.exceptions.not_found.SellerNotFoundException;
 import ru.tinkoff.storePrime.models.user.Account;
 import ru.tinkoff.storePrime.models.user.Seller;
 import ru.tinkoff.storePrime.repository.SellerRepository;
@@ -33,20 +33,21 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public void deleteSeller(Long sellerId) {
-        Seller seller = sellerRepository.findById(sellerId).orElseThrow();
+        Seller seller = sellerRepository.findById(sellerId).orElseThrow(() -> new SellerNotFoundException("Продавец с id " + sellerId + " не найден"));
         seller.setState(Account.State.DELETED);
     }
 
     @Override
-    public SellerDto updateSeller(Long id, NewOrUpdateSellerDto updatedSellerDto) {
-        Seller seller = sellerRepository.findById(id).orElseThrow();
+    public SellerDto updateSeller(Long sellerId, NewOrUpdateSellerDto updatedSellerDto) {
+        Seller seller = sellerRepository.findById(sellerId).orElseThrow(() ->
+                new SellerNotFoundException("Продавец с id " + sellerId + " не найден"));
         if (!updatedSellerDto.getEmail().equals(seller.getEmail())) {
             if (accountService.isEmailUsed(updatedSellerDto.getEmail())) {
                 throw new AlreadyExistsException("Account with email <" + updatedSellerDto.getEmail() + "> already exists");
             }
         }
         if (Account.State.DELETED.equals(seller.getState())) {
-            throw new NotFoundException("Пользователь не найден");
+            throw new SellerNotFoundException("Продавец с id " + sellerId + " удален");
         }
         seller = SellerConverter.getSellerFromNewOrUpdateSellerDto(updatedSellerDto);
         seller.setPasswordHash(passwordEncoder.encode(seller.getPasswordHash()));
@@ -55,17 +56,19 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public SellerDto getSeller(Long id) {
-        Seller seller = sellerRepository.findById(id).orElseThrow();
+    public SellerDto getSeller(Long sellerId) {
+        Seller seller = sellerRepository.findById(sellerId).orElseThrow(() ->
+                new SellerNotFoundException("Продавец с id " + sellerId + " не найден"));
         if (Account.State.DELETED.equals(seller.getState())) {
-            throw new NotFoundException("Пользователь не найден");
+            throw new SellerNotFoundException("Пользователь не найден");
         }
         return SellerDto.from(seller);
     }
 
     @Override
     public void updateCardBalanceBySellerId(Long sellerId, Double amount) {
-        Seller seller = sellerRepository.findById(sellerId).orElseThrow();
+        Seller seller = sellerRepository.findById(sellerId).orElseThrow(() ->
+                new SellerNotFoundException("Продавец с id " + sellerId + " не найден"));
         seller.setCardBalance(seller.getCardBalance() + amount);
         sellerRepository.save(seller);
     }

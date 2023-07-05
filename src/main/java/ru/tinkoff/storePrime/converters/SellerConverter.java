@@ -18,7 +18,7 @@ public class SellerConverter {
                 .role(Account.Role.SELLER)
                 .state(Account.State.NOT_CONFIRMED)
                 .phoneNumber(sellerDto.getPhoneNumber())
-                .cardBalance(0L).build();
+                .cardBalance(0.0).build();
     }
 
 

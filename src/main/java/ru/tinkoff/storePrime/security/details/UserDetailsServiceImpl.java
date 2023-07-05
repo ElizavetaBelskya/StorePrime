@@ -5,14 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.storePrime.exceptions.NotFoundException;
-import ru.tinkoff.storePrime.models.user.Customer;
-import ru.tinkoff.storePrime.models.user.Seller;
-import ru.tinkoff.storePrime.repository.CustomerRepository;
-import ru.tinkoff.storePrime.repository.SellerRepository;
+import ru.tinkoff.storePrime.exceptions.not_found.NotFoundException;
 import ru.tinkoff.storePrime.services.AccountService;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

@@ -3,7 +3,9 @@ package ru.tinkoff.storePrime.services.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.storePrime.dto.cart.CartItemDto;
-import ru.tinkoff.storePrime.exceptions.NotFoundException;
+import ru.tinkoff.storePrime.exceptions.not_found.CartItemNotFoundException;
+import ru.tinkoff.storePrime.exceptions.not_found.CustomerNotFoundException;
+import ru.tinkoff.storePrime.exceptions.not_found.ProductNotFoundException;
 import ru.tinkoff.storePrime.models.CartItem;
 import ru.tinkoff.storePrime.models.Product;
 import ru.tinkoff.storePrime.models.user.Customer;
@@ -30,9 +32,9 @@ public class CartServiceImpl implements CartService {
         Optional<CartItem> foundCartItem = cartRepository.findByCustomer_IdAndProduct_Id(customerId, productId);
         CartItem newCartItem = foundCartItem.orElseGet(() -> {
             Product product = productRepository.findById(productId)
-                    .orElseThrow(() -> new NotFoundException("Product not found"));
+                    .orElseThrow(() -> new ProductNotFoundException("Product not found"));
             Customer customer = customerRepository.findById(customerId)
-                    .orElseThrow(() -> new NotFoundException("Customer not found"));
+                    .orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
             return CartItem.builder()
                     .product(product)
                     .customer(customer)
@@ -46,12 +48,13 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public List<CartItemDto> getCustomerCart(Long customerId) {
-        return CartItemDto.from(customerRepository.findById(customerId).orElseThrow().getCart());
+        return CartItemDto.from(customerRepository.findById(customerId).orElseThrow(() -> new CustomerNotFoundException("Товар в корзине с id " + customerId + " не найден")).getCart());
     }
 
     @Override
     public void deleteProductFromCart(Long customerId, Long productId) {
-        CartItem foundCartItem = cartRepository.findByCustomer_IdAndProduct_Id(customerId, productId).orElseThrow();
+        CartItem foundCartItem = cartRepository.findByCustomer_IdAndProduct_Id(customerId, productId).orElseThrow(() ->
+                new CartItemNotFoundException("Элемент корзины не найден"));
         cartRepository.delete(foundCartItem);
     }
 
