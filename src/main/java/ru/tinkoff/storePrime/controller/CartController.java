@@ -32,9 +32,10 @@ public class CartController implements CartApi {
     }
 
     @Override
-    public ResponseEntity<CartItemDto> deleteProductFromCart(UserDetailsImpl userDetailsImpl, Long productId) {
+    public ResponseEntity<Void> deleteProductFromCart(UserDetailsImpl userDetailsImpl, Long productId) {
         Long customerId = userDetailsImpl.getAccount().getId();
-        return ResponseEntity.ok(cartService.deleteProductFromCart(customerId, productId));
+        cartService.deleteProductFromCart(customerId, productId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 

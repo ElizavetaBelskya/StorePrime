@@ -7,7 +7,7 @@ public interface SellerService {
 
     SellerDto addSeller(NewOrUpdateSellerDto sellerDto);
 
-    SellerDto deleteSeller(Long sellerId);
+    void deleteSeller(Long sellerId);
 
     SellerDto updateSeller(Long id, NewOrUpdateSellerDto updatedSeller);
 

@@ -34,9 +34,9 @@ public class CustomerController implements CustomerApi {
     }
 
     @Override
-    public ResponseEntity<CustomerDto> deleteCustomer(UserDetailsImpl userDetailsImpl) {
-        CustomerDto deletedCustomerDto = customerService.deleteCustomer(userDetailsImpl.getAccount().getId());
-        return ResponseEntity.accepted().body(deletedCustomerDto);
+    public ResponseEntity<Void> deleteCustomer(UserDetailsImpl userDetailsImpl) {
+        customerService.deleteCustomer(userDetailsImpl.getAccount().getId());
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @Override

@@ -71,14 +71,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto deleteProduct(Long sellerId, Long productId) {
+    public void deleteProduct(Long sellerId, Long productId) {
         Product product = productRepository.findById(productId).orElseThrow();
         if (!product.getSeller().getId().equals(sellerId)) {
             throw new IllegalArgumentException();
             //TODO: подумать что тут можно выбросить
         }
         productRepository.delete(product);
-        return new ProductDto();
     }
 
     @Override

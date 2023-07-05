@@ -15,7 +15,7 @@ public interface ProductService {
 
     ProductDto updateProduct(Long productId, Long sellerId, NewOrUpdateProductDto updatedProductDto);
 
-    ProductDto deleteProduct(Long sellerId, Long productId);
+    void deleteProduct(Long sellerId, Long productId);
 
     List<ProductDto> getAllProducts(Double minPrice, Double maxPrice, String category, Long sellerId);
 

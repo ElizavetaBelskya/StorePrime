@@ -70,7 +70,7 @@ public interface CartApi {
     })
     @DeleteMapping("/{productId}")
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    ResponseEntity<CartItemDto> deleteProductFromCart(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+    ResponseEntity<Void> deleteProductFromCart(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                                  @PathVariable("productId") Long productId);
 
 

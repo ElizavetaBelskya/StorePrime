@@ -116,7 +116,7 @@ public interface ProductApi {
     })
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('SELLER')")
-    ResponseEntity<ProductDto> deleteProductById(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+    ResponseEntity<Void> deleteProductById(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                                  @PathVariable("id") Long productId);
 
 

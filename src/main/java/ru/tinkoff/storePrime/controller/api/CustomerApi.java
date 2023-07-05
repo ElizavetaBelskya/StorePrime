@@ -113,7 +113,7 @@ public interface CustomerApi {
     })
     @DeleteMapping
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    ResponseEntity<CustomerDto> deleteCustomer(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
+    ResponseEntity<Void> deleteCustomer(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
 
 
     @Operation(summary = "Пополнение счета покупателя")

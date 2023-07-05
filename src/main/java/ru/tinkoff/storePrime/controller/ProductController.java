@@ -11,6 +11,7 @@ import ru.tinkoff.storePrime.dto.product.ProductsPage;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 import ru.tinkoff.storePrime.services.ProductService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -59,9 +60,10 @@ public class ProductController implements ProductApi {
     }
 
     @Override
-    public ResponseEntity<ProductDto> deleteProductById(UserDetailsImpl userDetailsImpl, Long productId) {
+    public ResponseEntity<Void> deleteProductById(UserDetailsImpl userDetailsImpl, Long productId) {
         Long sellerId = userDetailsImpl.getAccount().getId();
-        return ResponseEntity.ok(productService.deleteProduct(sellerId, productId));
+        productService.deleteProduct(sellerId, productId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

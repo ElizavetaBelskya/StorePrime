@@ -141,7 +141,7 @@ public interface SellerApi {
     })
     @DeleteMapping
     @PreAuthorize("hasAuthority('SELLER')")
-    ResponseEntity<SellerDto> deleteSeller(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
+    ResponseEntity<Void> deleteSeller(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
 
 
 

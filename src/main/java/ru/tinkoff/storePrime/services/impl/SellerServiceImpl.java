@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.tinkoff.storePrime.converters.SellerConverter;
 import ru.tinkoff.storePrime.dto.user.NewOrUpdateSellerDto;
 import ru.tinkoff.storePrime.dto.user.SellerDto;
+import ru.tinkoff.storePrime.exceptions.NotFoundException;
 import ru.tinkoff.storePrime.models.user.Account;
 import ru.tinkoff.storePrime.models.user.Seller;
 import ru.tinkoff.storePrime.repository.SellerRepository;
@@ -31,10 +32,9 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public SellerDto deleteSeller(Long sellerId) {
+    public void deleteSeller(Long sellerId) {
         Seller seller = sellerRepository.findById(sellerId).orElseThrow();
         seller.setState(Account.State.DELETED);
-        return new SellerDto();
     }
 
     @Override
@@ -45,6 +45,9 @@ public class SellerServiceImpl implements SellerService {
                 throw new AlreadyExistsException("Account with email <" + updatedSellerDto.getEmail() + "> already exists");
             }
         }
+        if (Account.State.DELETED.equals(seller.getState())) {
+            throw new NotFoundException("Пользователь не найден");
+        }
         seller = SellerConverter.getSellerFromNewOrUpdateSellerDto(updatedSellerDto);
         seller.setPasswordHash(passwordEncoder.encode(seller.getPasswordHash()));
         Seller updatedSeller = sellerRepository.save(seller);
@@ -53,7 +56,11 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public SellerDto getSeller(Long id) {
-        return SellerDto.from(sellerRepository.findById(id).orElseThrow());
+        Seller seller = sellerRepository.findById(id).orElseThrow();
+        if (Account.State.DELETED.equals(seller.getState())) {
+            throw new NotFoundException("Пользователь не найден");
+        }
+        return SellerDto.from(seller);
     }
 
 

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.tinkoff.storePrime.converters.CustomerConverter;
 import ru.tinkoff.storePrime.dto.user.CustomerDto;
 import ru.tinkoff.storePrime.dto.user.NewOrUpdateCustomerDto;
+import ru.tinkoff.storePrime.exceptions.NotFoundException;
 import ru.tinkoff.storePrime.models.user.Account;
 import ru.tinkoff.storePrime.models.user.Customer;
 import ru.tinkoff.storePrime.repository.CustomerRepository;
@@ -37,6 +38,9 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDto updateCustomer(Long id, NewOrUpdateCustomerDto updatedCustomerDto) {
         Customer customer = customerRepository.findById(id).orElseThrow();
+        if (Account.State.DELETED.equals(customer.getState())) {
+            throw new NotFoundException("Пользователь не найден");
+        }
         if (!updatedCustomerDto.getEmail().equals(customer.getEmail())) {
             if (accountService.isEmailUsed(updatedCustomerDto.getEmail())) {
                 throw new AlreadyExistsException("Account with email <" + updatedCustomerDto.getEmail() + "> already exists");
@@ -49,11 +53,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDto deleteCustomer(Long customerId) {
+    public void deleteCustomer(Long customerId) {
         Customer customer = customerRepository.findById(customerId).orElseThrow();
         customer.setState(Account.State.DELETED);
         customerRepository.save(customer);
-        return new CustomerDto();
     }
 
     @Override
