@@ -1,10 +1,11 @@
-package ru.tinkoff.storePrime.controller.aspects;
+package ru.tinkoff.storePrime.controller.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
+import ru.tinkoff.storePrime.exceptions.MarketServiceException;
 import ru.tinkoff.storePrime.exceptions.not_found.NotFoundException;
 
 import java.util.NoSuchElementException;
@@ -16,22 +17,12 @@ import java.util.NoSuchElementException;
 
 @ControllerAdvice
 public class RestExceptionHandler {
-
-    @ExceptionHandler({NotFoundException.class, NoSuchElementException.class})
-    public ResponseEntity<ExceptionDto> handleNotFound(Exception ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(MarketServiceException.class)
+    public ResponseEntity<ExceptionDto> handleMarkerServiceException(MarketServiceException ex) {
+        return ResponseEntity.status(ex.getStatus())
                 .body(ExceptionDto.builder()
                         .message(ex.getMessage())
-                        .status(HttpStatus.NOT_FOUND.value())
-                        .build());
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ExceptionDto> handleIllegalArgument(Exception ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ExceptionDto.builder()
-                        .message(ex.getMessage())
-                        .status(HttpStatus.BAD_REQUEST.value())
+                        .status(ex.getStatus().value())
                         .build());
     }
 
