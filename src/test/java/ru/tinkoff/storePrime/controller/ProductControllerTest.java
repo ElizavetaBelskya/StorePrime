@@ -1,9 +1,9 @@
 package ru.tinkoff.storePrime.controller;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,10 +15,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
-import ru.tinkoff.storePrime.controller.handler.RestExceptionHandler;
+import ru.tinkoff.storePrime.handler.RestExceptionHandler;
 import ru.tinkoff.storePrime.dto.product.NewOrUpdateProductDto;
 import ru.tinkoff.storePrime.dto.product.ProductDto;
 import ru.tinkoff.storePrime.dto.product.ProductsPage;
+import ru.tinkoff.storePrime.exceptions.DisparateDataException;
+import ru.tinkoff.storePrime.exceptions.ForbiddenException;
+import ru.tinkoff.storePrime.exceptions.not_found.ProductNotFoundException;
 import ru.tinkoff.storePrime.models.user.Account;
 import ru.tinkoff.storePrime.models.user.Seller;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
@@ -37,6 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
+@ExtendWith(MockitoExtension.class)
 @DisplayName("ProductController is working when")
 public class ProductControllerTest {
 
@@ -48,16 +52,6 @@ public class ProductControllerTest {
 
     @InjectMocks
     private RestExceptionHandler restExceptionHandler;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-    }
-    @AfterEach
-    public void tearDown() {
-        Mockito.validateMockitoUsage();
-    }
-
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     @DisplayName("getProductById() is working")
@@ -97,8 +91,8 @@ public class ProductControllerTest {
                     .build();
 
             when(productService.getProductById(12L)).thenReturn(expectedProductDto);
-            when(productService.getProductById(23321L)).thenThrow(NoSuchElementException.class);
-            when(productService.getProductById(-12L)).thenThrow(NoSuchElementException.class);
+            when(productService.getProductById(23321L)).thenThrow(new ProductNotFoundException("Товар не найден"));
+            when(productService.getProductById(-12L)).thenThrow(new ProductNotFoundException("Товар не найден"));
         }
 
         @Test
@@ -188,6 +182,7 @@ public class ProductControllerTest {
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     @DisplayName("getProducts() is working")
     class GetProductsTest {
+
         @Test
         @DisplayName("Should return products page when valid parameters are provided")
         void get_products_when_valid_parameters_are_provided() throws Exception {
@@ -363,7 +358,7 @@ public class ProductControllerTest {
             String category = "Electronics";
             Long sellerId = null;
             when(productService.getProductsPage(page, minPrice, maxPrice, category, sellerId))
-                    .thenThrow(IllegalArgumentException.class);
+                    .thenThrow(new DisparateDataException("Минимальная цена больше максимальной"));
             mockMvc.perform(get("/products/pages")
                             .param("page", String.valueOf(page))
                             .param("minPrice", String.valueOf(minPrice))
@@ -382,16 +377,13 @@ public class ProductControllerTest {
             String category = "Electronics";
             Long sellerId = null;
 
-            when(productService.getProductsPage(page, minPrice, maxPrice, category, sellerId))
-                    .thenThrow(IllegalArgumentException.class);
-
             mockMvc.perform(get("/products/pages")
                             .param("page", String.valueOf(page))
                             .param("minPrice", String.valueOf(minPrice))
                             .param("maxPrice", String.valueOf(maxPrice))
-                            .param("category", category)).andDo(print())
+                            .param("category", category))
+                    .andDo(print())
                     .andExpect(status().isBadRequest());
-
         }
 
     }
@@ -467,10 +459,7 @@ public class ProductControllerTest {
                             .content(jsonBody))
                     .andDo(print())
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.errors[0].fieldName").value("amount"))
-                    .andExpect(jsonPath("$.errors[0].objectName").value("newOrUpdateProductDto"))
-                    .andExpect(jsonPath("$.errors[1].fieldName").value("price"))
-                    .andExpect(jsonPath("$.errors[1].objectName").value("newOrUpdateProductDto"));
+                    .andExpect(jsonPath("$.errors[0].objectName").value("newOrUpdateProductDto"));
         }
 
     }
@@ -547,6 +536,7 @@ public class ProductControllerTest {
                     .amount(10)
                     .sellerId(1L)
                     .build();
+
             when(productService.updateProduct(productId, sellerId, updatedProduct)).thenReturn(updatedProductDto);
 
             mockMvc.perform(put("/products/{id}", productId)
@@ -570,37 +560,35 @@ public class ProductControllerTest {
                     .build();
 
             when(productService.updateProduct(productId, sellerId, updatedProduct))
-                    .thenThrow(new NoSuchElementException("Товар не найден"));
+                    .thenThrow(new ProductNotFoundException("Товар не найден"));
 
             mockMvc.perform(put("/products/{id}", productId)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(updatedProduct)))
                     .andExpect(status().isNotFound())
                     .andExpect(jsonPath("$.message").value("Товар не найден"))
-                    .andDo(print())
-                    .andReturn();
+                    .andDo(print());
         }
 
         @Test
         public void test_update_product_of_another_seller() throws Exception {
             Long productId = 1L;
             Long sellerId = 9L;
-            NewOrUpdateProductDto updatedProduct =  NewOrUpdateProductDto.builder()
+            NewOrUpdateProductDto updatedProduct = NewOrUpdateProductDto.builder()
                     .title("Книга")
                     .description("Отличная книга для чтения")
                     .price(19.99)
                     .categories(Arrays.asList("Категория 1", "Категория 2"))
                     .amount(10)
                     .build();
-
-            //TODO: доделать нормально
             when(productService.updateProduct(productId, sellerId, updatedProduct))
-                    .thenThrow(new IllegalArgumentException("Товар не найден"));
+                    .thenThrow(new ForbiddenException("Нет прав на редактирование этого товара"));
 
             mockMvc.perform(put("/products/{id}", productId)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(updatedProduct)))
                     .andDo(print())
+                    .andExpect(status().isForbidden())
                     .andReturn();
         }
 

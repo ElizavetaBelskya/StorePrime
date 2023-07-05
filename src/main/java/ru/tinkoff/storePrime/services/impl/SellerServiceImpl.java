@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.tinkoff.storePrime.converters.SellerConverter;
 import ru.tinkoff.storePrime.dto.user.NewOrUpdateSellerDto;
 import ru.tinkoff.storePrime.dto.user.SellerDto;
+import ru.tinkoff.storePrime.exceptions.PaymentImpossibleException;
 import ru.tinkoff.storePrime.exceptions.not_found.SellerNotFoundException;
 import ru.tinkoff.storePrime.models.user.Account;
 import ru.tinkoff.storePrime.models.user.Seller;
@@ -66,10 +67,13 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public void updateCardBalanceBySellerId(Long sellerId, Double amount) {
+    public void updateCardBalanceBySellerId(Long sellerId, Double replenishment) {
         Seller seller = sellerRepository.findById(sellerId).orElseThrow(() ->
                 new SellerNotFoundException("Продавец с id " + sellerId + " не найден"));
-        seller.setCardBalance(seller.getCardBalance() + amount);
+        if (seller.getCardBalance() + replenishment < 0) {
+            throw new PaymentImpossibleException("Недостаточно средств");
+        }
+        seller.setCardBalance(seller.getCardBalance() + replenishment);
         sellerRepository.save(seller);
     }
 

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.tinkoff.storePrime.converters.CustomerConverter;
 import ru.tinkoff.storePrime.dto.user.CustomerDto;
 import ru.tinkoff.storePrime.dto.user.NewOrUpdateCustomerDto;
+import ru.tinkoff.storePrime.exceptions.PaymentImpossibleException;
 import ru.tinkoff.storePrime.exceptions.not_found.CustomerNotFoundException;
 import ru.tinkoff.storePrime.models.user.Account;
 import ru.tinkoff.storePrime.models.user.Customer;
@@ -65,6 +66,9 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDto updateCardBalance(Long customerId, Double replenishment) {
         Customer customer = customerRepository.findById(customerId).orElseThrow(() ->
                 new CustomerNotFoundException("Покупатель с id " + customerId + " не найден"));
+        if (customer.getCardBalance() + replenishment < 0) {
+            throw new PaymentImpossibleException("Недостаточно средств");
+        }
         customer.setCardBalance(customer.getCardBalance() + replenishment);
         return CustomerDto.from(customerRepository.save(customer));
     }

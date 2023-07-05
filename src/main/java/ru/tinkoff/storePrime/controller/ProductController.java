@@ -23,27 +23,27 @@ public class ProductController implements ProductApi {
 
     @Override
     public ResponseEntity<ProductDto> getProductById(Long id) {
-        return ResponseEntity.ok(productService.getProductById(id));
+        return ResponseEntity.ok().body(productService.getProductById(id));
     }
 
     @Override
     public ResponseEntity<List<ProductDto>> getProductsByContentString(String content) {
-        return ResponseEntity.ok(productService.getAllProductsByContentString(content));
+        return ResponseEntity.ok().body(productService.getAllProductsByContentString(content));
     }
 
     @Override
     public ResponseEntity<ProductsPage> getProducts(int page, Double minPrice, Double maxPrice, String category, Long sellerId) {
-        return ResponseEntity.ok(productService.getProductsPage(page, minPrice, maxPrice, category, sellerId));
+        return ResponseEntity.ok().body(productService.getProductsPage(page, minPrice, maxPrice, category, sellerId));
     }
 
     @Override
     public ResponseEntity<List<ProductDto>> getAllProducts(Double minPrice, Double maxPrice, String category, Long sellerId) {
-        return ResponseEntity.ok(productService.getAllProducts(minPrice, maxPrice, category, sellerId));
+        return ResponseEntity.ok().body(productService.getAllProducts(minPrice, maxPrice, category, sellerId));
     }
 
     @Override
     public ResponseEntity<List<ProductDto>> getProductsBySellerId(Long sellerId) {
-        return ResponseEntity.ok(productService.getProductsBySellerId(sellerId));
+        return ResponseEntity.ok().body(productService.getProductsBySellerId(sellerId));
     }
 
     @Override
@@ -56,7 +56,7 @@ public class ProductController implements ProductApi {
     public ResponseEntity<ProductDto> updateProductById(UserDetailsImpl userDetailsImpl,
                                                         Long id, NewOrUpdateProductDto updatedProduct) {
         Long sellerId = userDetailsImpl.getAccount().getId();
-        return ResponseEntity.ok(productService.updateProduct(id, sellerId, updatedProduct));
+        return ResponseEntity.ok().body(productService.updateProduct(id, sellerId, updatedProduct));
     }
 
     @Override
