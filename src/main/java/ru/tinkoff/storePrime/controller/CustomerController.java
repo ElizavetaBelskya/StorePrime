@@ -40,7 +40,7 @@ public class CustomerController implements CustomerApi {
     }
 
     @Override
-    public ResponseEntity<CustomerDto> updateCustomer(UserDetailsImpl userDetailsImpl, Integer replenishment) {
+    public ResponseEntity<CustomerDto> updateCustomer(UserDetailsImpl userDetailsImpl, Double replenishment) {
         Long customerId = userDetailsImpl.getAccount().getId();
         return ResponseEntity.ok(customerService.updateCardBalance(customerId, replenishment));
     }

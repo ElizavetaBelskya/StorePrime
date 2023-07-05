@@ -21,7 +21,7 @@ public abstract class AccountDto {
     private String phoneNumber;
 
     @Schema(description = "Баланс счета", example = "550")
-    private Long cardBalance;
+    private Double cardBalance;
 
 
 }

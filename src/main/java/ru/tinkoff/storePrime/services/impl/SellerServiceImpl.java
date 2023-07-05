@@ -63,6 +63,13 @@ public class SellerServiceImpl implements SellerService {
         return SellerDto.from(seller);
     }
 
+    @Override
+    public void updateCardBalanceBySellerId(Long sellerId, Double amount) {
+        Seller seller = sellerRepository.findById(sellerId).orElseThrow();
+        seller.setCardBalance(seller.getCardBalance() + amount);
+        sellerRepository.save(seller);
+    }
+
 
 //    public boolean isEmailUsed(String email) {
 //        return sellerRepository.findByEmail(email).isPresent();

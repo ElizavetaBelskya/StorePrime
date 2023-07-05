@@ -39,7 +39,7 @@ public abstract class Account {
     @Column(nullable = false)
     private String passwordHash;
 
-    private Long cardBalance;
+    private Double cardBalance;
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)

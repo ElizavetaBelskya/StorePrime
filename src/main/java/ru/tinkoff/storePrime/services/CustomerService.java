@@ -10,5 +10,6 @@ public interface CustomerService {
 
     void deleteCustomer(Long id);
 
-    CustomerDto updateCardBalance(Long customerId, Integer replenishment);
+    CustomerDto updateCardBalance(Long customerId, Double replenishment);
+
 }

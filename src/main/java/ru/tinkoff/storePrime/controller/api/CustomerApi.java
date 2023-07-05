@@ -140,7 +140,7 @@ public interface CustomerApi {
     @PatchMapping
     @PreAuthorize("hasAuthority('CUSTOMER')")
     ResponseEntity<CustomerDto> updateCustomer(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
-                                               @RequestBody Integer replenishment);
+                                               @RequestBody Double replenishment);
 
 
 

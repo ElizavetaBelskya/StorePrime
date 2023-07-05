@@ -60,7 +60,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDto updateCardBalance(Long customerId, Integer replenishment) {
+    public CustomerDto updateCardBalance(Long customerId, Double replenishment) {
         Customer customer = customerRepository.findById(customerId).orElseThrow();
         customer.setCardBalance(customer.getCardBalance() + replenishment);
         return CustomerDto.from(customerRepository.save(customer));
