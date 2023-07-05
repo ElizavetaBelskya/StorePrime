@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.storePrime.dto.order.OrderDto;
+import ru.tinkoff.storePrime.exceptions.DisparateDataException;
+import ru.tinkoff.storePrime.exceptions.ForbiddenException;
 import ru.tinkoff.storePrime.exceptions.not_found.CartItemNotFoundException;
 import ru.tinkoff.storePrime.exceptions.not_found.CustomerNotFoundException;
 import ru.tinkoff.storePrime.exceptions.not_found.OrderNotFoundException;
@@ -47,8 +49,7 @@ public class OrderServiceImpl implements OrderService {
             CartItem newItem = cartRepository.findById(itemId).orElseThrow(
                     () -> new CartItemNotFoundException("Товар в корзине с id " + customerId + " не найден"));
             if (!newItem.getCustomer().getId().equals(customerId)) {
-                throw new IllegalArgumentException();
-                //TODO: нормальное исключение
+                throw new ForbiddenException("Этот пользователь не имеет прав на обращение к элементу корзины с id " + itemId);
             } else {
                 items.add(newItem);
             }
@@ -85,8 +86,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto changeStatus(Long sellerId, Long orderId, String status) {
-        Order.Status newStatus = Order.Status.valueOf(status);
-        //TODO: выбрасывает IllegalArgument
+        Order.Status newStatus;
+        try {
+            newStatus = Order.Status.valueOf(status);
+        } catch (IllegalArgumentException ex) {
+            throw new DisparateDataException("Данный статус не относится к возможным статусам заказа");
+        }
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Заказ с id "+ orderId +" не найден"));
         for (Product product: order.getProducts()) {
             if (product.getSeller().getId().equals(sellerId)) {
@@ -94,7 +99,7 @@ public class OrderServiceImpl implements OrderService {
                 return OrderDto.from(orderRepository.save(order));
             }
         }
-        throw new IllegalArgumentException();
+        throw new ForbiddenException("Этот продавец не имеет права на редактирование заказа с id " + orderId);
     }
 
     @Override
@@ -104,7 +109,7 @@ public class OrderServiceImpl implements OrderService {
             order.setStatus(Order.Status.CANCELLED);
             return OrderDto.from(orderRepository.save(order));
         }
-        throw new IllegalArgumentException();
+        throw new ForbiddenException("Этот покупатель не имеет права на редактирование заказа с id " + orderId);
     }
 
     @Override

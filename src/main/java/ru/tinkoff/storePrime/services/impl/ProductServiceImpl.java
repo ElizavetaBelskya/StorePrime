@@ -9,6 +9,8 @@ import ru.tinkoff.storePrime.converters.ProductConverter;
 import ru.tinkoff.storePrime.dto.product.NewOrUpdateProductDto;
 import ru.tinkoff.storePrime.dto.product.ProductDto;
 import ru.tinkoff.storePrime.dto.product.ProductsPage;
+import ru.tinkoff.storePrime.exceptions.DisparateDataException;
+import ru.tinkoff.storePrime.exceptions.ForbiddenException;
 import ru.tinkoff.storePrime.exceptions.not_found.CategoryNotFoundException;
 import ru.tinkoff.storePrime.exceptions.not_found.ProductNotFoundException;
 import ru.tinkoff.storePrime.exceptions.not_found.SellerNotFoundException;
@@ -60,8 +62,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto updateProduct(Long productId, Long sellerId, NewOrUpdateProductDto updatedProductDto) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Товар с id " + productId + " не найден"));
         if (!product.getSeller().getId().equals(sellerId)) {
-            throw new IllegalArgumentException();
-            //TODO: подумать что тут можно выбросить
+            throw new ForbiddenException("Товар с id " + productId + " не доступен для редактирования данным продавцом");
         }
         Product updatedProduct = ProductConverter.getProductFromNewOrUpdateProductDto(updatedProductDto);
         updatedProduct.setId(productId);
@@ -77,8 +78,7 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(Long sellerId, Long productId) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Товар с id " + productId + " не найден"));
         if (!product.getSeller().getId().equals(sellerId)) {
-            throw new IllegalArgumentException();
-            //TODO: подумать что тут можно выбросить
+            throw new ForbiddenException("Товар с id " + productId + " не доступен для удаления данным продавцом");
         }
         productRepository.delete(product);
     }
@@ -86,14 +86,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> getAllProducts(Double minPrice, Double maxPrice, String category, Long sellerId) {
         if (minPrice > maxPrice) {
-            throw new IllegalArgumentException("Минимальная цена больше максимальной");
+            throw new DisparateDataException("Минимальная цена больше максимальной");
         }
         Optional<Category> categoryToSearch = categoryRepository.findByName(category);
         Collection<Category> categories = Collections.emptyList();
         if (categoryToSearch.isPresent()) {
             categories = Collections.singleton(categoryToSearch.get());
         } else {
-            throw new CategoryNotFoundException("Эта категория не существует");
+            throw new DisparateDataException("Эта категория не существует");
         }
         if (minPrice == null) {
             minPrice = 0.0;

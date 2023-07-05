@@ -74,8 +74,4 @@ public class SellerServiceImpl implements SellerService {
     }
 
 
-//    public boolean isEmailUsed(String email) {
-//        return sellerRepository.findByEmail(email).isPresent();
-//    }
-
 }

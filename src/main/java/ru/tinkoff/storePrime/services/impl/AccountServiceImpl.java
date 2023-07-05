@@ -1,6 +1,7 @@
 package ru.tinkoff.storePrime.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.storePrime.exceptions.not_found.SellerNotFoundException;
 import ru.tinkoff.storePrime.models.user.Account;
@@ -37,7 +38,7 @@ public class AccountServiceImpl implements AccountService {
             return seller.get();
         }
 
-        throw new IllegalArgumentException("Account with such email does not exist");
+        throw new UsernameNotFoundException("Account with such email does not exist");
     }
 
 }
