@@ -97,7 +97,12 @@ public interface CustomerApi {
 
     @Operation(summary = "Удаление аккаунта покупателя")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "Аккаунт покупателя удален"),
+            @ApiResponse(responseCode = "204", description = "Аккаунт удален",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = Void.class))
+                    }
+            ),
             @ApiResponse(responseCode = "404", description = "Сведения об ошибке: пользователь не найден",
                     content = {
                             @Content(mediaType = "application/json",

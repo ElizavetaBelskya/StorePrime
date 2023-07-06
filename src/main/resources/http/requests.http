@@ -38,3 +38,4 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQ
 
 ###
 
+GET http://localhost:80/products/pages?minPrice=10&maxPrice=100&page=-1

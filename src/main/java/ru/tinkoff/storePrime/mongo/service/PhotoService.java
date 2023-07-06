@@ -1,8 +1,8 @@
 package ru.tinkoff.storePrime.mongo.service;
 
+import lombok.RequiredArgsConstructor;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.tinkoff.storePrime.exceptions.not_found.PhotoNotFoundException;
@@ -12,10 +12,9 @@ import ru.tinkoff.storePrime.mongo.repository.PhotoRepository;
 import java.io.IOException;
 
 @Service
+@RequiredArgsConstructor
 public class PhotoService {
-
-    @Autowired
-    private PhotoRepository photoRepo;
+    private final PhotoRepository photoRepo;
 
     public String addPhoto(String title, MultipartFile file) throws IOException {
         Photo photo = new Photo();

@@ -33,6 +33,12 @@ public interface SellerApi {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = SellerDto.class))
                     }
+            ),
+            @ApiResponse(responseCode = "400", description = "Сведения об ошибке: некорректные данные запроса",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
             )
     })
     @PostMapping
@@ -48,13 +54,19 @@ public interface SellerApi {
                                     schema = @Schema(implementation = SellerDto.class))
                     }
             ),
-            @ApiResponse(responseCode = "404", description = "Сведения об ошибке",
+            @ApiResponse(responseCode = "400", description = "Сведения об ошибке: некорректные данные запроса",
                     content = {
                             @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = SellerDto.class))
+                                    schema = @Schema(implementation = ExceptionDto.class))
                     }
             ),
-            @ApiResponse(responseCode = "401", description = "Сведения об ошибке",
+            @ApiResponse(responseCode = "403", description = "Запрет доступа",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            ),
+            @ApiResponse(responseCode = "400", description = "Сведения об ошибке: некорректные данные запроса",
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ExceptionDto.class))
@@ -76,13 +88,13 @@ public interface SellerApi {
                                     schema = @Schema(implementation = SellerDto.class))
                     }
             ),
-            @ApiResponse(responseCode = "404", description = "Сведения об ошибке",
+            @ApiResponse(responseCode = "403", description = "Запрет доступа",
                     content = {
                             @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = SellerDto.class))
+                                    schema = @Schema(implementation = ExceptionDto.class))
                     }
             ),
-            @ApiResponse(responseCode = "401", description = "Сведения об ошибке",
+            @ApiResponse(responseCode = "400", description = "Сведения об ошибке: некорректные данные запроса",
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ExceptionDto.class))
@@ -104,10 +116,16 @@ public interface SellerApi {
             @ApiResponse(responseCode = "404", description = "Сведения об ошибке",
                     content = {
                             @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = SellerDto.class))
+                                    schema = @Schema(implementation = ExceptionDto.class))
                     }
             ),
-            @ApiResponse(responseCode = "401", description = "Сведения об ошибке",
+            @ApiResponse(responseCode = "400", description = "Сведения об ошибке: некорректные данные запроса",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            ),
+            @ApiResponse(responseCode = "403", description = "Запрет доступа",
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ExceptionDto.class))
@@ -126,13 +144,19 @@ public interface SellerApi {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = SellerDto.class))
                     }),
-            @ApiResponse(responseCode = "404", description = "Сведения об ошибке",
+            @ApiResponse(responseCode = "400", description = "Сведения об ошибке: некорректные данные запроса",
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ExceptionDto.class))
                     }
             ),
-            @ApiResponse(responseCode = "401", description = "Сведения об ошибке",
+            @ApiResponse(responseCode = "403", description = "Запрет доступа",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            ),
+            @ApiResponse(responseCode = "400", description = "Сведения об ошибке: некорректные данные запроса",
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ExceptionDto.class))

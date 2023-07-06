@@ -2,6 +2,7 @@ package ru.tinkoff.storePrime.controller.api;
 
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.storePrime.dto.cart.CartItemDto;
 import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
+import ru.tinkoff.storePrime.dto.product.ProductDto;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 
 import java.util.List;
@@ -57,7 +59,7 @@ public interface CartApi {
             @ApiResponse(responseCode = "201", description = "Добавленный в корзину товар",
                     content = {
                             @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = CartItemDto.class, type = "array"))
+                                    array = @ArraySchema(schema = @Schema(implementation = CartItemDto.class)))
                     }
             ),
             @ApiResponse(responseCode = "403", description = "Сведения об ошибке: доступ запрещен",
@@ -74,10 +76,10 @@ public interface CartApi {
 
     @Operation(summary = "Удаление товара из корзины")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Товар удален из корзины",
+            @ApiResponse(responseCode = "204", description = "Товар удален из корзины",
                     content = {
                             @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = CartItemDto.class))
+                                    schema = @Schema(implementation = Void.class))
                     }
             ),
             @ApiResponse(responseCode = "404", description = "Товар не найден в корзине",

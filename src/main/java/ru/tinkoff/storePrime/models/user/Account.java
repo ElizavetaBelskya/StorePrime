@@ -33,7 +33,7 @@ public abstract class Account {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(unique = true)
+    @Column()
     private String phoneNumber;
 
     @Column(nullable = false)

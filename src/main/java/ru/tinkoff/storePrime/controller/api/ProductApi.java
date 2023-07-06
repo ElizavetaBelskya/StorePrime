@@ -88,7 +88,13 @@ public interface ProductApi {
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ExceptionDto.class))
-                    })
+                    }),
+            @ApiResponse(responseCode = "400", description = "Сведения об ошибке: неверный запрос",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            )
     })
     @GetMapping("/seller/{sellerId}")
     ResponseEntity<List<ProductDto>> getProductsBySellerId(@PathVariable("sellerId") Long sellerId);
@@ -105,7 +111,19 @@ public interface ProductApi {
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ExceptionDto.class))
-                    })
+                    }),
+            @ApiResponse(responseCode = "403", description = "Сведения об ошибке: доступ запрещен",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            ),
+            @ApiResponse(responseCode = "400", description = "Сведения об ошибке: неверный запрос",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            )
     })
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('SELLER')")
@@ -124,7 +142,19 @@ public interface ProductApi {
                     content = {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = ExceptionDto.class))
-                    })
+                    }),
+            @ApiResponse(responseCode = "403", description = "Сведения об ошибке: доступ запрещен",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            ),
+            @ApiResponse(responseCode = "400", description = "Сведения об ошибке: неверный запрос",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            )
     })
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('SELLER')")
@@ -138,7 +168,13 @@ public interface ProductApi {
             @ApiResponse(responseCode = "200", description = "Страница с товарами",
                     content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = ProductsPage.class))
-                    })
+                    }),
+            @ApiResponse(responseCode = "400", description = "Сведения об ошибке: неверный запрос",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            )
     })
     @GetMapping("/pages")
     ResponseEntity<ProductsPage> getProducts(
@@ -154,7 +190,13 @@ public interface ProductApi {
             @ApiResponse(responseCode = "200", description = "Страница с товарами",
                     content = {
                             @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ProductDto.class)))
-                    })
+                    }),
+            @ApiResponse(responseCode = "400", description = "Сведения об ошибке: неверный запрос",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            )
     })
     @GetMapping
     ResponseEntity<List<ProductDto>> getAllProducts(
@@ -170,6 +212,12 @@ public interface ProductApi {
                     content = {
                             @Content(mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = ProductDto.class)))
+                    }
+            ),
+            @ApiResponse(responseCode = "400", description = "Сведения об ошибке: неверный запрос",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
                     }
             )
     })

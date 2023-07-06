@@ -44,7 +44,7 @@ public interface OrderApi {
             @ApiResponse(responseCode = "200", description = "Заказы пользователя",
                     content = {
                             @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = OrderDto.class))
+                                    array = @ArraySchema(schema = @Schema(implementation = OrderDto.class)))
                     }
             )
     })

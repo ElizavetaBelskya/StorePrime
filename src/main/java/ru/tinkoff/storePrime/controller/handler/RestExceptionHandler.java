@@ -1,4 +1,4 @@
-package ru.tinkoff.storePrime.handler;
+package ru.tinkoff.storePrime.controller.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +12,8 @@ import ru.tinkoff.storePrime.exceptions.MarketServiceException;
 import ru.tinkoff.storePrime.validation.responses.ValidationErrorDto;
 import ru.tinkoff.storePrime.validation.responses.ValidationErrorsDto;
 
+import javax.naming.AuthenticationException;
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,15 @@ public class RestExceptionHandler {
                 .body(ExceptionDto.builder()
                         .message(ex.getMessage())
                         .status(ex.getStatus().value())
+                        .build());
+    }
+
+    @ExceptionHandler({AccessDeniedException.class, AuthenticationException.class})
+    public ResponseEntity<ExceptionDto> handleAccessDeniedException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN.value())
+                .body(ExceptionDto.builder()
+                        .message(ex.getMessage())
+                        .status(HttpStatus.FORBIDDEN.value())
                         .build());
     }
 
@@ -60,7 +71,7 @@ public class RestExceptionHandler {
                         .build());
     }
 
-    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class, IllegalArgumentException.class})
     public ResponseEntity<ExceptionDto> handleTypeMismatch(Exception ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ExceptionDto.builder()
@@ -70,10 +81,10 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ExceptionDto> handleOther() {
+    public ResponseEntity<ExceptionDto> handleOther(Exception exception) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ExceptionDto.builder()
-                        .message("Server error")
+                        .message(exception.getMessage())
                         .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                         .build());
     }

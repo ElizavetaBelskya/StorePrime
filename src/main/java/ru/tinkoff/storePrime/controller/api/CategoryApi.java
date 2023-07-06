@@ -1,6 +1,7 @@
 package ru.tinkoff.storePrime.controller.api;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,7 +27,7 @@ public interface CategoryApi {
             @ApiResponse(responseCode = "200", description = "Категории найдены",
                     content = {
                             @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = ProductDto.class))
+                                    array = @ArraySchema(schema = @Schema(implementation = String.class)))
                     }
             ),
             @ApiResponse(responseCode = "404", description = "Категории не найдены",
