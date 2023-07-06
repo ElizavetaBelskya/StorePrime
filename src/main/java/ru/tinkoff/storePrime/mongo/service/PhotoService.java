@@ -5,6 +5,7 @@ import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.tinkoff.storePrime.exceptions.not_found.PhotoNotFoundException;
 import ru.tinkoff.storePrime.mongo.model.Photo;
 import ru.tinkoff.storePrime.mongo.repository.PhotoRepository;
 
@@ -26,6 +27,7 @@ public class PhotoService {
     }
 
     public Photo getPhoto(String id) {
-        return photoRepo.findById(id).get();
+        return photoRepo.findById(id).orElseThrow(() -> new PhotoNotFoundException("Фотография с id "
+                + id + " не существует"));
     }
 }
