@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.tinkoff.storePrime.models.Address;
 
+import javax.validation.constraints.NotBlank;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,9 +18,11 @@ public class AddressDto {
 
 
     @Schema(description = "Улица", example = "Спартаковская")
+    @NotBlank
     private String street;
 
     @Schema(description = "Дом", example = "98")
+    @NotBlank
     private Integer house;
 
     @Schema(description = "Квартира/Корпус", example = "6А")

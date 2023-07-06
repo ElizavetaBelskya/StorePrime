@@ -5,6 +5,10 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ru.tinkoff.storePrime.dto.location.LocationDto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 
 @Data
 @AllArgsConstructor
@@ -13,16 +17,24 @@ import ru.tinkoff.storePrime.dto.location.LocationDto;
 @Schema(description = "Продавец")
 public class NewOrUpdateSellerDto {
 
+    @NotBlank
+    @Email
+    @Size(max = 100)
     @Schema(description = "Электронная почта", example = "example@mail.ru")
     private String email;
 
+    @NotBlank
+    @Size(max = 12)
     @Schema(description = "Номер телефона", example = "899999999")
     private String phoneNumber;
 
-    @Schema(description = "Название компании", example = "Tinkoff")
+    @NotBlank
+    @Size(max = 100)
+    @Schema(description = "Имя", example = "Иван")
     private String name;
 
     @Schema(description = "Описание компании", example = "Наша компания является лидером на рынке")
+    @Size(max = 250)
     private String description;
 
     private LocationDto locationDto;

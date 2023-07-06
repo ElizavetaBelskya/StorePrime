@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import ru.tinkoff.storePrime.models.Location;
 
+import javax.validation.constraints.NotBlank;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,9 +16,11 @@ import ru.tinkoff.storePrime.models.Location;
 public class LocationDto {
 
     @Schema(description = "Страна", example = "Россия")
+    @NotBlank
     private String country;
 
     @Schema(description = "Город", example = "Москва")
+    @NotBlank
     private String city;
 
     public static LocationDto from(Location location) {
