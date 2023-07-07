@@ -2,6 +2,7 @@ package ru.tinkoff.storePrime.controller.api;
 
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -65,7 +66,7 @@ public interface CustomerApi {
     @PutMapping
     @PreAuthorize("hasAuthority('CUSTOMER')")
     ResponseEntity<CustomerDto> updateCustomer(
-            @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
             @Valid @RequestBody NewOrUpdateCustomerDto updatedCustomer);
 
 
@@ -92,7 +93,7 @@ public interface CustomerApi {
     })
     @GetMapping
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    ResponseEntity<CustomerDto> getThisCustomer(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
+    ResponseEntity<CustomerDto> getThisCustomer(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
 
 
     @Operation(summary = "Удаление аккаунта покупателя")
@@ -118,7 +119,7 @@ public interface CustomerApi {
     })
     @DeleteMapping
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    ResponseEntity<Void> deleteCustomer(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
+    ResponseEntity<Void> deleteCustomer(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
 
 
     @Operation(summary = "Пополнение счета покупателя")
@@ -144,7 +145,7 @@ public interface CustomerApi {
     })
     @PatchMapping
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    ResponseEntity<CustomerDto> updateCustomer(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+    ResponseEntity<CustomerDto> updateCustomer(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                                @RequestBody Double replenishment);
 
 

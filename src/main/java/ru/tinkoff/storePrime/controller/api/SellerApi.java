@@ -76,7 +76,7 @@ public interface SellerApi {
     @PutMapping
     @PreAuthorize("hasAuthority('SELLER')")
     ResponseEntity<SellerDto> updateSeller(
-            @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
             @Valid @RequestBody NewOrUpdateSellerDto updatedSeller);
 
 
@@ -103,7 +103,7 @@ public interface SellerApi {
     })
     @GetMapping
     @PreAuthorize("hasAuthority('SELLER')")
-    ResponseEntity<SellerDto> getThisSeller(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
+    ResponseEntity<SellerDto> getThisSeller(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
 
     @Operation(summary = "Получение аккаунта продавца")
     @ApiResponses(value = {
@@ -165,7 +165,7 @@ public interface SellerApi {
     })
     @DeleteMapping
     @PreAuthorize("hasAuthority('SELLER')")
-    ResponseEntity<Void> deleteSeller(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
+    ResponseEntity<Void> deleteSeller(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
 
 
 

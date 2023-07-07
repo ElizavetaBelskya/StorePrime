@@ -8,12 +8,18 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.bind.support.WebDataBinderFactory;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.method.support.ModelAndViewContainer;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import ru.tinkoff.storePrime.controller.handler.RestExceptionHandler;
 import ru.tinkoff.storePrime.dto.product.NewOrUpdateProductDto;
@@ -39,16 +45,39 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
+//@AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ProductController is working when")
 public class ProductControllerTest {
 
-    @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private ProductService productService;
+
+    @BeforeEach
+    public void setup() {
+        mockMvc = MockMvcBuilders.standaloneSetup(new ProductController(productService))
+                .setControllerAdvice(new RestExceptionHandler())
+                .setCustomArgumentResolvers(new HandlerMethodArgumentResolver() {
+                    @Override
+                    public boolean supportsParameter(MethodParameter parameter) {
+                        return parameter.getParameterType().isAssignableFrom(UserDetailsImpl.class);
+                    }
+
+                    @Override
+                    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+                        return new UserDetailsImpl(
+                                Seller.builder()
+                                        .id(1L).email("example@mail.ru")
+                                        .passwordHash("password")
+                                        .state(Account.State.CONFIRMED)
+                                        .role(Account.Role.SELLER)
+                                        .build()
+                        );
+                    }
+                }).build();
+    }
 
 
     @Nested
@@ -473,14 +502,14 @@ public class ProductControllerTest {
 
         private UserDetails userDetails;
 
-        @BeforeEach
-        public void setUpUserDetails() {
-            userDetails = new UserDetailsImpl(Seller.builder().id(1L).email("myemail@mail.ru")
-                    .passwordHash("1234qwer").role(Account.Role.SELLER).state(Account.State.CONFIRMED).build());
-            SecurityContextHolder.getContext().setAuthentication(
-                    new UsernamePasswordAuthenticationToken(userDetails, null, Collections.singleton(
-                            new SimpleGrantedAuthority("SELLER"))));
-        }
+//        @BeforeEach
+//        public void setUpUserDetails() {
+//            userDetails = new UserDetailsImpl(Seller.builder().id(1L).email("myemail@mail.ru")
+//                    .passwordHash("1234qwer").role(Account.Role.SELLER).state(Account.State.CONFIRMED).build());
+//            SecurityContextHolder.getContext().setAuthentication(
+//                    new UsernamePasswordAuthenticationToken(userDetails, null, Collections.singleton(
+//                            new SimpleGrantedAuthority("SELLER"))));
+//        }
 
         @Test
         public void test_update_correct_product() throws Exception {

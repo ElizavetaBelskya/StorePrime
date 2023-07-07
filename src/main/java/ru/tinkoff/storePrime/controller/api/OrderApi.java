@@ -1,6 +1,7 @@
 package ru.tinkoff.storePrime.controller.api;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,7 +37,7 @@ public interface OrderApi {
     })
     @PostMapping
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    ResponseEntity<OrderDto> createOrder(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+    ResponseEntity<OrderDto> createOrder(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                          @RequestBody List<Long> cartItemIdList);
 
     @Operation(summary = "Получение всех заказов пользователя")
@@ -50,7 +51,7 @@ public interface OrderApi {
     })
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    ResponseEntity<List<OrderDto>> getAllOrder(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
+    ResponseEntity<List<OrderDto>> getAllOrder(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
 
     @Operation(summary = "Получение всех заказов продавца")
     @ApiResponses(value = {
@@ -63,7 +64,7 @@ public interface OrderApi {
     })
     @GetMapping("/all/seller")
     @PreAuthorize("hasAuthority('SELLER')")
-    ResponseEntity<List<OrderDto>> getAllOrderForSeller(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
+    ResponseEntity<List<OrderDto>> getAllOrderForSeller(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
 
     @Operation(summary = "Получение всех отмененных заказов покупателя")
     @ApiResponses(value = {
@@ -76,7 +77,7 @@ public interface OrderApi {
     })
     @GetMapping("/cancelled")
     @PreAuthorize("hasAuthority('СUSTOMER')")
-    ResponseEntity<List<OrderDto>> getCancelledProductsForCustomer(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
+    ResponseEntity<List<OrderDto>> getCancelledProductsForCustomer(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
 
     @Operation(summary = "Изменение статуса заказа")
     @ApiResponses(value = {
@@ -89,7 +90,7 @@ public interface OrderApi {
     })
     @PatchMapping("/status/{orderId}")
     @PreAuthorize("hasAuthority('SELLER')")
-    ResponseEntity<OrderDto> changeStatus(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+    ResponseEntity<OrderDto> changeStatus(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                           @PathVariable("orderId") Long orderId, @RequestParam("status") String status);
 
     @Operation(summary = "Изменение статуса заказа")
@@ -103,7 +104,7 @@ public interface OrderApi {
     })
     @PatchMapping("/{orderId}/cancel")
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    ResponseEntity<OrderDto> cancelOrder(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl, @PathVariable("orderId") Long orderId);
+    ResponseEntity<OrderDto> cancelOrder(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl, @PathVariable("orderId") Long orderId);
 
 
 

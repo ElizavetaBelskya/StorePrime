@@ -2,6 +2,7 @@ package ru.tinkoff.storePrime.controller.api;
 
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -49,7 +50,7 @@ public interface CartApi {
     })
     @PostMapping("/{productId}")
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    ResponseEntity<CartItemDto> addProductToCart(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+    ResponseEntity<CartItemDto> addProductToCart(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                                  @PathVariable("productId") Long productId,
                                                  @RequestParam("quantity") Integer quantity);
 
@@ -71,7 +72,7 @@ public interface CartApi {
     })
     @GetMapping
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    ResponseEntity<List<CartItemDto>> getCustomerCart(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
+    ResponseEntity<List<CartItemDto>> getCustomerCart(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
 
 
     @Operation(summary = "Удаление товара из корзины")
@@ -103,7 +104,7 @@ public interface CartApi {
     })
     @DeleteMapping("/{productId}")
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    ResponseEntity<Void> deleteProductFromCart(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+    ResponseEntity<Void> deleteProductFromCart(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                                  @PathVariable("productId") Long productId);
 
 

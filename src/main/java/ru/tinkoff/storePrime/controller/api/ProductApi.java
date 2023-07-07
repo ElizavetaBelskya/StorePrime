@@ -49,7 +49,7 @@ public interface ProductApi {
     })
     @PostMapping
     @PreAuthorize("hasAuthority('SELLER')")
-    ResponseEntity<ProductDto> addProduct(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+    ResponseEntity<ProductDto> addProduct(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
             @Valid @RequestBody NewOrUpdateProductDto newProduct);
 
 
@@ -127,7 +127,7 @@ public interface ProductApi {
     })
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('SELLER')")
-    ResponseEntity<ProductDto> updateProductById(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+    ResponseEntity<ProductDto> updateProductById(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
             @PathVariable("id") Long id, @Valid @RequestBody NewOrUpdateProductDto updatedProduct);
 
     @Operation(summary = "Удаление товара по идентификатору")
@@ -158,7 +158,7 @@ public interface ProductApi {
     })
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('SELLER')")
-    ResponseEntity<Void> deleteProductById(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+    ResponseEntity<Void> deleteProductById(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                                  @PathVariable("id") Long productId);
 
 
