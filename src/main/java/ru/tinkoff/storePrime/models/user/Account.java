@@ -8,6 +8,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Getter
 @Setter
+@EqualsAndHashCode
+@ToString
 @MappedSuperclass
 @AllArgsConstructor
 @NoArgsConstructor

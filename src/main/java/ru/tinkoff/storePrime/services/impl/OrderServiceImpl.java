@@ -60,9 +60,13 @@ public class OrderServiceImpl implements OrderService {
         Map<Product, Integer> productAmountsForOrder = new HashMap<>();
         for (CartItem item: items) {
             Product product = item.getProduct();
+            if (product.getAmount() > item.getQuantity()) {
+                throw new DisparateDataException("Запрос товара в заказе превышает его реальное колчество");
+            }
             Double price = product.getPrice()*item.getQuantity();
-            sellerService.updateCardBalanceBySellerId(product.getSeller().getId(), price);
+            sellerService.updateCardBalanceBySellerId(product.getSeller().getId(), price*0.97);
             customerService.updateCardBalance(item.getCustomer().getId(), -1*price);
+            product.setAmount(product.getAmount() - item.getQuantity());
             productListForOrder.add(product);
             productAmountsForOrder.put(product, item.getQuantity());
         }
@@ -112,11 +116,11 @@ public class OrderServiceImpl implements OrderService {
             order.setStatus(Order.Status.CANCELLED);
             Double orderPrice = order.getProducts()
                     .stream().mapToDouble(x -> x.getPrice()*order.getProductAmounts().get(x)).sum();
-            customerService.updateCardBalance(customerId, -orderPrice);
+            customerService.updateCardBalance(customerId, orderPrice);
             Map<Product, Integer> productMap = order.getProductAmounts();
             for (Product product: productMap.keySet()) {
                 Double price = product.getPrice()*productMap.get(product).doubleValue();
-                sellerService.updateCardBalanceBySellerId(product.getSeller().getId(), price);
+                sellerService.updateCardBalanceBySellerId(product.getSeller().getId(), -price*0.97);
             }
             return OrderDto.from(orderRepository.save(order));
         }

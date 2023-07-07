@@ -3,8 +3,10 @@ package ru.tinkoff.storePrime.models.user;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ru.tinkoff.storePrime.models.Location;
+import ru.tinkoff.storePrime.models.Product;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
@@ -28,5 +30,7 @@ public class Seller extends Account {
 
     @Embedded
     private Location location;
+
+
 
 }
