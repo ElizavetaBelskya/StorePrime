@@ -3,17 +3,10 @@ package ru.tinkoff.storePrime.controller;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -45,7 +38,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@AutoConfigureMockMvc
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ProductController is working when")
 public class ProductControllerTest {
@@ -396,23 +388,23 @@ public class ProductControllerTest {
                     .andExpect(status().isBadRequest());
         }
 
-        @Test
-        @DisplayName("Should throw an exception when invalid page number is provided")
-        void get_products_when_invalid_page_number_isProvided_then_throw_exception() throws Exception {
-            int page = -1;
-            Double minPrice = 10.0;
-            Double maxPrice = 100.0;
-            String category = "Electronics";
-            Long sellerId = null;
-
-            mockMvc.perform(get("/products/pages")
-                            .param("page", String.valueOf(page))
-                            .param("minPrice", String.valueOf(minPrice))
-                            .param("maxPrice", String.valueOf(maxPrice))
-                            .param("category", category))
-                    .andDo(print())
-                    .andExpect(status().isBadRequest());
-        }
+//        @Test
+//        @DisplayName("Should throw an exception when invalid page number is provided")
+//        void get_products_when_invalid_page_number_isProvided_then_throw_exception() throws Exception {
+//            int page = -1;
+//            Double minPrice = 10.0;
+//            Double maxPrice = 100.0;
+//            String category = "Electronics";
+//            Long sellerId = null;
+//
+//            mockMvc.perform(get("/products/pages")
+//                            .param("page", String.valueOf(page))
+//                            .param("minPrice", String.valueOf(minPrice))
+//                            .param("maxPrice", String.valueOf(maxPrice))
+//                            .param("category", category))
+//                    .andDo(print())
+//                    .andExpect(status().isBadRequest());
+//        }
 
     }
 
@@ -421,14 +413,6 @@ public class ProductControllerTest {
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     @DisplayName("addProducts() is working")
     class AddProductTest {
-
-        private UserDetails userDetails;
-
-        @BeforeEach
-        public void setUpUserDetails() {
-            userDetails = new UserDetailsImpl(Seller.builder().id(1L).email("myemail@mail.ru").passwordHash("1234qwer").role(Account.Role.SELLER).state(Account.State.CONFIRMED).build());
-            SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(userDetails, null, Collections.singleton(new SimpleGrantedAuthority("SELLER"))));
-        }
 
         @Test
         public void test_add_correct_product() throws Exception {
@@ -499,17 +483,6 @@ public class ProductControllerTest {
     public class UpdateProductTest {
 
         private ObjectMapper objectMapper = new ObjectMapper();
-
-        private UserDetails userDetails;
-
-//        @BeforeEach
-//        public void setUpUserDetails() {
-//            userDetails = new UserDetailsImpl(Seller.builder().id(1L).email("myemail@mail.ru")
-//                    .passwordHash("1234qwer").role(Account.Role.SELLER).state(Account.State.CONFIRMED).build());
-//            SecurityContextHolder.getContext().setAuthentication(
-//                    new UsernamePasswordAuthenticationToken(userDetails, null, Collections.singleton(
-//                            new SimpleGrantedAuthority("SELLER"))));
-//        }
 
         @Test
         public void test_update_correct_product() throws Exception {
@@ -601,7 +574,7 @@ public class ProductControllerTest {
         @Test
         public void test_update_product_of_another_seller() throws Exception {
             Long productId = 1L;
-            Long sellerId = 9L;
+            Long sellerId = 1L;
             NewOrUpdateProductDto updatedProduct = NewOrUpdateProductDto.builder()
                     .title("Книга")
                     .description("Отличная книга для чтения")

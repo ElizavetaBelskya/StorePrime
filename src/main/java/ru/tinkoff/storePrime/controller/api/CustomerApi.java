@@ -35,6 +35,12 @@ public interface CustomerApi {
                             @Content(mediaType = "application/json",
                                     schema = @Schema(implementation = CustomerDto.class))
                     }
+            ),
+            @ApiResponse(responseCode = "400", description = "Данные некорректны",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
             )
     })
     @PostMapping
@@ -65,7 +71,7 @@ public interface CustomerApi {
     })
     @PutMapping
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    ResponseEntity<CustomerDto> updateCustomer(
+    ResponseEntity<CustomerDto> updateCustomerCardBalance(
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
             @Valid @RequestBody NewOrUpdateCustomerDto updatedCustomer);
 
@@ -145,8 +151,8 @@ public interface CustomerApi {
     })
     @PatchMapping
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    ResponseEntity<CustomerDto> updateCustomer(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
-                                               @RequestBody Double replenishment);
+    ResponseEntity<CustomerDto> updateCustomerCardBalance(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+                                                          @RequestBody Double replenishment);
 
 
 

@@ -20,6 +20,7 @@ import ru.tinkoff.storePrime.services.CustomerService;
 import ru.tinkoff.storePrime.services.OrderService;
 import ru.tinkoff.storePrime.services.SellerService;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,8 +60,9 @@ public class OrderServiceImpl implements OrderService {
         Map<Product, Integer> productAmountsForOrder = new HashMap<>();
         for (CartItem item: items) {
             Product product = item.getProduct();
-            sellerService.updateCardBalanceBySellerId(product.getSeller().getId(), product.getPrice());
-            customerService.updateCardBalance(item.getCustomer().getId(), -1*product.getPrice());
+            Double price = product.getPrice()*item.getQuantity();
+            sellerService.updateCardBalanceBySellerId(product.getSeller().getId(), price);
+            customerService.updateCardBalance(item.getCustomer().getId(), -1*price);
             productListForOrder.add(product);
             productAmountsForOrder.put(product, item.getQuantity());
         }
@@ -103,10 +105,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto cancelOrder(Long customerId, Long orderId) {
-        Order order = orderRepository.findById(orderId).orElseThrow();
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Этот заказ не найден"));
         if (order.getCustomer().getId().equals(customerId)) {
             order.setStatus(Order.Status.CANCELLED);
+            Double orderPrice = order.getProducts()
+                    .stream().mapToDouble(x -> x.getPrice()*order.getProductAmounts().get(x)).sum();
+            customerService.updateCardBalance(customerId, -orderPrice);
+            Map<Product, Integer> productMap = order.getProductAmounts();
+            for (Product product: productMap.keySet()) {
+                Double price = product.getPrice()*productMap.get(product).doubleValue();
+                sellerService.updateCardBalanceBySellerId(product.getSeller().getId(), price);
+            }
             return OrderDto.from(orderRepository.save(order));
         }
         throw new ForbiddenException("Этот покупатель не имеет права на редактирование заказа с id " + orderId);

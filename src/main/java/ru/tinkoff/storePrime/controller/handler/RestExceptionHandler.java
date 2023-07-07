@@ -2,6 +2,7 @@ package ru.tinkoff.storePrime.controller.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
 import ru.tinkoff.storePrime.exceptions.MarketServiceException;
+import ru.tinkoff.storePrime.security.exceptions.AlreadyExistsException;
 import ru.tinkoff.storePrime.validation.responses.ValidationErrorDto;
 import ru.tinkoff.storePrime.validation.responses.ValidationErrorsDto;
 
@@ -43,6 +45,15 @@ public class RestExceptionHandler {
                         .build());
     }
 
+    @ExceptionHandler({AlreadyExistsException.class})
+    public ResponseEntity<ExceptionDto> handleAlreadyExistsException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT.value())
+                .body(ExceptionDto.builder()
+                        .message(ex.getMessage())
+                        .status(HttpStatus.CONFLICT.value())
+                        .build());
+    }
+
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<ValidationErrorsDto> handleControllerValidationError(MethodArgumentNotValidException ex) {
         List<ValidationErrorDto> errors = new ArrayList<>();
@@ -71,7 +82,7 @@ public class RestExceptionHandler {
                         .build());
     }
 
-    @ExceptionHandler({MethodArgumentTypeMismatchException.class, IllegalArgumentException.class})
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class, IllegalArgumentException.class, HttpMessageNotReadableException.class})
     public ResponseEntity<ExceptionDto> handleTypeMismatch(Exception ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ExceptionDto.builder()

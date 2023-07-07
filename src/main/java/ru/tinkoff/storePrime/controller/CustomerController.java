@@ -23,7 +23,7 @@ public class CustomerController implements CustomerApi {
     }
 
     @Override
-    public ResponseEntity<CustomerDto> updateCustomer(UserDetailsImpl userDetailsImpl, NewOrUpdateCustomerDto updatedCustomerDto) {
+    public ResponseEntity<CustomerDto> updateCustomerCardBalance(UserDetailsImpl userDetailsImpl, NewOrUpdateCustomerDto updatedCustomerDto) {
         Long customerId = userDetailsImpl.getAccount().getId();
         return ResponseEntity.accepted().body(customerService.updateCustomer(customerId, updatedCustomerDto));
     }
@@ -40,7 +40,7 @@ public class CustomerController implements CustomerApi {
     }
 
     @Override
-    public ResponseEntity<CustomerDto> updateCustomer(UserDetailsImpl userDetailsImpl, Double replenishment) {
+    public ResponseEntity<CustomerDto> updateCustomerCardBalance(UserDetailsImpl userDetailsImpl, Double replenishment) {
         Long customerId = userDetailsImpl.getAccount().getId();
         return ResponseEntity.ok(customerService.updateCardBalance(customerId, replenishment));
     }
