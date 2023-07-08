@@ -10,5 +10,6 @@ public class MarketServiceException extends RuntimeException {
 
     private final HttpStatus status;
     private final String message;
+    private final String serviceMessage;
 
 }

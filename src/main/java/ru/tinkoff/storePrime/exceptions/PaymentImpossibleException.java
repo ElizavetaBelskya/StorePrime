@@ -4,6 +4,6 @@ import org.springframework.http.HttpStatus;
 
 public class PaymentImpossibleException extends MarketServiceException {
     public PaymentImpossibleException(String message) {
-        super(HttpStatus.PAYMENT_REQUIRED, message);
+        super(HttpStatus.PAYMENT_REQUIRED, message, ExceptionMessages.PAYMENT_IMPOSSIBLE);
     }
 }

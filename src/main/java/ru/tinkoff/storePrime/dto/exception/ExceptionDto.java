@@ -17,6 +17,8 @@ public class ExceptionDto {
     private String message;
     @Schema(description = "HTTP-код", example = "404")
     private int status;
+    @Schema(description = "Константа, обозначающая вид ошибки", example = "CUSTOMER_NOT_FOUND")
+    private String serviceMessage;
 
 
 }

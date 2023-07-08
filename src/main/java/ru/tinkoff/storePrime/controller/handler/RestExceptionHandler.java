@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
+import ru.tinkoff.storePrime.exceptions.ExceptionMessages;
 import ru.tinkoff.storePrime.exceptions.MarketServiceException;
 import ru.tinkoff.storePrime.security.exceptions.AlreadyExistsException;
 import ru.tinkoff.storePrime.validation.responses.ValidationErrorDto;
@@ -33,6 +34,7 @@ public class RestExceptionHandler {
                 .body(ExceptionDto.builder()
                         .message(ex.getMessage())
                         .status(ex.getStatus().value())
+                        .serviceMessage(ex.getServiceMessage())
                         .build());
     }
 
@@ -41,7 +43,8 @@ public class RestExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN.value())
                 .body(ExceptionDto.builder()
                         .message(ex.getMessage())
-                        .status(HttpStatus.FORBIDDEN.value())
+                        .status(HttpStatus.UNAUTHORIZED.value())
+                        .serviceMessage(ExceptionMessages.ACCESS_DENIED)
                         .build());
     }
 
@@ -51,6 +54,7 @@ public class RestExceptionHandler {
                 .body(ExceptionDto.builder()
                         .message(ex.getMessage())
                         .status(HttpStatus.CONFLICT.value())
+                        .serviceMessage(ExceptionMessages.ALREADY_EXIST)
                         .build());
     }
 
@@ -88,6 +92,7 @@ public class RestExceptionHandler {
                 .body(ExceptionDto.builder()
                         .message(ex.getMessage())
                         .status(HttpStatus.BAD_REQUEST.value())
+                        .serviceMessage(ExceptionMessages.VALIDATION_REJECTED)
                         .build());
     }
 
@@ -97,6 +102,7 @@ public class RestExceptionHandler {
                 .body(ExceptionDto.builder()
                         .message(exception.getMessage())
                         .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                        .serviceMessage(ExceptionMessages.INTERNAL_SERVER_ERROR)
                         .build());
     }
 
