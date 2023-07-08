@@ -6,16 +6,23 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
 import ru.tinkoff.storePrime.dto.user.AccountDto;
 import ru.tinkoff.storePrime.dto.user.CustomerDto;
 import ru.tinkoff.storePrime.dto.user.SellerDto;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 
+@Tags(value = {
+        @Tag(name = "Accounts")
+})
+@RequestMapping("/accounts")
 public interface AccountApi {
 
 

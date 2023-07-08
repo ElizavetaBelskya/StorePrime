@@ -39,3 +39,8 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQ
 ###
 
 GET http://localhost:80/products/pages?minPrice=10&maxPrice=100&page=-1
+
+###
+
+GET http://localhost:80/accounts
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQG1haWwucnUiLCJyb2xlIjoiQ1VTVE9NRVIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2F1dGgvbG9naW4iLCJleHAiOjE2ODg4MjM1MzJ9.k5Rpq6W9dfsFYCAkqA1vezNpCNC67HjXMBb7-aqhaFY
