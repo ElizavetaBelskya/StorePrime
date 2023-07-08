@@ -89,6 +89,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto changeStatus(Long sellerId, Long orderId, String status) {
         Order.Status newStatus;
+        if (status.equals("CANCELLED")) {
+            throw new ForbiddenException("У вас нет прав на это действие");
+        }
         try {
             newStatus = Order.Status.valueOf(status);
         } catch (IllegalArgumentException ex) {
