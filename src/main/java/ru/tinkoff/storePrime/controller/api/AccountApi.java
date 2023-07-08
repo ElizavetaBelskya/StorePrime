@@ -1,12 +1,14 @@
 package ru.tinkoff.storePrime.controller.api;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
 import ru.tinkoff.storePrime.dto.user.AccountDto;
@@ -46,6 +48,6 @@ public interface AccountApi {
     })
     @GetMapping
     @PreAuthorize("hasAnyAuthority('CUSTOMER', 'SELLER')")
-    ResponseEntity<AccountDto> getThisAccount(UserDetailsImpl userDetailsImpl);
+    ResponseEntity<AccountDto> getThisAccount(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl);
 
 }
