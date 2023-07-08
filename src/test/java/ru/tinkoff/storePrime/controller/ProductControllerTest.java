@@ -388,9 +388,9 @@ public class ProductControllerTest {
                     .andExpect(status().isBadRequest());
         }
 
-//        @Test
-//        @DisplayName("Should throw an exception when invalid page number is provided")
-//        void get_products_when_invalid_page_number_isProvided_then_throw_exception() throws Exception {
+        @Test
+        @DisplayName("Should throw an exception when invalid page number is provided")
+        void get_products_when_invalid_page_number_isProvided_then_throw_exception() throws Exception {
 //            int page = -1;
 //            Double minPrice = 10.0;
 //            Double maxPrice = 100.0;
@@ -404,7 +404,7 @@ public class ProductControllerTest {
 //                            .param("category", category))
 //                    .andDo(print())
 //                    .andExpect(status().isBadRequest());
-//        }
+        }
 
     }
 
