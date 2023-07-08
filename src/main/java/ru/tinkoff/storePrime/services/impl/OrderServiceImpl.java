@@ -56,7 +56,7 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orders = new ArrayList<>();
         for (CartItem item: items) {
             Product product = item.getProduct();
-            if (product.getAmount() > item.getQuantity()) {
+            if (product.getAmount() < item.getQuantity()) {
                 throw new DisparateDataException("Запрос товара в заказе превышает его реальное колчество");
             }
             Double price = product.getPrice()*item.getQuantity();

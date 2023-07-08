@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import ru.tinkoff.storePrime.exceptions.not_found.NotFoundException;
 import ru.tinkoff.storePrime.services.AccountService;
 
+import java.net.URLDecoder;
+
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -17,7 +19,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         try {
-            return new UserDetailsImpl(accountService.getUserByEmail(email));
+            String decodedEmail = URLDecoder.decode(email);
+            return new UserDetailsImpl(accountService.getUserByEmail(decodedEmail));
         } catch (NotFoundException ex) {
             throw new UsernameNotFoundException(ex.getMessage());
         }
