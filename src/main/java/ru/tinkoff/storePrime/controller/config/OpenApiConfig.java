@@ -115,10 +115,9 @@ public class OpenApiConfig {
 
     private Components buildComponents() {
         Schema<?> error = new Schema<>().type("object").description("")
-                .addProperty("timestamp", new Schema<>().type("integer"))
                 .addProperty("status", new Schema<>().type("integer"))
-                .addProperty("error", new Schema<>().type("string"))
-                .addProperty("path", new Schema<>().type("string"));
+                .addProperty("message", new Schema<>().type("string"))
+                .addProperty("serviceMessage", new Schema<>().type("string"));
 
         Schema<?> emailAndPassword = new Schema<>()
                 .type("object").description("The email and password")

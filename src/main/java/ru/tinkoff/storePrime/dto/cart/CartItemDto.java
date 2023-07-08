@@ -27,11 +27,15 @@ public class CartItemDto {
     @Schema(description = "Идентификатор пользователя", example = "123")
     private Long customerId;
 
+    @Schema(description = "Количество товара в корзине", example = "3")
+    private Integer quantity;
+
     public static CartItemDto from(CartItem cartItem) {
         return CartItemDto.builder()
                 .id(cartItem.getId())
                 .product(ProductDto.from(cartItem.getProduct()))
                 .customerId(cartItem.getCustomer().getId())
+                .quantity(cartItem.getQuantity())
                 .build();
     }
 
