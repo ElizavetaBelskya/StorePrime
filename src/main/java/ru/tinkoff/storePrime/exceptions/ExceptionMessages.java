@@ -29,6 +29,7 @@ public final class ExceptionMessages {
 
     public static final String INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR";
 
+    public static final String UNAUTHORIZED = "UNAUTHORIZED";
 
 
 

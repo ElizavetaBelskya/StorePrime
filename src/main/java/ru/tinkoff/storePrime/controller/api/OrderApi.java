@@ -31,13 +31,13 @@ public interface OrderApi {
             @ApiResponse(responseCode = "201", description = "Созданный заказ",
                     content = {
                             @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = OrderDto.class))
+                                    array = @ArraySchema(schema = @Schema(implementation = OrderDto.class)))
                     }
             )
     })
     @PostMapping
     @PreAuthorize("hasAuthority('CUSTOMER')")
-    ResponseEntity<OrderDto> createOrder(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
+    ResponseEntity<List<OrderDto>> createOrder(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                          @RequestBody List<Long> cartItemIdList);
 
     @Operation(summary = "Получение всех заказов пользователя")

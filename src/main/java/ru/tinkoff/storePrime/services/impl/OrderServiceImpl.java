@@ -20,11 +20,8 @@ import ru.tinkoff.storePrime.services.CustomerService;
 import ru.tinkoff.storePrime.services.OrderService;
 import ru.tinkoff.storePrime.services.SellerService;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -42,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderDto createNewOrder(Long customerId, List<Long> cartItemIdList) {
+    public List<OrderDto> createNewOrders(Long customerId, List<Long> cartItemIdList) {
         Customer customer = customerRepository.findById(customerId).orElseThrow(
                 () -> new CustomerNotFoundException("Пользователь с id " + customerId + " не найден"));
         List<CartItem> items = new ArrayList<>();
@@ -56,8 +53,7 @@ public class OrderServiceImpl implements OrderService {
             }
         }
 
-        List<Product> productListForOrder = new ArrayList<>();
-        Map<Product, Integer> productAmountsForOrder = new HashMap<>();
+        List<Order> orders = new ArrayList<>();
         for (CartItem item: items) {
             Product product = item.getProduct();
             if (product.getAmount() > item.getQuantity()) {
@@ -67,17 +63,17 @@ public class OrderServiceImpl implements OrderService {
             sellerService.updateCardBalanceBySellerId(product.getSeller().getId(), price*0.97);
             customerService.updateCardBalance(item.getCustomer().getId(), -1*price);
             product.setAmount(product.getAmount() - item.getQuantity());
-            productListForOrder.add(product);
-            productAmountsForOrder.put(product, item.getQuantity());
+            Order order = Order.builder()
+                    .status(Order.Status.CREATED)
+                    .product(product)
+                    .quantity(item.getQuantity())
+                    .customer(customer)
+                    .build();
+            Order newOrder = orderRepository.save(order);
+            orders.add(newOrder);
         }
-        Order order = Order.builder()
-                .status(Order.Status.CREATED)
-                .products(productListForOrder)
-                .productAmounts(productAmountsForOrder)
-                .customer(customer)
-                .build();
-        orderRepository.save(order);
-        return OrderDto.from(orderRepository.save(order));
+
+        return OrderDto.from(orders);
     }
 
     @Override
@@ -99,11 +95,10 @@ public class OrderServiceImpl implements OrderService {
             throw new DisparateDataException("Данный статус не относится к возможным статусам заказа");
         }
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Заказ с id "+ orderId +" не найден"));
-        for (Product product: order.getProducts()) {
-            if (product.getSeller().getId().equals(sellerId)) {
-                order.setStatus(newStatus);
-                return OrderDto.from(orderRepository.save(order));
-            }
+        Product product = order.getProduct();
+        if (product.getSeller().getId().equals(sellerId)) {
+            order.setStatus(newStatus);
+            return OrderDto.from(orderRepository.save(order));
         }
         throw new ForbiddenException("Этот продавец не имеет права на редактирование заказа с id " + orderId);
     }
@@ -114,14 +109,9 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException("Этот заказ не найден"));
         if (order.getCustomer().getId().equals(customerId)) {
             order.setStatus(Order.Status.CANCELLED);
-            Double orderPrice = order.getProducts()
-                    .stream().mapToDouble(x -> x.getPrice()*order.getProductAmounts().get(x)).sum();
+            Double orderPrice = order.getProduct().getPrice();
             customerService.updateCardBalance(customerId, orderPrice);
-            Map<Product, Integer> productMap = order.getProductAmounts();
-            for (Product product: productMap.keySet()) {
-                Double price = product.getPrice()*productMap.get(product).doubleValue();
-                sellerService.updateCardBalanceBySellerId(product.getSeller().getId(), -price*0.97);
-            }
+            sellerService.updateCardBalanceBySellerId(order.getProduct().getSeller().getId(), -orderPrice*0.97);
             return OrderDto.from(orderRepository.save(order));
         }
         throw new ForbiddenException("Этот покупатель не имеет права на редактирование заказа с id " + orderId);

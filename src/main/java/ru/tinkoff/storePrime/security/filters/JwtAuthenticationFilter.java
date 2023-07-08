@@ -4,12 +4,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
+import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
+import ru.tinkoff.storePrime.exceptions.ExceptionMessages;
 import ru.tinkoff.storePrime.security.authentication.RefreshTokenAuthentication;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 import ru.tinkoff.storePrime.security.utils.AuthorizationHeaderUtil;
@@ -17,6 +22,7 @@ import ru.tinkoff.storePrime.security.utils.JwtUtil;
 
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Map;
 
 import static ru.tinkoff.storePrime.security.config.TokenSecurityConfig.AUTHENTICATION_URL;
@@ -68,7 +74,24 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException {
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        createUnauthorizedAnswer(response);
+    }
+
+    static void createUnauthorizedAnswer(HttpServletResponse response) throws IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+
+        ExceptionDto exceptionDto = ExceptionDto.builder()
+                .message("Authorization failed")
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .serviceMessage(ExceptionMessages.UNAUTHORIZED)
+                .build();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String exceptionDtoJson = objectMapper.writeValueAsString(exceptionDto);
+
+        PrintWriter writer = response.getWriter();
+        writer.println(exceptionDtoJson);
     }
 
 }

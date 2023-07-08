@@ -19,9 +19,9 @@ public class OrderController implements OrderApi {
 
 
     @Override
-    public ResponseEntity<OrderDto> createOrder(UserDetailsImpl userDetailsImpl, List<Long> cartItemIdList) {
+    public ResponseEntity<List<OrderDto>> createOrder(UserDetailsImpl userDetailsImpl, List<Long> cartItemIdList) {
         Long customerId = userDetailsImpl.getAccount().getId();
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createNewOrder(customerId, cartItemIdList));
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createNewOrders(customerId, cartItemIdList));
     }
 
     @Override

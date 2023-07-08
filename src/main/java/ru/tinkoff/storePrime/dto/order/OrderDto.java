@@ -26,25 +26,19 @@ public class OrderDto {
 
     private String status;
 
-    private Map<ProductDto, Integer> productAmounts;
+    private ProductDto product;
+
+    private Integer quantity;
 
     private Long customerId;
 
     public static OrderDto from(Order order) {
 
-        Map <ProductDto, Integer> resultMap = new HashMap<>();
-        for (Map.Entry<Product, Integer> entry : order.getProductAmounts().entrySet()) {
-            Product originalKey = entry.getKey();
-            Integer originalValue = entry.getValue();
-            ProductDto convertedKey = ProductDto.from(originalKey);
-            resultMap.put(convertedKey, originalValue);
-        }
-
-
         return OrderDto.builder().id(order.getId())
                 .customerId(order.getCustomer().getId())
                 .status(order.getStatus().name())
-                .productAmounts(resultMap).build();
+                .product(ProductDto.from(order.getProduct()))
+                .build();
     }
 
     public static List<OrderDto> from(List<Order> orders) {

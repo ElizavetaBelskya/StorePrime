@@ -40,7 +40,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler({AccessDeniedException.class, AuthenticationException.class})
     public ResponseEntity<ExceptionDto> handleAccessDeniedException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN.value())
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value())
                 .body(ExceptionDto.builder()
                         .message(ex.getMessage())
                         .status(HttpStatus.UNAUTHORIZED.value())

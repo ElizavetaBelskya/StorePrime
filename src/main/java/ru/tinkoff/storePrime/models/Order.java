@@ -26,22 +26,10 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToMany
-    @JoinTable(
-            name = "order_product",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Product> products;
+    @ManyToOne
+    private Product product;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "order_product_amount",
-            joinColumns = @JoinColumn(name = "order_id")
-    )
-    @MapKeyJoinColumn(name = "product_id")
-    @Column(name = "amount")
-    private Map<Product, Integer> productAmounts;
+    private Integer quantity;
 
     private Status status;
 
