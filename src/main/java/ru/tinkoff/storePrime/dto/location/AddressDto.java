@@ -16,13 +16,12 @@ import javax.validation.constraints.NotBlank;
 @Schema(description = "Адрес")
 public class AddressDto {
 
-
     @Schema(description = "Улица", example = "Спартаковская")
-    @NotBlank
+    @NotBlank(message = "{address.street.notBlank}")
     private String street;
 
     @Schema(description = "Дом", example = "98")
-    @NotBlank
+    @NotBlank(message = "{address.house.notBlank}")
     private Integer house;
 
     @Schema(description = "Квартира/Корпус", example = "6А")
@@ -35,7 +34,8 @@ public class AddressDto {
                 .street(address.getStreet())
                 .house(address.getHouse())
                 .apartment(address.getApartment())
-                .location(LocationDto.from(address.getLocation())).build();
+                .location(LocationDto.from(address.getLocation()))
+                .build();
     }
 
 }

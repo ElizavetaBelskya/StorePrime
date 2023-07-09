@@ -16,11 +16,11 @@ import javax.validation.constraints.NotBlank;
 public class LocationDto {
 
     @Schema(description = "Страна", example = "Россия")
-    @NotBlank
+    @NotBlank(message = "{location.country.notBlank}")
     private String country;
 
     @Schema(description = "Город", example = "Москва")
-    @NotBlank
+    @NotBlank(message = "{location.city.notBlank}")
     private String city;
 
     public static LocationDto from(Location location) {
@@ -31,3 +31,4 @@ public class LocationDto {
     }
 
 }
+

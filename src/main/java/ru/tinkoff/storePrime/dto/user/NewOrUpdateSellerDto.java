@@ -7,6 +7,7 @@ import ru.tinkoff.storePrime.dto.location.LocationDto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 
@@ -17,20 +18,23 @@ import javax.validation.constraints.Size;
 @Schema(description = "Продавец")
 public class NewOrUpdateSellerDto {
 
-    @NotBlank
-    @Email
-    @Size(max = 100)
+    @NotBlank(message = "{seller.email.notBlank}")
+    @Size(max = 100, message = "{seller.email.size}")
+    @Email(message = "{seller.email.email}")
+    @Pattern(regexp = "^[-\\w]+(\\.[-\\w]+)*@[A-Za-z0-9]+(\\.[A-Za-z]+)*(\\.[A-Za-z]{2,})$", message = "{seller.email.pattern}")
     @Schema(description = "Электронная почта", example = "example@mail.ru")
     private String email;
 
-    @NotBlank
-    @Size(max = 12)
-    @Schema(description = "Номер телефона", example = "899999999")
+    @NotBlank(message = "{seller.phoneNumber.notBlank}")
+    @Size(max = 12, message = "{seller.phoneNumber.size}")
+    @Pattern(regexp = "\\d{11}", message = "{seller.phoneNumber.pattern}")
+    @Schema(description = "Номер телефона", example = "89999999999")
     private String phoneNumber;
 
-    @NotBlank
-    @Size(max = 100)
-    @Schema(description = "Имя", example = "Иван")
+    @NotBlank(message = "{seller.name.notBlank}")
+    @Size(min = 1, max = 100, message = "{seller.name.size}")
+    @Pattern(regexp = "^[^0-9!@#$%^&*()+=|{}\\[\\]<>?/~`\\s]+$", message = "{seller.name.pattern}")
+    @Schema(description = "Название", example = "Наша компания")
     private String name;
 
     @Schema(description = "Описание компании", example = "Наша компания является лидером на рынке")
@@ -39,7 +43,16 @@ public class NewOrUpdateSellerDto {
 
     private LocationDto locationDto;
 
-    @Schema(description = "Счет ИНН", example = "54678912")
+    @NotBlank(message = "{seller.INN.notBlank}")
+    @Pattern(regexp = "^\\d{10}$", message = "{seller.INN.pattern}")
+    @Schema(description = "ИНН", example = "1234567890")
     private String INN;
 
+    @NotBlank(message = "{seller.passwordHash.notBlank}")
+    @Size(min = 8, max = 64, message = "{seller.passwordHash.size}")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\^?!=.*\\[\\]\\\\/@$%#&_-])[A-Za-z\\d\\^?!=.*\\[\\]\\\\/@$%#&_-]+$", message = "{seller.passwordHash.pattern}")
+    @Schema(description = "Пароль", example = "Password123!")
+    private String passwordHash;
+
 }
+

@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.validator.constraints.Length;
 import ru.tinkoff.storePrime.models.Category;
 import ru.tinkoff.storePrime.models.user.Seller;
 
@@ -21,24 +22,24 @@ import java.util.List;
 public class NewOrUpdateProductDto {
 
     @Schema(description = "Название товара", example = "Книга")
-    @NotBlank(message = "Название товара не может быть пустым")
+    @NotBlank(message = "{product.title.notBlank}")
+    @Size(min = 1, max = 100, message = "{product.title.size}")
     private String title;
 
     @Schema(description = "Описание товара", example = "Отличная книга для чтения")
     private String description;
 
     @Schema(description = "Цена товара", example = "19.99")
-    @NotNull(message = "Цена товара не может быть пустой")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Цена товара должна быть положительной")
+    @NotNull(message = "{product.price.notNull}")
+    @DecimalMin(value = "1.0", inclusive = false, message = "{product.price.min}")
     private Double price;
 
     @Schema(description = "Категории товара")
-    @NotEmpty(message = "Список категорий не может быть пустым")
     private List<String> categories;
 
     @Schema(description = "Количество товара")
-    @NotNull(message = "Количество товара не может быть пустым")
-    @Min(value = 0, message = "Количество товара должно быть неотрицательным")
+    @NotNull(message = "{product.amount.notNull}")
+    @Min(value = 1, message = "{product.amount.min}")
     private Integer amount;
 
 }
