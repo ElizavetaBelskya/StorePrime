@@ -3,6 +3,8 @@ package ru.tinkoff.storePrime.models;
 import javax.persistence.*;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import ru.tinkoff.storePrime.models.base.LongIdEntity;
 import ru.tinkoff.storePrime.models.user.Seller;
 
 import java.util.List;
@@ -10,17 +12,13 @@ import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Getter
 @Setter
 
 @Entity
 @Table(name = "product")
-public class Product {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Product extends LongIdEntity {
 
     @Column(nullable = false, name = "title")
     private String title;
@@ -50,12 +48,12 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return Objects.equals(id, product.id);
+        return Objects.equals(this.getId(), product.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id) + 41*Objects.hash(title) +41*Objects.hash(description);
+        return Objects.hash(this.getId()) + 41*Objects.hash(title) +41*Objects.hash(description);
     }
 
 

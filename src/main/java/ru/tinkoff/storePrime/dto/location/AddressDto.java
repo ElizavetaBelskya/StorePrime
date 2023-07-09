@@ -29,13 +29,5 @@ public class AddressDto {
 
     private LocationDto location;
 
-    public static AddressDto from(Address address) {
-        return AddressDto.builder()
-                .street(address.getStreet())
-                .house(address.getHouse())
-                .apartment(address.getApartment())
-                .location(LocationDto.from(address.getLocation()))
-                .build();
-    }
 
 }

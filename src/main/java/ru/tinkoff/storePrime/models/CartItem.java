@@ -4,20 +4,18 @@ package ru.tinkoff.storePrime.models;
 import javax.persistence.*;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import ru.tinkoff.storePrime.models.base.LongIdEntity;
 import ru.tinkoff.storePrime.models.user.Customer;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Getter
 @Setter
 @Entity
 @Table(name = "cart_item")
-public class CartItem {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class CartItem extends LongIdEntity {
 
     @ManyToOne
     @JoinColumn(name = "customer_id")

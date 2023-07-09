@@ -3,6 +3,7 @@ package ru.tinkoff.storePrime.services.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.tinkoff.storePrime.converters.OrderConverter;
 import ru.tinkoff.storePrime.dto.order.OrderDto;
 import ru.tinkoff.storePrime.exceptions.DisparateDataException;
 import ru.tinkoff.storePrime.exceptions.ForbiddenException;
@@ -73,17 +74,17 @@ public class OrderServiceImpl implements OrderService {
             orders.add(newOrder);
         }
 
-        return OrderDto.from(orders);
+        return OrderConverter.getOrderDtoFromOrder(orders);
     }
 
     @Override
     public List<OrderDto> getAllOrdersOfCustomer(Long customerId) {
-        return OrderDto.from(orderRepository.getOrdersByCustomerId(customerId));
+        return OrderConverter.getOrderDtoFromOrder(orderRepository.getOrdersByCustomerId(customerId));
     }
 
     @Override
     public List<OrderDto> getAllOrdersOfSeller(Long sellerId) {
-        return OrderDto.from(orderRepository.getOrdersByProductsSellerId(sellerId));
+        return OrderConverter.getOrderDtoFromOrder(orderRepository.getOrdersByProductsSellerId(sellerId));
     }
 
     @Override
@@ -101,7 +102,7 @@ public class OrderServiceImpl implements OrderService {
         Product product = order.getProduct();
         if (product.getSeller().getId().equals(sellerId)) {
             order.setStatus(newStatus);
-            return OrderDto.from(orderRepository.save(order));
+            return OrderConverter.getOrderDtoFromOrder(orderRepository.save(order));
         }
         throw new ForbiddenException("Этот продавец не имеет права на редактирование заказа с id " + orderId);
     }
@@ -115,14 +116,14 @@ public class OrderServiceImpl implements OrderService {
             Double orderPrice = order.getProduct().getPrice();
             customerService.updateCardBalance(customerId, orderPrice);
             sellerService.updateCardBalanceBySellerId(order.getProduct().getSeller().getId(), -orderPrice*0.97);
-            return OrderDto.from(orderRepository.save(order));
+            return OrderConverter.getOrderDtoFromOrder(orderRepository.save(order));
         }
         throw new ForbiddenException("Этот покупатель не имеет права на редактирование заказа с id " + orderId);
     }
 
     @Override
     public List<OrderDto> getCancelledOrdersByCustomerId(Long customerId) {
-        return OrderDto.from(orderRepository.findByCustomer_IdAndStatus(customerId, Order.Status.CANCELLED));
+        return OrderConverter.getOrderDtoFromOrder(orderRepository.findByCustomer_IdAndStatus(customerId, Order.Status.CANCELLED));
     }
 
 }

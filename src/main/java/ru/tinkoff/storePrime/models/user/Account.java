@@ -4,6 +4,8 @@ import javax.persistence.*;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import ru.tinkoff.storePrime.dto.base.LongIdDto;
+import ru.tinkoff.storePrime.models.base.LongIdEntity;
 
 @SuperBuilder
 @Getter
@@ -13,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @MappedSuperclass
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class Account {
+public abstract class Account extends LongIdEntity {
 
     public enum State {
         NOT_CONFIRMED, CONFIRMED, DELETED, BANNED
@@ -22,10 +24,6 @@ public abstract class Account {
     public enum Role {
         CUSTOMER, SELLER
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)

@@ -4,24 +4,23 @@ package ru.tinkoff.storePrime.dto.cart;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ru.tinkoff.storePrime.converters.ProductConverter;
+import ru.tinkoff.storePrime.dto.base.LongIdDto;
 import ru.tinkoff.storePrime.dto.product.ProductDto;
 import ru.tinkoff.storePrime.models.CartItem;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
+@Data
 @Schema(description = "Товар из корзины")
-public class CartItemDto {
-
-    @Schema(description = "Идентификатор товара в корзине", example = "123")
-    private Long id;
+public class CartItemDto extends LongIdDto {
 
     private ProductDto product;
 

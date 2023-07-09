@@ -3,6 +3,7 @@ package ru.tinkoff.storePrime.dto.product;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import ru.tinkoff.storePrime.dto.base.LongIdDto;
 import ru.tinkoff.storePrime.models.Product;
 
 import java.util.List;
@@ -13,10 +14,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @SuperBuilder
 @Schema(description = "Товар")
-public class ProductDto {
-
-    @Schema(description = "Идентификатор товара", example = "123")
-    private Long id;
+public class ProductDto extends LongIdDto {
 
     @Schema(description = "Название товара", example = "Книга")
     private String title;

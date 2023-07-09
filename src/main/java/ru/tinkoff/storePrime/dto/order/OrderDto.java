@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ru.tinkoff.storePrime.converters.ProductConverter;
+import ru.tinkoff.storePrime.dto.base.LongIdDto;
 import ru.tinkoff.storePrime.dto.cart.CartItemDto;
 import ru.tinkoff.storePrime.dto.product.ProductDto;
 import ru.tinkoff.storePrime.models.Order;
@@ -21,33 +22,18 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @SuperBuilder
 @Schema(description = "Заказ")
-public class OrderDto {
+public class OrderDto extends LongIdDto {
 
-    private Long id;
-
+    @Schema(description = "Статус заказа", example = "TRANSITING")
     private String status;
 
     private ProductDto product;
 
-    private Integer quantity;
-
+    @Schema(description = "Идентификатор пользователя", example = "123")
     private Long customerId;
 
-    public static OrderDto from(Order order) {
-
-        return OrderDto.builder().id(order.getId())
-                .customerId(order.getCustomer().getId())
-                .status(order.getStatus().name())
-                .product(ProductConverter.getProductDtoFromProduct(order.getProduct()))
-                .build();
-    }
-
-    public static List<OrderDto> from(List<Order> orders) {
-        return orders.stream().map(OrderDto::from)
-                .collect(Collectors.toList());
-    }
-
-
+    @Schema(description = "Количество товара в заказе", example = "3")
+    private Integer quantity;
 
 
 }
