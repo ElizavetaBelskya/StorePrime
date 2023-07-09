@@ -33,7 +33,7 @@ public class CustomerServiceImpl implements CustomerService {
         customerDto.setPasswordHash(passwordEncoder.encode(customerDto.getPasswordHash()));
         Customer customer = CustomerConverter.getCustomerFromNewOrUpdateCustomerDto(customerDto);
         customer = customerRepository.save(customer);
-        return CustomerDto.from(customer);
+        return CustomerConverter.getCustomerDtoFromCustomer(customer);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class CustomerServiceImpl implements CustomerService {
         customer = CustomerConverter.getCustomerFromNewOrUpdateCustomerDto(updatedCustomerDto);
         customer.setPasswordHash(passwordEncoder.encode(updatedCustomerDto.getPasswordHash()));
         Customer updatedCustomer = customerRepository.save(customer);
-        return CustomerDto.from(updatedCustomer);
+        return CustomerConverter.getCustomerDtoFromCustomer(updatedCustomer);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class CustomerServiceImpl implements CustomerService {
             throw new PaymentImpossibleException("Недостаточно средств");
         }
         customer.setCardBalance(customer.getCardBalance() + replenishment);
-        return CustomerDto.from(customerRepository.save(customer));
+        return CustomerConverter.getCustomerDtoFromCustomer(customerRepository.save(customer));
     }
 
 }

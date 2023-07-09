@@ -39,12 +39,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto getProductById(Long id) {
-        return ProductDto.from(productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Товар с id " + id + " не найден")));
+        return ProductConverter.getProductDtoFromProduct(productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Товар с id " + id + " не найден")));
     }
 
     @Override
     public List<ProductDto> getProductsBySellerId(Long sellerId) {
-        return ProductDto.from(productRepository.findAllBySellerId(sellerId));
+        return ProductConverter.getProductDtoFromProduct(productRepository.findAllBySellerId(sellerId));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
                 .flatMap(name -> categoryRepository.findByName(name).stream())
                 .collect(Collectors.toList());
         newProduct.setCategories(categories);
-        return ProductDto.from(productRepository.save(newProduct));
+        return ProductConverter.getProductDtoFromProduct(productRepository.save(newProduct));
     }
 
     @Override
@@ -71,7 +71,7 @@ public class ProductServiceImpl implements ProductService {
                 .flatMap(name -> categoryRepository.findByName(name).stream())
                 .collect(Collectors.toList());
         updatedProduct.setCategories(categories);
-        return ProductDto.from(productRepository.save(updatedProduct));
+        return ProductConverter.getProductDtoFromProduct(productRepository.save(updatedProduct));
     }
 
     @Override
@@ -100,21 +100,21 @@ public class ProductServiceImpl implements ProductService {
         }
         if (sellerId != null && maxPrice != null) {
             if (!categories.isEmpty()) {
-                return ProductDto.from(productRepository.findBySellerAndPriceAndCategory(sellerId, minPrice, maxPrice, categories));
+                return ProductConverter.getProductDtoFromProduct(productRepository.findBySellerAndPriceAndCategory(sellerId, minPrice, maxPrice, categories));
             } else {
-                return ProductDto.from(productRepository.findBySellerAndPrice(sellerId, minPrice, maxPrice));
+                return ProductConverter.getProductDtoFromProduct(productRepository.findBySellerAndPrice(sellerId, minPrice, maxPrice));
             }
         } else if (maxPrice != null) {
             if (!categories.isEmpty()) {
-                return ProductDto.from(productRepository.findByPriceAndCategory(minPrice, maxPrice, categories));
+                return ProductConverter.getProductDtoFromProduct(productRepository.findByPriceAndCategory(minPrice, maxPrice, categories));
             } else {
-                return ProductDto.from(productRepository.findByPrice(minPrice, maxPrice));
+                return ProductConverter.getProductDtoFromProduct(productRepository.findByPrice(minPrice, maxPrice));
             }
         } else {
             if (!categories.isEmpty()) {
-                return ProductDto.from(productRepository.findByCategory(categories));
+                return ProductConverter.getProductDtoFromProduct(productRepository.findByCategory(categories));
             } else {
-                return ProductDto.from(productRepository.findAll());
+                return ProductConverter.getProductDtoFromProduct(productRepository.findAll());
             }
         }
     }
@@ -156,7 +156,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         return ProductsPage.builder()
-                .products(ProductDto.from(productsPage.getContent()))
+                .products(ProductConverter.getProductDtoFromProduct(productsPage.getContent()))
                 .totalPagesCount(productsPage.getTotalPages())
                 .build();
 
@@ -164,7 +164,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> getAllProductsByContentString(String content) {
-        return ProductDto.from(productRepository.findAllByContent("%" + content + "%"));
+        return ProductConverter.getProductDtoFromProduct(productRepository.findAllByContent("%" + content + "%"));
     }
 
 }

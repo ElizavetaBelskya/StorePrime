@@ -1,6 +1,8 @@
 package ru.tinkoff.storePrime.converters;
 
+import ru.tinkoff.storePrime.dto.location.LocationDto;
 import ru.tinkoff.storePrime.dto.user.NewOrUpdateSellerDto;
+import ru.tinkoff.storePrime.dto.user.SellerDto;
 import ru.tinkoff.storePrime.models.Location;
 import ru.tinkoff.storePrime.models.user.Account;
 import ru.tinkoff.storePrime.models.user.Seller;
@@ -21,6 +23,17 @@ public class SellerConverter {
                 .cardBalance(0.0).build();
     }
 
+    public static SellerDto getSellerDtoFromSeller(Seller seller) {
+        return SellerDto.builder()
+                .id(seller.getId())
+                .email(seller.getEmail())
+                .phoneNumber(seller.getPhoneNumber())
+                .cardBalance(seller.getCardBalance())
+                .name(seller.getName())
+                .description(seller.getDescription())
+                .locationDto(LocationDto.from(seller.getLocation()))
+                .build();
+    }
 
 
 }

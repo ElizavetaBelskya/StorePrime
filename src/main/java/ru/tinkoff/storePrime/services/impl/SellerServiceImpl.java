@@ -29,7 +29,7 @@ public class SellerServiceImpl implements SellerService {
     public SellerDto addSeller(NewOrUpdateSellerDto sellerDto) {
         Seller newSeller = SellerConverter.getSellerFromNewOrUpdateSellerDto(sellerDto);
         Seller seller = sellerRepository.save(newSeller);
-        return SellerDto.from(seller);
+        return SellerConverter.getSellerDtoFromSeller(seller);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class SellerServiceImpl implements SellerService {
         seller = SellerConverter.getSellerFromNewOrUpdateSellerDto(updatedSellerDto);
         seller.setPasswordHash(passwordEncoder.encode(seller.getPasswordHash()));
         Seller updatedSeller = sellerRepository.save(seller);
-        return SellerDto.from(updatedSeller);
+        return SellerConverter.getSellerDtoFromSeller(updatedSeller);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class SellerServiceImpl implements SellerService {
         if (Account.State.DELETED.equals(seller.getState())) {
             throw new SellerNotFoundException("Пользователь не найден");
         }
-        return SellerDto.from(seller);
+        return SellerConverter.getSellerDtoFromSeller(seller);
     }
 
     @Override

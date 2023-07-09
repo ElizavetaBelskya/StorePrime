@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import ru.tinkoff.storePrime.converters.ProductConverter;
 import ru.tinkoff.storePrime.dto.cart.CartItemDto;
 import ru.tinkoff.storePrime.dto.product.ProductDto;
 import ru.tinkoff.storePrime.models.Order;
@@ -37,7 +38,7 @@ public class OrderDto {
         return OrderDto.builder().id(order.getId())
                 .customerId(order.getCustomer().getId())
                 .status(order.getStatus().name())
-                .product(ProductDto.from(order.getProduct()))
+                .product(ProductConverter.getProductDtoFromProduct(order.getProduct()))
                 .build();
     }
 

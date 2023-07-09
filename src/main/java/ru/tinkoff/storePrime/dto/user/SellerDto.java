@@ -24,17 +24,4 @@ public class SellerDto extends AccountDto {
 
     private LocationDto locationDto;
 
-    public static SellerDto from(Seller seller) {
-        return SellerDto.builder()
-                .id(seller.getId())
-                .email(seller.getEmail())
-                .phoneNumber(seller.getPhoneNumber())
-                .cardBalance(seller.getCardBalance())
-                .name(seller.getName())
-                .description(seller.getDescription())
-                .locationDto(LocationDto.from(seller.getLocation()))
-                .build();
-    }
-
-
 }

@@ -36,24 +36,5 @@ public class ProductDto {
     @Schema(description = "Количество товара")
     private Integer amount;
 
-    public static ProductDto from(Product product) {
-        return ProductDto.builder()
-                .id(product.getId())
-                .title(product.getTitle())
-                .description(product.getDescription())
-                .price(product.getPrice())
-                .sellerId(product.getSeller().getId())
-                .amount(product.getAmount())
-                .categories(
-                        product.getCategories().stream()
-                                .map(x -> x.getName())
-                                .collect(Collectors.toList())
-                ).build();
-    }
-
-    public static List<ProductDto> from(List<Product> products) {
-        return products.stream().map(ProductDto::from)
-                .collect(Collectors.toList());
-    }
 
 }

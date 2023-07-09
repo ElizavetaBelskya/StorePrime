@@ -39,7 +39,7 @@ public class LoggingAspect {
         HttpStatus code = status != null ? status.value() : null;
         String errorMessage = throwable.getMessage();
         if (code == HttpStatus.INTERNAL_SERVER_ERROR) {
-            logger.log(Level.OFF, "Internal server error: " + errorMessage);
+            logger.log(Level.SEVERE, "Internal server error: " + errorMessage);
         } else {
             logger.log(Level.WARNING, errorMessage);
         }

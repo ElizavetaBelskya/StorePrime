@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import ru.tinkoff.storePrime.converters.ProductConverter;
 import ru.tinkoff.storePrime.dto.product.ProductDto;
 import ru.tinkoff.storePrime.models.CartItem;
 
@@ -33,7 +34,7 @@ public class CartItemDto {
     public static CartItemDto from(CartItem cartItem) {
         return CartItemDto.builder()
                 .id(cartItem.getId())
-                .product(ProductDto.from(cartItem.getProduct()))
+                .product(ProductConverter.getProductDtoFromProduct(cartItem.getProduct()))
                 .customerId(cartItem.getCustomer().getId())
                 .quantity(cartItem.getQuantity())
                 .build();

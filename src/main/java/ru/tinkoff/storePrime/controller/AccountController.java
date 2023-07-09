@@ -3,6 +3,8 @@ package ru.tinkoff.storePrime.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.storePrime.controller.api.AccountApi;
+import ru.tinkoff.storePrime.converters.CustomerConverter;
+import ru.tinkoff.storePrime.converters.SellerConverter;
 import ru.tinkoff.storePrime.dto.user.AccountDto;
 import ru.tinkoff.storePrime.dto.user.CustomerDto;
 import ru.tinkoff.storePrime.dto.user.SellerDto;
@@ -19,9 +21,9 @@ public class AccountController implements AccountApi {
     public ResponseEntity<AccountDto> getThisAccount(UserDetailsImpl userDetailsImpl) {
         Account account = userDetailsImpl.getAccount();
         if (Account.Role.CUSTOMER.equals(account.getRole())) {
-            return ResponseEntity.ok(CustomerDto.from((Customer) account));
+            return ResponseEntity.ok(CustomerConverter.getCustomerDtoFromCustomer((Customer) account));
         } else if (Account.Role.SELLER.equals(account.getRole())) {
-            return ResponseEntity.ok(SellerDto.from((Seller) account));
+            return ResponseEntity.ok(SellerConverter.getSellerDtoFromSeller((Seller) account));
         } else {
             throw new ForbiddenException("Запрет доступа");
         }

@@ -31,18 +31,4 @@ public class CustomerDto extends AccountDto {
 
     private AddressDto addressDto;
 
-    public static CustomerDto from(Customer customer) {
-        return CustomerDto.builder()
-                .id(customer.getId())
-                .email(customer.getEmail())
-                .phoneNumber(customer.getPhoneNumber())
-                .cardBalance(customer.getCardBalance())
-                .name(customer.getName())
-                .surname(customer.getSurname())
-                .gender(customer.getGender())
-                .birthdayDate(customer.getBirthdayDate())
-                .addressDto(AddressDto.from(customer.getAddress()))
-                .build();
-    }
-
 }

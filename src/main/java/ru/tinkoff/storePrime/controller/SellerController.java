@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.storePrime.controller.api.SellerApi;
+import ru.tinkoff.storePrime.converters.SellerConverter;
 import ru.tinkoff.storePrime.dto.user.NewOrUpdateSellerDto;
 import ru.tinkoff.storePrime.dto.user.SellerDto;
 import ru.tinkoff.storePrime.models.user.Seller;
@@ -40,7 +41,7 @@ public class SellerController implements SellerApi {
 
     @Override
     public ResponseEntity<SellerDto> getThisSeller(UserDetailsImpl userDetailsImpl) {
-        return ResponseEntity.ok(SellerDto.from((Seller) userDetailsImpl.getAccount()));
+        return ResponseEntity.ok(SellerConverter.getSellerDtoFromSeller((Seller) userDetailsImpl.getAccount()));
     }
 
     @Override
