@@ -96,11 +96,11 @@ public class RestExceptionHandler {
                         .build());
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ExceptionDto> handleOther(Exception exception) {
+    @ExceptionHandler(Throwable.class)
+    public ResponseEntity<ExceptionDto> handleOther(Throwable throwable) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ExceptionDto.builder()
-                        .message(exception.getMessage())
+                        .message(throwable.getMessage())
                         .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                         .serviceMessage(ExceptionMessages.INTERNAL_SERVER_ERROR)
                         .build());

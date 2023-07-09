@@ -45,7 +45,6 @@ public class TokenSecurityConfig {
                 .antMatchers("/auth/logout").authenticated()
                 .antMatchers( "/**" ).permitAll();
 
-
         httpSecurity.addFilter(jwtAuthenticationFilter);
         httpSecurity.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
         httpSecurity.addFilterBefore(jwtRevokeFilter, JwtAuthenticationFilter.class);
