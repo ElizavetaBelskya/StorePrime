@@ -94,7 +94,7 @@ class CustomerControllerTest {
         void test_add_correct_customer() throws Exception {
             NewOrUpdateCustomerDto newCustomer = NewOrUpdateCustomerDto.builder()
                     .email("example@mail.ru")
-                    .phoneNumber("899999999")
+                    .phoneNumber("89999999999")
                     .name("Иван")
                     .surname("Иванов")
                     .gender(Customer.Gender.MALE)
@@ -103,14 +103,14 @@ class CustomerControllerTest {
                             LocationDto.builder()
                                     .country("Россия").city("Москва")
                                     .build()).build())
-                    .passwordHash("passwordHash")
+                    .passwordHash("passwordHash123!")
                     .build();
 
 
             CustomerDto savedCustomer = CustomerDto.builder()
                     .email("example@mail.ru")
                     .id(1L)
-                    .phoneNumber("899999999")
+                    .phoneNumber("89999999999")
                     .name("Иван")
                     .surname("Иванов")
                     .gender(Customer.Gender.MALE)
@@ -170,7 +170,7 @@ class CustomerControllerTest {
         void test_update_customer_success() throws Exception {
             NewOrUpdateCustomerDto newCustomer = NewOrUpdateCustomerDto.builder()
                     .email("example@mail.ru")
-                    .phoneNumber("890909999")
+                    .phoneNumber("89090999998")
                     .name("Иван")
                     .surname("Ивановский")
                     .gender(Customer.Gender.MALE)
@@ -179,11 +179,12 @@ class CustomerControllerTest {
                             LocationDto.builder()
                                     .country("Россия").city("Москва")
                                     .build()).build())
-                    .passwordHash("passwordHash")
+                    .passwordHash("passwordHash123!")
                     .build();
-            CustomerDto savedCustomer = CustomerDto.builder().email("example@mail.ru")
+            CustomerDto savedCustomer = CustomerDto.builder()
                     .id(1L)
-                    .phoneNumber("890909999")
+                    .email("example@mail.ru")
+                    .phoneNumber("89090999998")
                     .name("Иван")
                     .surname("Ивановский")
                     .gender(Customer.Gender.MALE)

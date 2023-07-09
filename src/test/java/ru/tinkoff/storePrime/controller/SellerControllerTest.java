@@ -86,8 +86,10 @@ public class SellerControllerTest {
         public void add_seller_when_email_is_already_used() throws Exception {
             NewOrUpdateSellerDto newSeller = NewOrUpdateSellerDto.builder()
                     .email("example@mail.ru")
-                    .phoneNumber("899999999")
+                    .phoneNumber("89999999999")
                     .name("Ivan")
+                    .passwordHash("Password123!!")
+                    .INN("1234567890")
                     .description("Our company is a market leader")
                     .build();
 
@@ -105,14 +107,16 @@ public class SellerControllerTest {
         public void add_seller_success() throws Exception {
             NewOrUpdateSellerDto newSeller = NewOrUpdateSellerDto.builder()
                     .email("example@mail.ru")
-                    .phoneNumber("899999999")
+                    .phoneNumber("89999999999")
                     .name("Ivan")
+                    .passwordHash("Password123!!")
+                    .INN("1234567890")
                     .description("Our company is a market leader")
                     .build();
             SellerDto savedSeller = SellerDto.builder()
                     .id(1L)
                     .email("example@mail.ru")
-                    .phoneNumber("899999999")
+                    .phoneNumber("89999999999")
                     .name("Ivan")
                     .description("Our company is a market leader")
                     .build();
@@ -158,9 +162,11 @@ public class SellerControllerTest {
         public void update_seller_when_email_is_already_used() throws Exception {
             NewOrUpdateSellerDto newSeller = NewOrUpdateSellerDto.builder()
                     .email("wrong@mail.ru")
-                    .phoneNumber("899999999")
+                    .phoneNumber("89999999999")
                     .name("Ivan")
                     .description("Our company is a market leader")
+                    .INN("1234567890")
+                    .passwordHash("passwordHash123!")
                     .build();
 
             when(sellerService.updateSeller(1L, newSeller)).thenThrow(AlreadyExistsException.class);
@@ -176,15 +182,17 @@ public class SellerControllerTest {
         @DisplayName("Should update a new seller")
         public void update_seller_success() throws Exception {
             NewOrUpdateSellerDto newSeller = NewOrUpdateSellerDto.builder()
-                    .email("newexample@mail.ru")
-                    .phoneNumber("899999999")
+                    .email("wrong@mail.ru")
+                    .phoneNumber("89999999999")
                     .name("Ivan")
                     .description("Our company is a market leader")
+                    .INN("1234567890")
+                    .passwordHash("passwordHash123!")
                     .build();
             SellerDto savedSeller = SellerDto.builder()
                     .id(1L)
-                    .email("newexample@mail.ru")
-                    .phoneNumber("899999999")
+                    .email("wrong@mail.ru")
+                    .phoneNumber("89999999999")
                     .name("Ivan")
                     .description("Our company is a market leader")
                     .build();
