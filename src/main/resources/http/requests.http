@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "email": "example@mail.ru",
-  "phoneNumber": "899999999",
+  "phoneNumber": "89999",
   "name": "Иван",
   "surname": "Иванов",
   "gender": "MALE",

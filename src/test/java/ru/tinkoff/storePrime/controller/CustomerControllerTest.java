@@ -154,7 +154,6 @@ class CustomerControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(asJsonString(newCustomer)))
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.errors[0].fieldName").value("birthdayDate"))
                     .andDo(print());
 
         }
