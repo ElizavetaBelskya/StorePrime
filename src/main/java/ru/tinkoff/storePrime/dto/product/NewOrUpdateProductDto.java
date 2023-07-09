@@ -42,4 +42,9 @@ public class NewOrUpdateProductDto {
     @Min(value = 1, message = "{product.amount.min}")
     private Integer amount;
 
+    @Schema(description = "Идентификаторы иллюстраций")
+    @NotEmpty(message = "{product.imageIds.notEmpty}")
+    @Size(min = 1, max = 3)
+    private List<String> imageIds;
+
 }

@@ -8,12 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.tinkoff.storePrime.controller.api.PhotoApi;
-import ru.tinkoff.storePrime.dto.photo.PhotoResponse;
 import ru.tinkoff.storePrime.mongo.model.Photo;
 import ru.tinkoff.storePrime.mongo.service.PhotoService;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.UUID;
 
 @RestController

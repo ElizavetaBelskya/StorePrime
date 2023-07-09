@@ -34,5 +34,8 @@ public class ProductDto extends LongIdDto {
     @Schema(description = "Количество товара")
     private Integer amount;
 
+    @Schema(description = "Идентификаторы иллюстраций")
+    private List<String> imageIds;
+
 
 }

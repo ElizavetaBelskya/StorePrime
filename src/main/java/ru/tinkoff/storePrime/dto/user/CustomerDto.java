@@ -26,8 +26,8 @@ public class CustomerDto extends AccountDto {
     @Schema(description = "Пол", example = "MALE")
     private Customer.Gender gender;
 
-    @Schema(description = "Дата рождения", example = "[2000, 12, 1]")
-    private LocalDate birthdayDate;
+    @Schema(description = "Дата рождения", example = "2000-12-01")
+    private String birthdayDate;
 
     private AddressDto addressDto;
 

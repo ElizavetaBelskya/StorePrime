@@ -17,6 +17,7 @@ public class ProductConverter {
                 .description(productDto.getDescription())
                 .amount(productDto.getAmount())
                 .price(productDto.getPrice())
+                .imagesIds(productDto.getImageIds())
                 .build();
     }
 
@@ -28,6 +29,7 @@ public class ProductConverter {
                 .price(product.getPrice())
                 .sellerId(product.getSeller().getId())
                 .amount(product.getAmount())
+                .imageIds(product.getImagesIds())
                 .categories(
                         product.getCategories().stream()
                                 .map(x -> x.getName())

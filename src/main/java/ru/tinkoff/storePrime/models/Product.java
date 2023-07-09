@@ -43,6 +43,9 @@ public class Product extends LongIdEntity {
     @Column(name = "amount")
     private Integer amount;
 
+    @ElementCollection
+    private List<String> imagesIds;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

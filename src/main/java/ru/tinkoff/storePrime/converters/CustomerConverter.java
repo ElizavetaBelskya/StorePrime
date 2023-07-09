@@ -34,7 +34,7 @@ public class CustomerConverter {
                 .name(customer.getName())
                 .surname(customer.getSurname())
                 .gender(customer.getGender())
-                .birthdayDate(customer.getBirthdayDate())
+                .birthdayDate(customer.getBirthdayDate().toString())
                 .addressDto(AddressConverter.getAddressDtoFromAddress(customer.getAddress()))
                 .build();
     }
