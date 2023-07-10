@@ -13,6 +13,8 @@ import ru.tinkoff.storePrime.exceptions.ExceptionMessages;
 import ru.tinkoff.storePrime.security.exceptions.JWTVerificationException;
 import ru.tinkoff.storePrime.security.utils.AuthorizationHeaderUtil;
 import ru.tinkoff.storePrime.security.utils.JwtUtil;
+import ru.tinkoff.storePrime.security.utils.UnauthorizedUtil;
+import ru.tinkoff.storePrime.security.utils.impl.UnauthorizedUtilImpl;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -30,6 +32,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final AuthorizationHeaderUtil authorizationHeaderUtil;
 
+    private final UnauthorizedUtil unauthorizedUtil;
+
     private final JwtUtil jwtUtil;
 
     @Override
@@ -45,7 +49,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     filterChain.doFilter(request, response);
                 } catch (JWTVerificationException e) {
                     logger.info(e.getMessage());
-                    JwtAuthenticationFilter.createUnauthorizedAnswer(response);
+                    unauthorizedUtil.createUnauthorizedAnswer(response);
                 }
             } else {
                 filterChain.doFilter(request, response);

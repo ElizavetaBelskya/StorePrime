@@ -24,4 +24,6 @@ public class RequestUtilImpl implements AuthorizationHeaderUtil {
         String authorizationHeader = request.getHeader(AUTHORIZATION_HEADER_NAME);
         return authorizationHeader.substring(BEARER.length());
     }
+
+
 }
