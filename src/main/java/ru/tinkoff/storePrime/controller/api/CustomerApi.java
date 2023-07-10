@@ -21,6 +21,7 @@ import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 
 import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
+import javax.validation.constraints.DecimalMin;
 
 @Tags(value = {
         @Tag(name = "Customer")
@@ -152,7 +153,7 @@ public interface CustomerApi {
     @PatchMapping
     @PreAuthorize("hasAuthority('CUSTOMER')")
     ResponseEntity<CustomerDto> updateCustomerCardBalance(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
-                                                          @RequestBody Double replenishment);
+                                                          @RequestBody @DecimalMin("0.0") Double replenishment);
 
 
 

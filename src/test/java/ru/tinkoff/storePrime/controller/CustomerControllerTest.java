@@ -6,10 +6,13 @@ import org.junit.Before;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -114,7 +117,7 @@ class CustomerControllerTest {
                     .name("Иван")
                     .surname("Иванов")
                     .gender(Customer.Gender.MALE)
-                    .birthdayDate(LocalDate.parse("2000-01-01"))
+                    .birthdayDate("2000-01-01")
                     .addressDto(AddressDto.builder().location(
                             LocationDto.builder()
                                     .country("Россия").city("Москва")
@@ -187,7 +190,7 @@ class CustomerControllerTest {
                     .name("Иван")
                     .surname("Ивановский")
                     .gender(Customer.Gender.MALE)
-                    .birthdayDate(LocalDate.parse("2000-01-01"))
+                    .birthdayDate("2000-01-01")
                     .addressDto(AddressDto.builder().location(
                             LocationDto.builder()
                                     .country("Россия").city("Москва")
@@ -260,7 +263,7 @@ class CustomerControllerTest {
                     .cardBalance(500.0)
                     .phoneNumber("89093249999")
                     .gender(Customer.Gender.MALE)
-                    .birthdayDate(LocalDate.parse("2000-01-01"))
+                    .birthdayDate("2000-01-01")
                     .addressDto(AddressDto.builder()
                             .location(LocationDto.builder()
                                     .country("Россия")
@@ -290,7 +293,7 @@ class CustomerControllerTest {
                     .cardBalance(500.0)
                     .phoneNumber("89093249999")
                     .gender(Customer.Gender.MALE)
-                    .birthdayDate(LocalDate.parse("2000-01-01"))
+                    .birthdayDate("2000-01-01")
                     .addressDto(AddressDto.builder()
                             .location(LocationDto.builder()
                                     .country("Россия")

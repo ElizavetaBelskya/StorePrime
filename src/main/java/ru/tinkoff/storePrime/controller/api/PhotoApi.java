@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.tinkoff.storePrime.mongo.model.Photo;
 
 import java.io.IOException;
 
@@ -42,15 +41,10 @@ public interface PhotoApi {
 
     @Operation(summary = "Получение фотографии")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Идентификатор фотографии",
-                    content = {
-                            @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = Photo.class))
-                    }
-            )
+            @ApiResponse(responseCode = "200", description = "Успешно"),
+            @ApiResponse(responseCode = "404", description = "Фотография не найдена")
     })
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('SELLER', 'CUSTOMER')")
     ResponseEntity getPhoto(@PathVariable String id);
 
 

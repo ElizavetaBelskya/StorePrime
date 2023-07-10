@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -225,10 +226,10 @@ public interface ProductApi {
     @GetMapping("/pages")
     ResponseEntity<ProductsPage> getProducts(
             @Parameter(description = "Номер страницы", example = "1") @Min(1) @RequestParam("page") int page,
-            @Parameter(description = "Минимальная стоимость товара", example = "?minPrice=1500") @DecimalMin("0") @RequestParam(value = "minPrice", required = false) Double minPrice,
-            @Parameter(description = "Максимальная стоимость товара", example = "?maxPrice=1500") @RequestParam(value = "maxPrice", required = false) Double maxPrice,
-            @Parameter(description = "Категория товара", example = "?category=pets") @Pattern(regexp = "[a-zA-Z]+") @RequestParam(value = "category", required = false) String category,
-            @Parameter(description = "Идентификатор продавца", example = "1") @Min(1) @RequestParam(value = "sellerId", required = false) Long sellerId
+            @Parameter(description = "Минимальная стоимость товара", example = "?minPrice=1500") @Nullable @DecimalMin("0") @RequestParam(value = "minPrice", required = false) Double minPrice,
+            @Parameter(description = "Максимальная стоимость товара", example = "?maxPrice=1500") @Nullable @RequestParam(value = "maxPrice", required = false) Double maxPrice,
+            @Parameter(description = "Категория товара", example = "?category=pets") @Nullable @Pattern(regexp = "[a-zA-Z]+") @RequestParam(value = "category", required = false) String category,
+            @Parameter(description = "Идентификатор продавца", example = "1") @Nullable @Min(1) @RequestParam(value = "sellerId", required = false) Long sellerId
     );
 
     @Operation(summary = "Получение списка товаров")
@@ -246,10 +247,10 @@ public interface ProductApi {
     })
     @GetMapping
     ResponseEntity<List<ProductDto>> getAllProducts(
-            @Parameter(description = "Минимальная стоимость товара", example = "?minPrice=1500") @RequestParam(value = "minPrice", required = false) Double minPrice,
-            @Parameter(description = "Максимальная стоимость товара", example = "?maxPrice=1500") @RequestParam(value = "maxPrice", required = false) Double maxPrice,
-            @Parameter(description = "Категория товара", example = "?category=pets") @RequestParam(value = "category", required = false) String category,
-            @Parameter(description = "Идентификатор продавца", example = "1") @RequestParam(value = "id", required = false) Long sellerId
+            @Parameter(description = "Минимальная стоимость товара", example = "?minPrice=1500") @Nullable @RequestParam(value = "minPrice", required = false) Double minPrice,
+            @Parameter(description = "Максимальная стоимость товара", example = "?maxPrice=1500") @Nullable @RequestParam(value = "maxPrice", required = false) Double maxPrice,
+            @Parameter(description = "Категория товара", example = "?category=pets") @Nullable @RequestParam(value = "category", required = false) String category,
+            @Parameter(description = "Идентификатор продавца", example = "1") @Nullable @RequestParam(value = "id", required = false) Long sellerId
     );
 
     @Operation(summary = "Получение товаров по названию")

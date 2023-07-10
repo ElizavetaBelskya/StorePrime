@@ -11,6 +11,8 @@ import ru.tinkoff.storePrime.models.Product;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
@@ -152,10 +154,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             @Param("content") String content
     );
 
-    @Query(value = "SELECT * FROM products ORDER BY RAND() LIMIT 1", nativeQuery = true)
-    Product findRandomProduct();
+    @Query(value = "SELECT * FROM product ORDER BY random() LIMIT 1", nativeQuery = true)
+    Optional<Product> findRandomProduct();
 
-    @Query(value = "SELECT * FROM products ORDER BY RAND() LIMIT :amount", nativeQuery = true)
+    @Query(value = "SELECT * FROM product ORDER BY random() LIMIT :amount", nativeQuery = true)
     List<Product> findRandomProducts(@Param("amount") int amount);
 
 }

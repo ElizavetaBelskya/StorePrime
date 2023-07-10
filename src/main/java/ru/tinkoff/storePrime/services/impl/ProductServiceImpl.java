@@ -85,6 +85,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> getAllProducts(Double minPrice, Double maxPrice, String category, Long sellerId) {
+        if (minPrice == null) {
+            minPrice = 0.0;
+        }
+        if (maxPrice == null) {
+            maxPrice = Double.MAX_VALUE;
+        }
         if (minPrice > maxPrice) {
             throw new DisparateDataException("Минимальная цена больше максимальной");
         }
@@ -95,9 +101,6 @@ public class ProductServiceImpl implements ProductService {
         } else {
             throw new DisparateDataException("Эта категория не существует");
         }
-        if (minPrice == null) {
-            minPrice = 0.0;
-        }
         if (sellerId != null && maxPrice != null) {
             if (!categories.isEmpty()) {
                 return ProductConverter.getProductDtoFromProduct(productRepository.findBySellerAndPriceAndCategory(sellerId, minPrice, maxPrice, categories));
@@ -105,11 +108,7 @@ public class ProductServiceImpl implements ProductService {
                 return ProductConverter.getProductDtoFromProduct(productRepository.findBySellerAndPrice(sellerId, minPrice, maxPrice));
             }
         } else if (maxPrice != null) {
-            if (!categories.isEmpty()) {
-                return ProductConverter.getProductDtoFromProduct(productRepository.findByPriceAndCategory(minPrice, maxPrice, categories));
-            } else {
-                return ProductConverter.getProductDtoFromProduct(productRepository.findByPrice(minPrice, maxPrice));
-            }
+            return ProductConverter.getProductDtoFromProduct(productRepository.findByPriceAndCategory(minPrice, maxPrice, categories));
         } else {
             if (!categories.isEmpty()) {
                 return ProductConverter.getProductDtoFromProduct(productRepository.findByCategory(categories));
@@ -129,7 +128,6 @@ public class ProductServiceImpl implements ProductService {
         }
         if (maxPrice == null && minPrice != null) {
             maxPrice = Double.MAX_VALUE;
-            //TODO: тут бы заменить на чтото разумное
         }
         if (minPrice == null) {
             minPrice = 0d;
@@ -169,7 +167,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto getOneProduct() {
-        return ProductConverter.getProductDtoFromProduct(productRepository.findRandomProduct());
+        return ProductConverter.getProductDtoFromProduct(productRepository.findRandomProduct().orElseThrow(() -> new ProductNotFoundException("Товар не найден")));
     }
 
     @Override
