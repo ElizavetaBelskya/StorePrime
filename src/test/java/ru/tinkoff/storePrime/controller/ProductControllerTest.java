@@ -3,8 +3,10 @@ package ru.tinkoff.storePrime.controller;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.MessageSource;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -422,6 +424,7 @@ public class ProductControllerTest {
             newProduct.setPrice(19.99);
             newProduct.setCategories(Arrays.asList("Категория 1", "Категория 2"));
             newProduct.setAmount(10);
+            newProduct.setImageIds(new ArrayList<>(Collections.singleton("123")));
 
             ProductDto addedProduct = new ProductDto();
             addedProduct.setId(1L);
@@ -430,6 +433,7 @@ public class ProductControllerTest {
             addedProduct.setPrice(19.99);
             addedProduct.setCategories(Arrays.asList("Категория 1", "Категория 2"));
             addedProduct.setAmount(10);
+            addedProduct.setImageIds(new ArrayList<>(Collections.singleton("123")));
             when(productService.addProduct(1L, newProduct)).thenReturn(addedProduct);
 
             ObjectMapper objectMapper = new ObjectMapper();
@@ -494,6 +498,7 @@ public class ProductControllerTest {
                     .price(19.99)
                     .categories(Arrays.asList("Категория 1", "Категория 2"))
                     .amount(10)
+                    .imageIds(new ArrayList<>(Collections.singleton("112")))
                     .build();
 
             ProductDto updatedProductDto = ProductDto.builder()
@@ -504,6 +509,7 @@ public class ProductControllerTest {
                     .categories(Arrays.asList("Категория 1", "Категория 2"))
                     .amount(10)
                     .sellerId(1L)
+                    .imageIds(new ArrayList<>(Collections.singleton("112")))
                     .build();
             when(productService.updateProduct(productId, sellerId, updatedProduct)).thenReturn(updatedProductDto);
 
@@ -558,6 +564,7 @@ public class ProductControllerTest {
                     .price(19.99)
                     .categories(Arrays.asList("Категория 1", "Категория 2"))
                     .amount(10)
+                    .imageIds(new ArrayList<>(Collections.singleton("112")))
                     .build();
 
             when(productService.updateProduct(productId, sellerId, updatedProduct))
@@ -581,6 +588,7 @@ public class ProductControllerTest {
                     .price(19.99)
                     .categories(Arrays.asList("Категория 1", "Категория 2"))
                     .amount(10)
+                    .imageIds(new ArrayList<>(Collections.singleton("112")))
                     .build();
             when(productService.updateProduct(productId, sellerId, updatedProduct))
                     .thenThrow(new ForbiddenException("Нет прав на редактирование этого товара"));

@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,11 +43,13 @@ public interface PhotoApi {
 
     @Operation(summary = "Получение фотографии")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Успешно"),
+            @ApiResponse(responseCode = "200", description = "Успешно", content = {
+                    @Content(mediaType = "octet")
+            }),
             @ApiResponse(responseCode = "404", description = "Фотография не найдена")
     })
     @GetMapping("/{id}")
-    ResponseEntity getPhoto(@PathVariable String id);
+    ResponseEntity<ByteArrayResource> getPhoto(@PathVariable String id);
 
 
 }

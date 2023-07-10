@@ -1,5 +1,6 @@
 package ru.tinkoff.storePrime.controller.handler;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -26,6 +27,7 @@ import java.util.List;
 
 
 @ControllerAdvice
+@Slf4j
 public class RestExceptionHandler {
 
     @ExceptionHandler(MarketServiceException.class)
@@ -98,6 +100,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<ExceptionDto> handleOther(Throwable throwable) {
+        log.error(throwable.getMessage(), throwable);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ExceptionDto.builder()
                         .message(throwable.getMessage())

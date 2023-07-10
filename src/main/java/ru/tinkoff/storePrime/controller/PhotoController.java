@@ -2,6 +2,7 @@ package ru.tinkoff.storePrime.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +26,13 @@ public class PhotoController implements PhotoApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
-    public ResponseEntity getPhoto(String id) {
+    public ResponseEntity<ByteArrayResource> getPhoto(String id) {
         Photo photo = photoService.getPhoto(id);
         byte[] imageData = photo.getImage().getData();
         ByteArrayResource resource = new ByteArrayResource(imageData);
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_JPEG)
+//                .contentLength()
                 .body(resource);
     }
 
