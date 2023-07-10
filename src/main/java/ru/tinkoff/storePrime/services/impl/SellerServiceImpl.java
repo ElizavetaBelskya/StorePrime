@@ -1,6 +1,7 @@
 package ru.tinkoff.storePrime.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.CacheManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.storePrime.converters.SellerConverter;
@@ -14,6 +15,9 @@ import ru.tinkoff.storePrime.repository.SellerRepository;
 import ru.tinkoff.storePrime.security.exceptions.AlreadyExistsException;
 import ru.tinkoff.storePrime.services.AccountService;
 import ru.tinkoff.storePrime.services.SellerService;
+import ru.tinkoff.storePrime.services.utils.AccountCachingUtil;
+
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -21,27 +25,33 @@ public class SellerServiceImpl implements SellerService {
 
     private final SellerRepository sellerRepository;
 
+    private final CacheManager cacheManager;
+
     private final AccountService accountService;
 
     private final PasswordEncoder passwordEncoder;
 
+    private final AccountCachingUtil accountCachingUtil;
+
     @Override
     public SellerDto addSeller(NewOrUpdateSellerDto sellerDto) {
         Seller newSeller = SellerConverter.getSellerFromNewOrUpdateSellerDto(sellerDto);
+        newSeller.setPasswordHash(passwordEncoder.encode(newSeller.getPasswordHash()));
         Seller seller = sellerRepository.save(newSeller);
         return SellerConverter.getSellerDtoFromSeller(seller);
     }
 
     @Override
     public void deleteSeller(Long sellerId) {
-        Seller seller = sellerRepository.findById(sellerId).orElseThrow(() -> new SellerNotFoundException("Продавец с id " + sellerId + " не найден"));
+        Seller seller = accountCachingUtil.getSeller(sellerId);
         seller.setState(Account.State.DELETED);
+        sellerRepository.save(seller);
+        Objects.requireNonNull(cacheManager.getCache("account")).invalidate();
     }
 
     @Override
     public SellerDto updateSeller(Long sellerId, NewOrUpdateSellerDto updatedSellerDto) {
-        Seller seller = sellerRepository.findById(sellerId).orElseThrow(() ->
-                new SellerNotFoundException("Продавец с id " + sellerId + " не найден"));
+        Seller seller = accountCachingUtil.getSeller(sellerId);
         if (!updatedSellerDto.getEmail().equals(seller.getEmail())) {
             if (accountService.isEmailUsed(updatedSellerDto.getEmail())) {
                 throw new AlreadyExistsException("Account with email <" + updatedSellerDto.getEmail() + "> already exists");
@@ -52,14 +62,15 @@ public class SellerServiceImpl implements SellerService {
         }
         seller = SellerConverter.getSellerFromNewOrUpdateSellerDto(updatedSellerDto);
         seller.setPasswordHash(passwordEncoder.encode(seller.getPasswordHash()));
+        seller.setId(sellerId);
         Seller updatedSeller = sellerRepository.save(seller);
+        Objects.requireNonNull(cacheManager.getCache("account")).put(updatedSeller.getId(), updatedSeller);
         return SellerConverter.getSellerDtoFromSeller(updatedSeller);
     }
 
     @Override
     public SellerDto getSeller(Long sellerId) {
-        Seller seller = sellerRepository.findById(sellerId).orElseThrow(() ->
-                new SellerNotFoundException("Продавец с id " + sellerId + " не найден"));
+        Seller seller = accountCachingUtil.getSeller(sellerId);
         if (Account.State.DELETED.equals(seller.getState())) {
             throw new SellerNotFoundException("Пользователь не найден");
         }
@@ -74,7 +85,8 @@ public class SellerServiceImpl implements SellerService {
             throw new PaymentImpossibleException("Недостаточно средств");
         }
         seller.setCardBalance(seller.getCardBalance() + replenishment);
-        sellerRepository.save(seller);
+        Seller updatedSeller = sellerRepository.save(seller);
+        Objects.requireNonNull(cacheManager.getCache("account")).put(updatedSeller.getId(), updatedSeller);
     }
 
 

@@ -33,8 +33,29 @@ email=example@mail.ru&password=1234qwer
 #}
 
 ###
-GET http://localhost:80/customer
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQG1haWwucnUiLCJyb2xlIjoiQ1VTVE9NRVIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2F1dGgvbG9naW4iLCJleHAiOjE2ODgyOTM3ODV9.OC6rYjDwIDtrn9oZy9AaqnW9i-4_vIMJ2O9QLUPd07A
+PUT http://localhost:80/customer
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQG1haWwucnUiLCJyb2xlIjoiQ1VTVE9NRVIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2F1dGgvbG9naW4iLCJleHAiOjE2ODkwMDI2NjZ9.HuwHJzvQiD3Iwfs19uK6BIGx4nxwHKryuj7Eq48_dR8
+Content-Type: application/json
+
+{
+  "email": "example@mail.ru",
+  "phoneNumber": "899997999",
+  "name": "Иван",
+  "surname": "Иванович",
+  "gender": "MALE",
+  "birthdayDate": "2000-01-01",
+  "addressDto": {
+    "street": "Спартаковская",
+    "house": 98,
+    "apartment": "6А",
+    "location": {
+      "country": "Россия",
+      "city": "Москва"
+    }
+  },
+  "passwordHash": "1234Qwer!!"
+}
+
 
 ###
 
@@ -43,4 +64,67 @@ GET http://localhost:80/products/pages?minPrice=10&maxPrice=100&page=-1
 ###
 
 GET http://localhost:80/accounts
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQG1haWwucnUiLCJyb2xlIjoiQ1VTVE9NRVIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2F1dGgvbG9naW4iLCJleHAiOjE2ODg4MjM1MzJ9.k5Rpq6W9dfsFYCAkqA1vezNpCNC67HjXMBb7-aqhaFY
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQG1haWwucnUiLCJyb2xlIjoiQ1VTVE9NRVIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2F1dGgvbG9naW4iLCJleHAiOjE2ODkwMDI2NjZ9.HuwHJzvQiD3Iwfs19uK6BIGx4nxwHKryuj7Eq48_dR8
+
+####
+
+POST http://localhost/seller
+Content-Type: application/json
+
+{
+  "email": "myexample@mail.ru",
+  "phoneNumber": "89999999999",
+  "name": "Компания",
+  "description": "Наша компания является лидером на рынке",
+  "locationDto": {
+    "country": "Россия",
+    "city": "Москва"
+  },
+  "passwordHash": "Password123!",
+  "inn": "1234567890"
+}
+
+####
+
+POST http://localhost/auth/login
+Content-Type: application/x-www-form-urlencoded
+
+email=myexample@mail.ru&password=Password123!
+
+###
+#
+#{
+#  "accessToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJteWV4YW1wbGVAbWFpbC5ydSIsInJvbGUiOiJTRUxMRVIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2F1dGgvbG9naW4iLCJleHAiOjE2ODkwMDYzMTB9.whvZTMJrUePn2KmMxvKvFKC4s5shp8nO-XmMxYpj52Q",
+#  "refreshToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJteWV4YW1wbGVAbWFpbC5ydSIsInJvbGUiOiJTRUxMRVIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2F1dGgvbG9naW4iLCJleHAiOjE2ODkwOTAzMTB9.979Vjeqn8NeaCDJSmNelk8Ab9UxiusuBrsx3WxpMqqk"
+#}
+
+#####
+
+PUT http://localhost/seller
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJteWV4YW1wbGVAbWFpbC5ydSIsInJvbGUiOiJTRUxMRVIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2F1dGgvbG9naW4iLCJleHAiOjE2ODkwMDYzMTB9.whvZTMJrUePn2KmMxvKvFKC4s5shp8nO-XmMxYpj52Q
+
+{
+  "email": "myexample@mail.ru",
+  "phoneNumber": "89999999999",
+  "name": "Компания",
+  "description": "Наша компания является лидером",
+  "locationDto": {
+    "country": "Россия",
+    "city": "Москва"
+  },
+  "passwordHash": "Password123!",
+  "inn": "1234567890"
+}
+
+###
+
+GET http://localhost/seller
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJteWV4YW1wbGVAbWFpbC5ydSIsInJvbGUiOiJTRUxMRVIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2F1dGgvbG9naW4iLCJleHAiOjE2ODkwMDYzMTB9.whvZTMJrUePn2KmMxvKvFKC4s5shp8nO-XmMxYpj52Q
+
+###
+
+DELETE http://localhost/seller
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJteWV4YW1wbGVAbWFpbC5ydSIsInJvbGUiOiJTRUxMRVIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2F1dGgvbG9naW4iLCJleHAiOjE2ODkwMDYzMTB9.whvZTMJrUePn2KmMxvKvFKC4s5shp8nO-XmMxYpj52Q

@@ -44,7 +44,7 @@ public interface PhotoApi {
     @Operation(summary = "Получение фотографии")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Успешно", content = {
-                    @Content(mediaType = "octet")
+                    @Content(mediaType = "application/octet-stream")
             }),
             @ApiResponse(responseCode = "404", description = "Фотография не найдена")
     })

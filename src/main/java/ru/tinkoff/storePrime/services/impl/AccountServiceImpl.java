@@ -34,16 +34,17 @@ public class AccountServiceImpl implements AccountService {
     public Account getUserByEmail(String email) {
         Optional<Customer> customer = customerRepository.findByEmail(email);
         if (customer.isPresent()) {
-            Objects.requireNonNull(cacheManager.getCache("account")).put(customer.get().getId(), customer.get());
-            return customer.get();
+            Customer notNullCustomer = customer.get();
+            Objects.requireNonNull(cacheManager.getCache("account")).put(notNullCustomer.getId(), notNullCustomer);
+            return notNullCustomer;
         }
 
         Optional<Seller> seller = sellerRepository.findByEmail(email);
         if (seller.isPresent()) {
-            Objects.requireNonNull(cacheManager.getCache("account")).put(seller.get().getId(), seller.get());
-            return seller.get();
+            Seller notNullSeller = seller.get();
+            Objects.requireNonNull(cacheManager.getCache("account")).put(notNullSeller.getId(), notNullSeller);
+            return notNullSeller;
         }
-
 
         throw new UsernameNotFoundException("Account with such email does not exist");
     }

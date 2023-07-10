@@ -17,7 +17,7 @@ import javax.persistence.MappedSuperclass;
 public abstract class LongIdEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "unique_id_in_all_db")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
 }

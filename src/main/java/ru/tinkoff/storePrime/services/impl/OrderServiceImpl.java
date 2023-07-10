@@ -20,6 +20,7 @@ import ru.tinkoff.storePrime.repository.OrderRepository;
 import ru.tinkoff.storePrime.services.CustomerService;
 import ru.tinkoff.storePrime.services.OrderService;
 import ru.tinkoff.storePrime.services.SellerService;
+import ru.tinkoff.storePrime.services.utils.AccountCachingUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,21 +33,20 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
 
-    private final CustomerRepository customerRepository;
-
     private final SellerService sellerService;
 
     private final CustomerService customerService;
 
+    private final AccountCachingUtil accountCachingUtil;
+
     @Override
     @Transactional
     public List<OrderDto> createNewOrders(Long customerId, List<Long> cartItemIdList) {
-        Customer customer = customerRepository.findById(customerId).orElseThrow(
-                () -> new CustomerNotFoundException("Пользователь с id " + customerId + " не найден"));
+        Customer customer = accountCachingUtil.getCustomer(customerId);
         List<CartItem> items = new ArrayList<>();
         for (Long itemId: cartItemIdList) {
             CartItem newItem = cartRepository.findById(itemId).orElseThrow(
-                    () -> new CartItemNotFoundException("Товар в корзине с id " + customerId + " не найден"));
+                    () -> new CartItemNotFoundException("Товар в корзине с id " + itemId + " не найден"));
             if (!newItem.getCustomer().getId().equals(customerId)) {
                 throw new ForbiddenException("Этот пользователь не имеет прав на обращение к элементу корзины с id " + itemId);
             } else {

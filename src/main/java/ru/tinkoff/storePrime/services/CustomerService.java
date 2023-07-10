@@ -12,4 +12,5 @@ public interface CustomerService {
 
     CustomerDto updateCardBalance(Long customerId, Double replenishment);
 
+    CustomerDto getThisCustomer(Long id);
 }

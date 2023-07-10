@@ -46,11 +46,11 @@ public abstract class Account extends LongIdEntity {
     private State state;
 
     public boolean isConfirmed() {
-        return State.CONFIRMED.equals(this.state);
+        return !State.DELETED.equals(this.state);
     }
 
     public boolean isBanned() {
-        return State.BANNED.equals(this.state);
+        return State.BANNED.equals(this.state) || State.DELETED.equals(this.state);
     }
 
 }

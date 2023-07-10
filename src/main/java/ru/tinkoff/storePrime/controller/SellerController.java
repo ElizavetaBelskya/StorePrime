@@ -41,7 +41,7 @@ public class SellerController implements SellerApi {
 
     @Override
     public ResponseEntity<SellerDto> getThisSeller(UserDetailsImpl userDetailsImpl) {
-        return ResponseEntity.ok(SellerConverter.getSellerDtoFromSeller((Seller) userDetailsImpl.getAccount()));
+        return ResponseEntity.ok(sellerService.getSeller(userDetailsImpl.getAccount().getId()));
     }
 
     @Override

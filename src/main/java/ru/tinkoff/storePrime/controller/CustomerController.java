@@ -31,7 +31,7 @@ public class CustomerController implements CustomerApi {
 
     @Override
     public ResponseEntity<CustomerDto> getThisCustomer(UserDetailsImpl userDetailsImpl) {
-        return ResponseEntity.ok(CustomerConverter.getCustomerDtoFromCustomer((Customer) userDetailsImpl.getAccount()));
+        return ResponseEntity.ok(customerService.getThisCustomer(userDetailsImpl.getAccount().getId()));
     }
 
     @Override

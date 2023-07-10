@@ -13,6 +13,7 @@ import ru.tinkoff.storePrime.repository.CartRepository;
 import ru.tinkoff.storePrime.repository.CustomerRepository;
 import ru.tinkoff.storePrime.repository.ProductRepository;
 import ru.tinkoff.storePrime.services.CartService;
+import ru.tinkoff.storePrime.services.utils.AccountCachingUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,14 +28,15 @@ public class CartServiceImpl implements CartService {
 
     private final CustomerRepository customerRepository;
 
+    private final AccountCachingUtil accountCachingUtil;
+
     @Override
     public CartItemDto addNewCartItem(Long customerId, Long productId, Integer quantity) {
         Optional<CartItem> foundCartItem = cartRepository.findByCustomer_IdAndProduct_Id(customerId, productId);
         CartItem newCartItem = foundCartItem.orElseGet(() -> {
             Product product = productRepository.findById(productId)
                     .orElseThrow(() -> new ProductNotFoundException("Product not found"));
-            Customer customer = customerRepository.findById(customerId)
-                    .orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
+            Customer customer = accountCachingUtil.getCustomer(customerId);
             return CartItem.builder()
                     .product(product)
                     .customer(customer)
@@ -48,7 +50,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public List<CartItemDto> getCustomerCart(Long customerId) {
-        return CartItemDto.from(customerRepository.findById(customerId).orElseThrow(() -> new CustomerNotFoundException("Товар в корзине с id " + customerId + " не найден")).getCart());
+        return CartItemDto.from(accountCachingUtil.getCustomer(customerId).getCart());
     }
 
     @Override
