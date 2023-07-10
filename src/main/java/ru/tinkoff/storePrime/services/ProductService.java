@@ -22,4 +22,8 @@ public interface ProductService {
     ProductsPage getProductsPage(int page, Double minPrice, Double maxPrice, String category, Long sellerId);
 
     List<ProductDto> getAllProductsByContentString(String content);
+
+    ProductDto getOneProduct();
+
+    List<ProductDto> getRandomProducts(Integer amount);
 }

@@ -27,6 +27,16 @@ public class ProductController implements ProductApi {
     }
 
     @Override
+    public ResponseEntity<ProductDto> getRandomProduct() {
+        return ResponseEntity.ok(productService.getOneProduct());
+    }
+
+    @Override
+    public ResponseEntity<List<ProductDto>> getRandomProducts(Integer amount) {
+        return ResponseEntity.ok(productService.getRandomProducts(amount));
+    }
+
+    @Override
     public ResponseEntity<List<ProductDto>> getProductsByContentString(String content) {
         return ResponseEntity.ok().body(productService.getAllProductsByContentString(content));
     }

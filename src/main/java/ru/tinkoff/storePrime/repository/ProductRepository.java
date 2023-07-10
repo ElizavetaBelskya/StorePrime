@@ -152,4 +152,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             @Param("content") String content
     );
 
+    @Query(value = "SELECT * FROM products ORDER BY RAND() LIMIT 1", nativeQuery = true)
+    Product findRandomProduct();
+
+    @Query(value = "SELECT * FROM products ORDER BY RAND() LIMIT :amount", nativeQuery = true)
+    List<Product> findRandomProducts(@Param("amount") int amount);
+
 }

@@ -76,6 +76,52 @@ public interface ProductApi {
     @GetMapping("/{id}")
     ResponseEntity<ProductDto> getProductById(@PathVariable("id") Long id);
 
+    @Operation(summary = "Получение случайного товара")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Товар найден",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ProductDto.class))
+                    }
+            ),
+            @ApiResponse(responseCode = "404", description = "Товар не найден",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }),
+            @ApiResponse(responseCode = "400", description = "Сведения об ошибке: неверный запрос",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            )
+    })
+    @GetMapping("/random")
+    ResponseEntity<ProductDto> getRandomProduct();
+
+    @Operation(summary = "Получение случайных товаров")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Товары найдены",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ProductDto.class))
+                    }
+            ),
+            @ApiResponse(responseCode = "404", description = "Товары не найден",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }),
+            @ApiResponse(responseCode = "400", description = "Сведения об ошибке: неверный запрос",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            )
+    })
+    @GetMapping("/random/{amount}")
+    ResponseEntity<List<ProductDto>> getRandomProducts(@PathVariable("amount") Integer amount);
+
     @Operation(summary = "Получение товаров по идентификатору продавца")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Товары найдены",

@@ -167,4 +167,15 @@ public class ProductServiceImpl implements ProductService {
         return ProductConverter.getProductDtoFromProduct(productRepository.findAllByContent("%" + content + "%"));
     }
 
+    @Override
+    public ProductDto getOneProduct() {
+        return ProductConverter.getProductDtoFromProduct(productRepository.findRandomProduct());
+    }
+
+    @Override
+    public List<ProductDto> getRandomProducts(Integer amount) {
+        return ProductConverter.getProductDtoFromProduct(productRepository.findRandomProducts(amount));
+    }
+
+
 }

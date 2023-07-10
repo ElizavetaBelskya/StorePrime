@@ -60,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
             if (product.getAmount() < item.getQuantity()) {
                 throw new DisparateDataException("Запрос товара в заказе превышает его реальное колчество");
             }
-            Double price = product.getPrice()*item.getQuantity();
+            double price = product.getPrice()*item.getQuantity();
             sellerService.updateCardBalanceBySellerId(product.getSeller().getId(), price*0.97);
             customerService.updateCardBalance(item.getCustomer().getId(), -1*price);
             product.setAmount(product.getAmount() - item.getQuantity());
@@ -74,6 +74,7 @@ public class OrderServiceImpl implements OrderService {
             orders.add(newOrder);
         }
 
+        cartRepository.deleteAll(items);
         return OrderConverter.getOrderDtoFromOrder(orders);
     }
 
