@@ -19,8 +19,6 @@ import ru.tinkoff.storePrime.services.AccountService;
 import ru.tinkoff.storePrime.services.SellerService;
 import ru.tinkoff.storePrime.services.utils.AccountCachingUtil;
 
-import java.util.Objects;
-
 @RequiredArgsConstructor
 @Service
 public class SellerServiceImpl implements SellerService {
@@ -56,7 +54,6 @@ public class SellerServiceImpl implements SellerService {
         if (cacheManager.getCache("account") != null) {
             cacheManager.getCache("account").invalidate();
         }
-
     }
 
     @Override

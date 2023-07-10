@@ -27,13 +27,13 @@ public class AccountCachingUtil {
     public Customer getCustomer(Long customerId) {
         try {
             Cache.ValueWrapper customerWrapper = cacheManager.getCache("account").get(customerId);
-            if (customerWrapper != null && customerWrapper instanceof SimpleValueWrapper) {
+            if (customerWrapper instanceof SimpleValueWrapper) {
                 Object customerObject = customerWrapper.get();
                 if (customerObject instanceof Customer) {
                     return (Customer) customerObject;
                 }
             }
-        } catch (NullPointerException e) {
+        } catch (NullPointerException ignored) {
         }
         return customerRepository.findById(customerId)
                 .orElseThrow(() -> new CustomerNotFoundException("Покупатель с id " + customerId + " не найден"));
@@ -44,15 +44,14 @@ public class AccountCachingUtil {
     public Seller getSeller(Long sellerId) {
         try {
             Cache.ValueWrapper customerWrapper = cacheManager.getCache("account").get(sellerId);
-            if (customerWrapper != null && customerWrapper instanceof SimpleValueWrapper) {
+            if (customerWrapper instanceof SimpleValueWrapper) {
                 Object sellerObject = customerWrapper.get();
-                if (sellerObject instanceof Customer) {
+                if (sellerObject instanceof Seller) {
                     return (Seller) sellerObject;
                 }
             }
-        } catch (NullPointerException e) {
+        } catch (NullPointerException ignored) {
         }
-
         return sellerRepository.findById(sellerId)
                 .orElseThrow(() -> new SellerNotFoundException("Продавец с id " + sellerId + " не найден"));
     }
