@@ -1,6 +1,8 @@
 package ru.tinkoff.storePrime.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,7 +33,12 @@ public class SellerServiceImpl implements SellerService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final AccountCachingUtil accountCachingUtil;
+    private AccountCachingUtil accountCachingUtil;
+
+    @Autowired
+    public void setAccountCachingUtil(AccountCachingUtil accountCachingUtil) {
+        this.accountCachingUtil = accountCachingUtil;
+    }
 
     @Override
     public SellerDto addSeller(NewOrUpdateSellerDto sellerDto) {
@@ -46,7 +53,10 @@ public class SellerServiceImpl implements SellerService {
         Seller seller = accountCachingUtil.getSeller(sellerId);
         seller.setState(Account.State.DELETED);
         sellerRepository.save(seller);
-        Objects.requireNonNull(cacheManager.getCache("account")).invalidate();
+        if (cacheManager.getCache("account") != null) {
+            cacheManager.getCache("account").invalidate();
+        }
+
     }
 
     @Override
@@ -64,7 +74,9 @@ public class SellerServiceImpl implements SellerService {
         seller.setPasswordHash(passwordEncoder.encode(seller.getPasswordHash()));
         seller.setId(sellerId);
         Seller updatedSeller = sellerRepository.save(seller);
-        Objects.requireNonNull(cacheManager.getCache("account")).put(updatedSeller.getId(), updatedSeller);
+        if (cacheManager.getCache("account") != null) {
+            cacheManager.getCache("account").put(updatedSeller.getId(), updatedSeller);
+        }
         return SellerConverter.getSellerDtoFromSeller(updatedSeller);
     }
 
@@ -86,7 +98,9 @@ public class SellerServiceImpl implements SellerService {
         }
         seller.setCardBalance(seller.getCardBalance() + replenishment);
         Seller updatedSeller = sellerRepository.save(seller);
-        Objects.requireNonNull(cacheManager.getCache("account")).put(updatedSeller.getId(), updatedSeller);
+        if (cacheManager.getCache("account") != null) {
+            cacheManager.getCache("account").put(updatedSeller.getId(), updatedSeller);
+        }
     }
 
 

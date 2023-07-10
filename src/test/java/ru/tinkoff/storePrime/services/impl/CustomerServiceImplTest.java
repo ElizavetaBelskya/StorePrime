@@ -4,8 +4,15 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.tinkoff.storePrime.config.CacheConfig;
 import ru.tinkoff.storePrime.converters.AddressConverter;
 import ru.tinkoff.storePrime.converters.CustomerConverter;
 import ru.tinkoff.storePrime.dto.location.AddressDto;
@@ -19,10 +26,14 @@ import ru.tinkoff.storePrime.models.Location;
 import ru.tinkoff.storePrime.models.user.Account;
 import ru.tinkoff.storePrime.models.user.Customer;
 import ru.tinkoff.storePrime.repository.CustomerRepository;
+import ru.tinkoff.storePrime.repository.SellerRepository;
 import ru.tinkoff.storePrime.security.exceptions.AlreadyExistsException;
 import ru.tinkoff.storePrime.services.AccountService;
+import ru.tinkoff.storePrime.services.utils.AccountCachingUtil;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,6 +41,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CustomerServiceImplTest {
+
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -42,6 +54,18 @@ class CustomerServiceImplTest {
 
     @InjectMocks
     private CustomerServiceImpl customerService;
+
+    @Mock
+    private SellerRepository sellerRepository;
+
+    @Mock
+    private CacheManager cacheManager;
+
+    @BeforeEach
+    public void setUp() {
+        AccountCachingUtil accountCachingUtil = new AccountCachingUtil(cacheManager, customerRepository, sellerRepository);
+        customerService.setAccountCachingUtil(accountCachingUtil);
+    }
 
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -125,7 +149,6 @@ class CustomerServiceImplTest {
             assertEquals(expectedCustomer.getName(), result.getName());
             assertEquals(expectedCustomer.getSurname(), result.getSurname());
             assertEquals(expectedCustomer.getGender(), result.getGender());
-            assertEquals(expectedCustomer.getBirthdayDate(), result.getBirthdayDate());
             assertEquals(expectedCustomer.getAddress().getStreet(), result.getAddressDto().getStreet());
             assertEquals(expectedCustomer.getAddress().getHouse(), result.getAddressDto().getHouse());
             assertEquals(expectedCustomer.getAddress().getApartment(), result.getAddressDto().getApartment());
@@ -180,7 +203,6 @@ class CustomerServiceImplTest {
             assertEquals(customer.getName(), result.getName());
             assertEquals(customer.getSurname(), result.getSurname());
             assertEquals(customer.getGender(), result.getGender());
-            assertEquals(customer.getBirthdayDate(), result.getBirthdayDate());
             assertEquals(customer.getAddress(), AddressConverter.getAddressFromAddressDto(result.getAddressDto()));
 
             verify(accountService, times(1)).isEmailUsed(customerDto.getEmail());

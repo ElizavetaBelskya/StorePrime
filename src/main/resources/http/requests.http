@@ -25,7 +25,7 @@ Content-Type: application/json
 POST http://localhost/auth/login
 Content-Type: application/x-www-form-urlencoded
 
-email=example@mail.ru&password=1234qwer
+email=example@mail.ru&password=1234Qwer!!
 ###
 #{
 #  "accessToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQG1haWwucnUiLCJyb2xlIjoiQ1VTVE9NRVIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2F1dGgvbG9naW4iLCJleHAiOjE2ODgyOTM3ODV9.OC6rYjDwIDtrn9oZy9AaqnW9i-4_vIMJ2O9QLUPd07A",
@@ -34,7 +34,7 @@ email=example@mail.ru&password=1234qwer
 
 ###
 PUT http://localhost:80/customer
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQG1haWwucnUiLCJyb2xlIjoiQ1VTVE9NRVIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2F1dGgvbG9naW4iLCJleHAiOjE2ODkwMDI2NjZ9.HuwHJzvQiD3Iwfs19uK6BIGx4nxwHKryuj7Eq48_dR8
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQG1haWwucnUiLCJyb2xlIjoiQ1VTVE9NRVIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2F1dGgvbG9naW4iLCJleHAiOjE2ODkwMTc1NDN9.lHZ7mZf-YNVhuKy2NhN19jjqPh4whPC94G7w17NY4Ew
 Content-Type: application/json
 
 {
@@ -64,7 +64,7 @@ GET http://localhost:80/products/pages?minPrice=10&maxPrice=100&page=-1
 ###
 
 GET http://localhost:80/accounts
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQG1haWwucnUiLCJyb2xlIjoiQ1VTVE9NRVIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2F1dGgvbG9naW4iLCJleHAiOjE2ODkwMDI2NjZ9.HuwHJzvQiD3Iwfs19uK6BIGx4nxwHKryuj7Eq48_dR8
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJleGFtcGxlQG1haWwucnUiLCJyb2xlIjoiQ1VTVE9NRVIiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0L2F1dGgvbG9naW4iLCJleHAiOjE2ODkwMTc1NDN9.lHZ7mZf-YNVhuKy2NhN19jjqPh4whPC94G7w17NY4Ew
 
 ####
 

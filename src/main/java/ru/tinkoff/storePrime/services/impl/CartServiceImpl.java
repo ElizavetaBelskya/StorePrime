@@ -1,6 +1,8 @@
 package ru.tinkoff.storePrime.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.storePrime.dto.cart.CartItemDto;
 import ru.tinkoff.storePrime.exceptions.not_found.CartItemNotFoundException;
@@ -26,9 +28,12 @@ public class CartServiceImpl implements CartService {
 
     private final ProductRepository productRepository;
 
-    private final CustomerRepository customerRepository;
+    private AccountCachingUtil accountCachingUtil;
 
-    private final AccountCachingUtil accountCachingUtil;
+    @Autowired
+    public void setAccountCachingUtil(AccountCachingUtil accountCachingUtil) {
+        this.accountCachingUtil = accountCachingUtil;
+    }
 
     @Override
     public CartItemDto addNewCartItem(Long customerId, Long productId, Integer quantity) {

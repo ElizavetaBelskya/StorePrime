@@ -1,6 +1,8 @@
 package ru.tinkoff.storePrime.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.tinkoff.storePrime.converters.OrderConverter;
@@ -37,7 +39,12 @@ public class OrderServiceImpl implements OrderService {
 
     private final CustomerService customerService;
 
-    private final AccountCachingUtil accountCachingUtil;
+    private AccountCachingUtil accountCachingUtil;
+
+    @Autowired
+    public void setAccountCachingUtil(AccountCachingUtil accountCachingUtil) {
+        this.accountCachingUtil = accountCachingUtil;
+    }
 
     @Override
     @Transactional

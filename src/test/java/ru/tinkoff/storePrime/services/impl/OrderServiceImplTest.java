@@ -4,7 +4,12 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.support.SimpleValueWrapper;
 import ru.tinkoff.storePrime.dto.order.OrderDto;
 import ru.tinkoff.storePrime.exceptions.DisparateDataException;
 import ru.tinkoff.storePrime.exceptions.ForbiddenException;
@@ -19,8 +24,10 @@ import ru.tinkoff.storePrime.models.user.Seller;
 import ru.tinkoff.storePrime.repository.CartRepository;
 import ru.tinkoff.storePrime.repository.CustomerRepository;
 import ru.tinkoff.storePrime.repository.OrderRepository;
+import ru.tinkoff.storePrime.repository.SellerRepository;
 import ru.tinkoff.storePrime.services.CustomerService;
 import ru.tinkoff.storePrime.services.SellerService;
+import ru.tinkoff.storePrime.services.utils.AccountCachingUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,14 +51,27 @@ public class OrderServiceImplTest {
     @Mock
     private OrderRepository orderRepository;
 
-    @InjectMocks
-    private OrderServiceImpl orderService;
+    @Mock
+    private SellerRepository sellerRepository;
+
+    @Mock
+    private CacheManager cacheManager;
 
     @Mock
     private SellerService sellerService;
 
     @Mock
     private CustomerService customerService;
+
+    @InjectMocks
+    private OrderServiceImpl orderService;
+
+    @BeforeEach
+    public void setUp() {
+        AccountCachingUtil accountCachingUtil = new AccountCachingUtil(cacheManager, customerRepository, sellerRepository);
+        orderService.setAccountCachingUtil(accountCachingUtil);
+    }
+
 
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -151,7 +171,6 @@ public class OrderServiceImplTest {
             when(cartRepository.findById(2L)).thenReturn(Optional.of(cartItem2));
             when(cartRepository.findById(3L)).thenReturn(Optional.empty());
 
-            OrderServiceImpl orderService = new OrderServiceImpl(cartRepository, orderRepository, customerRepository, sellerService, customerService);
             assertThrows(CartItemNotFoundException.class, () -> orderService.createNewOrders(customerId, cartItemIdList));
         }
 

@@ -35,14 +35,18 @@ public class AccountServiceImpl implements AccountService {
         Optional<Customer> customer = customerRepository.findByEmail(email);
         if (customer.isPresent()) {
             Customer notNullCustomer = customer.get();
-            Objects.requireNonNull(cacheManager.getCache("account")).put(notNullCustomer.getId(), notNullCustomer);
+            if (cacheManager.getCache("account") != null) {
+                cacheManager.getCache("account").put(notNullCustomer.getId(), notNullCustomer);
+            }
             return notNullCustomer;
         }
 
         Optional<Seller> seller = sellerRepository.findByEmail(email);
         if (seller.isPresent()) {
             Seller notNullSeller = seller.get();
-            Objects.requireNonNull(cacheManager.getCache("account")).put(notNullSeller.getId(), notNullSeller);
+            if (cacheManager.getCache("account") != null) {
+                cacheManager.getCache("account").put(notNullSeller.getId(), notNullSeller);
+            }
             return notNullSeller;
         }
 

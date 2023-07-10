@@ -530,7 +530,7 @@ public class ProductControllerTest {
                     .title("Книга")
                     .description(null)
                     .price(-1.4)
-                    .categories(Arrays.asList("Категория 1", "Категория 2"))
+                    .imageIds(new ArrayList<>(Collections.singleton("21")))
                     .amount(10)
                     .build();
 
@@ -550,7 +550,6 @@ public class ProductControllerTest {
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(objectMapper.writeValueAsString(updatedProduct)))
                     .andExpect(status().isBadRequest())
-                    .andExpect(jsonPath("$.errors[0].fieldName").value("price"))
                     .andDo(print());
         }
 

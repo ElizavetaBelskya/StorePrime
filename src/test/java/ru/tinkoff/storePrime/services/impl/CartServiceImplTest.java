@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.cache.CacheManager;
 import ru.tinkoff.storePrime.dto.cart.CartItemDto;
 import ru.tinkoff.storePrime.exceptions.not_found.CartItemNotFoundException;
 import ru.tinkoff.storePrime.exceptions.not_found.CustomerNotFoundException;
@@ -17,6 +18,8 @@ import ru.tinkoff.storePrime.models.user.Seller;
 import ru.tinkoff.storePrime.repository.CartRepository;
 import ru.tinkoff.storePrime.repository.CustomerRepository;
 import ru.tinkoff.storePrime.repository.ProductRepository;
+import ru.tinkoff.storePrime.repository.SellerRepository;
+import ru.tinkoff.storePrime.services.utils.AccountCachingUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +40,20 @@ class CartServiceImplTest {
     @Mock
     private CustomerRepository customerRepository;
 
+    @Mock
+    private SellerRepository sellerRepository;
+
     @InjectMocks
     private CartServiceImpl cartService;
+
+    @Mock
+    private CacheManager cacheManager;
+
+    @BeforeEach
+    public void setUp() {
+        AccountCachingUtil accountCachingUtil = new AccountCachingUtil(cacheManager, customerRepository, sellerRepository);
+        cartService.setAccountCachingUtil(accountCachingUtil);
+    }
 
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)

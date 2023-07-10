@@ -1,6 +1,8 @@
 package ru.tinkoff.storePrime.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.support.SimpleValueWrapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,7 +39,12 @@ public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
 
-    private final AccountCachingUtil accountCachingUtil;
+    private AccountCachingUtil accountCachingUtil;
+
+    @Autowired
+    public void setAccountCachingUtil(AccountCachingUtil accountCachingUtil) {
+        this.accountCachingUtil = accountCachingUtil;
+    }
 
     @Override
     public CustomerDto addCustomer(NewOrUpdateCustomerDto customerDto) {
@@ -67,7 +74,9 @@ public class CustomerServiceImpl implements CustomerService {
         updateCustomer.setCart(customer.getCart());
         updateCustomer.setId(customerId);
         Customer updatedCustomer = customerRepository.save(updateCustomer);
-        Objects.requireNonNull(cacheManager.getCache("account")).put(updatedCustomer.getId(), updatedCustomer);
+        if (cacheManager.getCache("account") != null) {
+            cacheManager.getCache("account").put(updatedCustomer.getId(), updatedCustomer);
+        }
         return CustomerConverter.getCustomerDtoFromCustomer(updatedCustomer);
     }
 
@@ -76,7 +85,9 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = accountCachingUtil.getCustomer(customerId);
         customer.setState(Account.State.DELETED);
         customerRepository.save(customer);
-        Objects.requireNonNull(cacheManager.getCache("account")).invalidate();
+        if (cacheManager.getCache("account") != null) {
+            cacheManager.getCache("account").invalidate();
+        }
     }
 
     @Override
@@ -87,7 +98,9 @@ public class CustomerServiceImpl implements CustomerService {
         }
         customer.setCardBalance(customer.getCardBalance() + replenishment);
         Customer updatedCustomer = customerRepository.save(customer);
-        Objects.requireNonNull(cacheManager.getCache("account")).put(customer.getId(), updatedCustomer);
+        if (cacheManager.getCache("account") != null) {
+            cacheManager.getCache("account").put(customerId, updatedCustomer);
+        }
         return CustomerConverter.getCustomerDtoFromCustomer(updatedCustomer);
     }
 
