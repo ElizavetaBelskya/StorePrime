@@ -14,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import ru.tinkoff.storePrime.dto.cart.CartItemDto;
+import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
 import ru.tinkoff.storePrime.dto.order.OrderDto;
 import ru.tinkoff.storePrime.dto.product.ProductDto;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
@@ -33,7 +34,19 @@ public interface OrderApi {
                             @Content(mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = OrderDto.class)))
                     }
-            )
+            ),
+            @ApiResponse(responseCode = "404", description = "Товар не найден в корзине",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            ),
+            @ApiResponse(responseCode = "402", description = "Оплата невозможна",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ExceptionDto.class))
+                    }
+            ),
     })
     @PostMapping
     @PreAuthorize("hasAuthority('CUSTOMER')")
