@@ -52,7 +52,7 @@ public interface CartApi {
     @PreAuthorize("hasAuthority('CUSTOMER')")
     ResponseEntity<CartItemDto> addProductToCart(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                                  @PathVariable("productId") Long productId,
-                                                 @RequestParam("quantity") Integer quantity);
+                                                 @Parameter(description = "Количество в корзине", example = "?quantity=1") @RequestParam("quantity") Integer quantity);
 
 
     @Operation(summary = "Получение всех товаров в корзине пользователя")

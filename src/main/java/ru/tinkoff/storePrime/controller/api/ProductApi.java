@@ -269,7 +269,8 @@ public interface ProductApi {
             )
     })
     @GetMapping("/search")
-    ResponseEntity<List<ProductDto>> getProductsByContentString(@RequestParam("content") String content, @RequestParam("category") String category);
+    ResponseEntity<List<ProductDto>> getProductsByContentString(@Parameter(description = "Строка для поиска", example = "?content=dress") @RequestParam("content") String content,
+                                                                @Parameter(description = "Категория для поиска", example = "?category=toys") @RequestParam("category") String category);
 
 
 }
