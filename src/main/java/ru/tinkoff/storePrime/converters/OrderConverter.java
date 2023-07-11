@@ -15,6 +15,7 @@ public class OrderConverter {
         return OrderDto.builder().id(order.getId())
                 .customerId(order.getCustomer().getId())
                 .status(order.getStatus().name())
+                .quantity(order.getQuantity())
                 .product(ProductConverter.getProductDtoFromProduct(order.getProduct()))
                 .build();
     }

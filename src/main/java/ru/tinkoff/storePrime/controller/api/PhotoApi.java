@@ -27,8 +27,7 @@ public interface PhotoApi {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Идентификатор фотографии",
                     content = {
-                            @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = String.class))
+                            @Content(schema = @Schema(implementation = String.class))
                     }
             )
     })
