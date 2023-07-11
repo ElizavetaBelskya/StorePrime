@@ -70,7 +70,7 @@ class CustomerServiceImplTest {
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     @DisplayName("addCustomer() is working")
-    public class addCustomerTest {
+    public class AddCustomerTest {
 
         @Test
         @DisplayName("Should throw an exception when the email is already used")
@@ -215,7 +215,7 @@ class CustomerServiceImplTest {
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     @DisplayName("updateCustomer() is working")
-    public class updateCustomerTest {
+    public class UpdateCustomerTest {
 
         @Test
         @DisplayName("Should throw an exception when the customer is not found")
@@ -354,7 +354,7 @@ class CustomerServiceImplTest {
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     @DisplayName("deleteCustomer() is working")
-    public class deleteCustomerTest {
+    public class DeleteCustomerTest {
         @Test
         @DisplayName("Should throw an exception when the customer id does not exist")
         void delete_customer_when_customer_id_does_not_exist() {
@@ -408,7 +408,7 @@ class CustomerServiceImplTest {
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     @DisplayName("updateCardBalance() is working")
-    public class updateCardBalanceTest {
+    public class UpdateCardBalanceTest {
 
         @Test
         @DisplayName("Should throw an exception when the customer is not found")

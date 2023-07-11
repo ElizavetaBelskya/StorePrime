@@ -24,25 +24,26 @@ public class MongoConfig {
     @Value("${spring.data.mongodb.password}")
     private String mongoPassword;
 
+    private final String DATABASE = "admin";
+
     @Bean
     public MongoClient mongoClient() {
         ConnectionString connectionString = new ConnectionString(mongoUri);
         MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
-                .credential(MongoCredential.createCredential(mongoUsername, "admin", mongoPassword.toCharArray()))
+                .credential(MongoCredential.createCredential(mongoUsername, DATABASE, mongoPassword.toCharArray()))
                 .build();
         return MongoClients.create(mongoClientSettings);
     }
 
     @Bean
     public MongoDatabaseFactory mongoDbFactory() {
-        return new SimpleMongoClientDatabaseFactory(mongoClient(), "admin");
+        return new SimpleMongoClientDatabaseFactory(mongoClient(), DATABASE);
     }
 
     @Bean
     public MongoTemplate mongoTemplate() {
         return new MongoTemplate(mongoDbFactory());
     }
-
 
 }

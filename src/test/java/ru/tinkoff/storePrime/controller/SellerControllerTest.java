@@ -79,7 +79,7 @@ public class SellerControllerTest {
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     @DisplayName("addSeller() is working")
-    public class addSellerTest {
+    public class AddSellerTest {
 
         @Test
         @DisplayName("Should throw an exception when the email is already used")
@@ -155,7 +155,7 @@ public class SellerControllerTest {
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     @DisplayName("updateSeller() is working")
-    public class updateSellerTest {
+    public class UpdateSellerTest {
 
         @Test
         @DisplayName("Should throw an exception when the email is already used")
@@ -211,7 +211,7 @@ public class SellerControllerTest {
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     @DisplayName("getSellerById() is working")
-    public class getSellerByIdTest {
+    public class GetSellerByIdTest {
 
         @Test
         @DisplayName("Should a new seller")
@@ -249,7 +249,7 @@ public class SellerControllerTest {
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     @DisplayName("getThisSeller() is working")
-    public class getThisSellerTest {
+    public class GetThisSellerTest {
         @Test
         @DisplayName("Should a new seller")
         public void get_seller_success() throws Exception {
@@ -274,7 +274,7 @@ public class SellerControllerTest {
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     @DisplayName("deleteSeller() is working")
-    public class deleteSellerTest {
+    public class DeleteSellerTest {
         @Test
         @DisplayName("Should delete a new seller")
         public void delete_seller_success() throws Exception {
