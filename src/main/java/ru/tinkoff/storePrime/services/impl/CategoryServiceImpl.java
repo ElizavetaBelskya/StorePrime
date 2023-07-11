@@ -2,6 +2,7 @@ package ru.tinkoff.storePrime.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.tinkoff.storePrime.dto.product.CategoryDto;
 import ru.tinkoff.storePrime.models.Category;
 import ru.tinkoff.storePrime.repository.CategoryRepository;
 import ru.tinkoff.storePrime.services.CategoryService;
@@ -16,7 +17,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public List<String> getAllCategoryNames() {
-        return categoryRepository.findAll().stream().map(Category::getName).collect(Collectors.toList());
+    public List<CategoryDto> getAllCategories() {
+        return categoryRepository.findAll().stream().map(x -> new CategoryDto(x.getName(), x.getImageId())).collect(Collectors.toList());
     }
 }

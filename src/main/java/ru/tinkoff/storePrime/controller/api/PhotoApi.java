@@ -36,7 +36,7 @@ public interface PhotoApi {
             )
     })
     @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @PreAuthorize("hasAuthority('SELLER')")
+//    @PreAuthorize("hasAuthority('SELLER')")
     ResponseEntity<String> addPhoto(@RequestBody MultipartFile image) throws IOException;
 
 

@@ -37,8 +37,13 @@ public class ProductController implements ProductApi {
     }
 
     @Override
-    public ResponseEntity<List<ProductDto>> getProductsByContentString(String content) {
-        return ResponseEntity.ok().body(productService.getAllProductsByContentString(content));
+    public ResponseEntity<List<ProductDto>> getProductsByContentString(String content, String category) {
+        if (category == null) {
+            return ResponseEntity.ok().body(productService.getAllProductsByContentString(content));
+        } else {
+            return ResponseEntity.ok().body(productService.getAllProductsByContentStringAndCategory(content, category));
+        }
+
     }
 
     @Override

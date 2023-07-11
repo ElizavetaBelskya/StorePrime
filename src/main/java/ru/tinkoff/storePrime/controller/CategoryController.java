@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import ru.tinkoff.storePrime.controller.api.CategoryApi;
+import ru.tinkoff.storePrime.dto.product.CategoryDto;
 import ru.tinkoff.storePrime.services.CategoryService;
 
 import java.util.List;
@@ -15,8 +16,8 @@ public class CategoryController implements CategoryApi {
     private final CategoryService categoryService;
 
     @Override
-    public ResponseEntity<List<String>> getAllCategories() {
-        return ResponseEntity.ok(categoryService.getAllCategoryNames());
+    public ResponseEntity<List<CategoryDto>> getAllCategories() {
+        return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
 }

@@ -46,5 +46,4 @@ public class CustomerController implements CustomerApi {
         return ResponseEntity.ok(customerService.updateCardBalance(customerId, replenishment));
     }
 
-
 }

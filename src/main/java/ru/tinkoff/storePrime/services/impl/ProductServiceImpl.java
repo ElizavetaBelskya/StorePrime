@@ -175,5 +175,17 @@ public class ProductServiceImpl implements ProductService {
         return ProductConverter.getProductDtoFromProduct(productRepository.findRandomProducts(amount));
     }
 
+    @Override
+    public List<ProductDto> getAllProductsByContentStringAndCategory(String content, String category) {
+        Optional<Category> categoryToSearch = categoryRepository.findByName(category);
+        Long categoryId;
+        if (categoryToSearch.isPresent()) {
+            categoryId = categoryToSearch.get().getId();
+        } else {
+            throw new DisparateDataException("Эта категория не существует");
+        }
+        return ProductConverter.getProductDtoFromProduct(productRepository.findAllByContentAndCategory("%" + content + "%", categoryId));
+    }
+
 
 }

@@ -269,11 +269,7 @@ public interface ProductApi {
             )
     })
     @GetMapping("/search")
-    ResponseEntity<List<ProductDto>> getProductsByContentString(@RequestParam("content") String content);
-
-
-
-
+    ResponseEntity<List<ProductDto>> getProductsByContentString(@RequestParam("content") String content, @RequestParam("category") String category);
 
 
 }

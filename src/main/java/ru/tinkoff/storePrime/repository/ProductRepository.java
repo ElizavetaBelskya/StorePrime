@@ -137,7 +137,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         """)
     Page<Product> findPageByCategory(
             PageRequest pageRequest,
-            Collection<Category> categories
+            @Param("categories") Collection<Category> categories
     );
 
 
@@ -160,4 +160,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT * FROM product ORDER BY random() LIMIT :amount", nativeQuery = true)
     List<Product> findRandomProducts(@Param("amount") int amount);
 
+    @Query(nativeQuery = true, value = """
+        select * from product inner join product_category on product.id = product_category.product_id where product.title ilike :content and product_category.category_id = :categoryId
+        """)
+    List<Product> findAllByContentAndCategory(@Param("content") String content, @Param("categoryId") Long categoryId);
 }

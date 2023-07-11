@@ -26,4 +26,6 @@ public interface ProductService {
     ProductDto getOneProduct();
 
     List<ProductDto> getRandomProducts(Integer amount);
+
+    List<ProductDto> getAllProductsByContentStringAndCategory(String content, String category);
 }

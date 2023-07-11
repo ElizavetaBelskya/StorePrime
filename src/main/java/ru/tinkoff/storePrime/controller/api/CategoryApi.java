@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tags;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.tinkoff.storePrime.dto.product.CategoryDto;
 import ru.tinkoff.storePrime.dto.product.ProductDto;
 import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
 
@@ -27,7 +28,7 @@ public interface CategoryApi {
             @ApiResponse(responseCode = "200", description = "Категории найдены",
                     content = {
                             @Content(mediaType = "application/json",
-                                    array = @ArraySchema(schema = @Schema(implementation = String.class)))
+                                    array = @ArraySchema(schema = @Schema(implementation = CategoryDto.class)))
                     }
             ),
             @ApiResponse(responseCode = "404", description = "Категории не найдены",
@@ -38,7 +39,7 @@ public interface CategoryApi {
             )
     })
     @GetMapping("/all")
-    ResponseEntity<List<String>> getAllCategories();
+    ResponseEntity<List<CategoryDto>> getAllCategories();
 
 
 }
