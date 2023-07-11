@@ -16,7 +16,6 @@ import ru.tinkoff.storePrime.security.exceptions.AlreadyExistsException;
 import ru.tinkoff.storePrime.validation.responses.ValidationErrorDto;
 import ru.tinkoff.storePrime.validation.responses.ValidationErrorsDto;
 
-import javax.naming.AuthenticationException;
 
 import java.util.ArrayList;
 import java.util.List;
