@@ -53,6 +53,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
         customerDto.setPasswordHash(passwordEncoder.encode(customerDto.getPasswordHash()));
         Customer customer = CustomerConverter.getCustomerFromNewOrUpdateCustomerDto(customerDto);
+        customer.setCardBalance(0.0);
         customer = customerRepository.save(customer);
         return CustomerConverter.getCustomerDtoFromCustomer(customer);
     }

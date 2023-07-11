@@ -34,7 +34,7 @@ public class NewOrUpdateSellerDto {
     @NotBlank(message = "{seller.name.notBlank}")
     @Size(min = 1, max = 100, message = "{seller.name.size}")
     @Pattern(regexp = "^[^0-9!@#$%^&*()+=|{}\\[\\]<>?/~`\\s]+$", message = "{seller.name.pattern}")
-    @Schema(description = "Название", example = "Наша компания")
+    @Schema(description = "Название", example = "Тинькофф")
     private String name;
 
     @Schema(description = "Описание компании", example = "Наша компания является лидером на рынке")

@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ru.tinkoff.storePrime.dto.base.LongIdDto;
+import ru.tinkoff.storePrime.dto.location.AddressDto;
+import ru.tinkoff.storePrime.dto.location.LocationDto;
 import ru.tinkoff.storePrime.models.Product;
 
 import java.util.List;
@@ -27,6 +29,11 @@ public class ProductDto extends LongIdDto {
 
     @Schema(description = "Идентификатор продавца товара")
     private Long sellerId;
+
+    @Schema(description = "Имя продавца товара")
+    private String sellerName;
+
+    private LocationDto sellerLocation;
 
     @Schema(description = "Категории товара")
     private List<String> categories;

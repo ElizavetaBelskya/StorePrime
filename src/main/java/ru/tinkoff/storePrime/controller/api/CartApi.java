@@ -19,6 +19,7 @@ import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
 import ru.tinkoff.storePrime.dto.product.ProductDto;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @Tags(value = {
@@ -52,12 +53,13 @@ public interface CartApi {
     @PreAuthorize("hasAuthority('CUSTOMER')")
     ResponseEntity<CartItemDto> addProductToCart(@Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetailsImpl,
                                                  @PathVariable("productId") Long productId,
-                                                 @Parameter(description = "Количество в корзине", example = "?quantity=1") @RequestParam("quantity") Integer quantity);
+                                                 @Parameter(description = "Количество в корзине", example = "1") @RequestParam("quantity")
+                                                 @Min(1) Integer quantity);
 
 
     @Operation(summary = "Получение всех товаров в корзине пользователя")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Добавленный в корзину товар",
+            @ApiResponse(responseCode = "200", description = "Добавленные в корзину товары",
                     content = {
                             @Content(mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = CartItemDto.class)))

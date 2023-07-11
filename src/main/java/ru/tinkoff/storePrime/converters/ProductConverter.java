@@ -1,5 +1,6 @@
 package ru.tinkoff.storePrime.converters;
 
+import ru.tinkoff.storePrime.dto.location.LocationDto;
 import ru.tinkoff.storePrime.dto.product.NewOrUpdateProductDto;
 import ru.tinkoff.storePrime.dto.product.ProductDto;
 import ru.tinkoff.storePrime.models.Product;
@@ -34,7 +35,10 @@ public class ProductConverter {
                         product.getCategories().stream()
                                 .map(x -> x.getName())
                                 .collect(Collectors.toList())
-                ).build();
+                )
+                .sellerName(product.getSeller().getName())
+                .sellerLocation(LocationDto.from(product.getSeller().getLocation()))
+                .build();
     }
 
     public static List<ProductDto> getProductDtoFromProduct(List<Product> products) {

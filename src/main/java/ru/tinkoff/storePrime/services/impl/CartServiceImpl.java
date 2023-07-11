@@ -55,7 +55,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public List<CartItemDto> getCustomerCart(Long customerId) {
-        return CartItemDto.from(accountCachingUtil.getCustomer(customerId).getCart());
+        return CartItemDto.from(cartRepository.findByCustomer_Id(customerId));
     }
 
     @Override

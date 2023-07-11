@@ -21,7 +21,7 @@ public class SellerConverter {
                 .state(Account.State.NOT_CONFIRMED)
                 .phoneNumber(sellerDto.getPhoneNumber())
                 .passwordHash(sellerDto.getPasswordHash())
-                .cardBalance(0.0).build();
+                .build();
     }
 
     public static SellerDto getSellerDtoFromSeller(Seller seller) {

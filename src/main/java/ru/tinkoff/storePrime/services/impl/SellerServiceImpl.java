@@ -42,6 +42,7 @@ public class SellerServiceImpl implements SellerService {
     public SellerDto addSeller(NewOrUpdateSellerDto sellerDto) {
         Seller newSeller = SellerConverter.getSellerFromNewOrUpdateSellerDto(sellerDto);
         newSeller.setPasswordHash(passwordEncoder.encode(newSeller.getPasswordHash()));
+        newSeller.setCardBalance(0.0);
         Seller seller = sellerRepository.save(newSeller);
         return SellerConverter.getSellerDtoFromSeller(seller);
     }
@@ -67,10 +68,11 @@ public class SellerServiceImpl implements SellerService {
         if (Account.State.DELETED.equals(seller.getState())) {
             throw new SellerNotFoundException("Продавец с id " + sellerId + " удален");
         }
-        seller = SellerConverter.getSellerFromNewOrUpdateSellerDto(updatedSellerDto);
-        seller.setPasswordHash(passwordEncoder.encode(seller.getPasswordHash()));
-        seller.setId(sellerId);
-        Seller updatedSeller = sellerRepository.save(seller);
+        Seller newSeller = SellerConverter.getSellerFromNewOrUpdateSellerDto(updatedSellerDto);
+        newSeller.setPasswordHash(passwordEncoder.encode(seller.getPasswordHash()));
+        newSeller.setId(sellerId);
+        newSeller.setCardBalance(seller.getCardBalance());
+        Seller updatedSeller = sellerRepository.save(newSeller);
         if (cacheManager.getCache("account") != null) {
             cacheManager.getCache("account").put(updatedSeller.getId(), updatedSeller);
         }

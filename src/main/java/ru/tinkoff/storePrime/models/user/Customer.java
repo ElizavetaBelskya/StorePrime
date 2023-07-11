@@ -35,7 +35,7 @@ public class Customer extends Account {
 
     private LocalDate birthdayDate;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
     private List<CartItem> cart;
 
     @Embedded

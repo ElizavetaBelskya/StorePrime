@@ -12,7 +12,7 @@ import ru.tinkoff.storePrime.dto.base.LongIdDto;
 @NoArgsConstructor
 @SuperBuilder
 @Schema(description = "Категория")
-public class CategoryDto extends LongIdDto {
+public class CategoryDto {
 
     @Schema(description = "Название категории", example = "Посуда")
     private String name;
