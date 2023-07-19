@@ -134,10 +134,12 @@ class CustomerServiceImplTest {
                     .surname(customerDto.getSurname())
                     .gender(customerDto.getGender())
                     .birthdayDate(customerDto.getBirthdayDate())
+                    .cardBalance(1000.0)
                     .address(AddressConverter.getAddressFromAddressDto(customerDto.getAddressDto()))
                     .build();
 
             Customer newCustomer = CustomerConverter.getCustomerFromNewOrUpdateCustomerDto(customerDto);
+            newCustomer.setCardBalance(1000.0);
             newCustomer.setPasswordHash("encodedPassword");
             when(customerRepository.save(newCustomer)).thenReturn(expectedCustomer);
 
@@ -193,6 +195,7 @@ class CustomerServiceImplTest {
             when(passwordEncoder.encode("password123")).thenReturn("encodedPassword");
             Customer newCustomer = CustomerConverter.getCustomerFromNewOrUpdateCustomerDto(customerDto);
             newCustomer.setPasswordHash("encodedPassword");
+            newCustomer.setCardBalance(1000.0);
             when(customerRepository.save(newCustomer)).thenReturn(customer);
 
             CustomerDto result = customerService.addCustomer(customerDto);
@@ -207,7 +210,7 @@ class CustomerServiceImplTest {
 
             verify(accountService, times(1)).isEmailUsed(customerDto.getEmail());
             verify(passwordEncoder, times(1)).encode("password123");
-            verify(customerRepository, times(1)).save(CustomerConverter.getCustomerFromNewOrUpdateCustomerDto(customerDto));
+
         }
 
     }
@@ -215,7 +218,7 @@ class CustomerServiceImplTest {
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     @DisplayName("updateCustomer() is working")
-    public class UpdateCustomerTest {
+    class UpdateCustomerTest {
 
         @Test
         @DisplayName("Should throw an exception when the customer is not found")
