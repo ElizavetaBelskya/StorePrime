@@ -17,6 +17,7 @@ import ru.tinkoff.storePrime.exceptions.not_found.CartItemNotFoundException;
 import ru.tinkoff.storePrime.exceptions.not_found.CustomerNotFoundException;
 import ru.tinkoff.storePrime.exceptions.not_found.OrderNotFoundException;
 import ru.tinkoff.storePrime.models.CartItem;
+import ru.tinkoff.storePrime.models.Location;
 import ru.tinkoff.storePrime.models.Order;
 import ru.tinkoff.storePrime.models.Product;
 import ru.tinkoff.storePrime.models.user.Customer;
@@ -76,7 +77,7 @@ public class OrderServiceImplTest {
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     @DisplayName("createNewOrders() is working")
-    public class CreateNewOrdersTest {
+    class CreateNewOrdersTest {
 
         @Test
         @DisplayName("Should throw an exception when customer is not found")
@@ -181,12 +182,16 @@ public class OrderServiceImplTest {
             List<Long> cartItemIdList = Arrays.asList(1L, 2L, 3L);
 
             Customer customer = Customer.builder().id(customerId).build();
+            Location location = Location.builder()
+                            .country("Россия")
+                            .city("Москва")
+                            .build();
 
             Product product1 = Product.builder()
                     .id(1L)
                     .amount(10)
                     .price(100.0)
-                    .seller(Seller.builder().id(1L).build())
+                    .seller(Seller.builder().id(1L).location(location).build())
                     .categories(new ArrayList<>())
                     .build();
 
@@ -194,7 +199,7 @@ public class OrderServiceImplTest {
                     .id(2L)
                     .amount(5)
                     .price(120.0)
-                    .seller(Seller.builder().id(2L).build())
+                    .seller(Seller.builder().id(2L).location(location).build())
                     .categories(new ArrayList<>())
                     .build();
 
@@ -202,7 +207,7 @@ public class OrderServiceImplTest {
                     .id(3L)
                     .amount(3)
                     .price(30.0)
-                    .seller(Seller.builder().id(3L).build())
+                    .seller(Seller.builder().id(3L).location(location).build())
                     .categories(new ArrayList<>())
                     .build();
 
@@ -321,17 +326,18 @@ public class OrderServiceImplTest {
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     @DisplayName("getAllOrdersOfCustomer() is working")
-    public class GetAllOrdersOfCustomerTest {
+    class GetAllOrdersOfCustomerTest {
 
         @Test
         @DisplayName("Should return all orders of a customer when valid customer id is provided")
         void get_all_orders_of_customer_success() {
             Long customerId = 1L;
+            Location location = Location.builder().country("Россия").city("Казань").build();
             List<Order> orders = Arrays.asList(
-                    Order.builder().id(1L).status(Order.Status.CREATED).product(Product.builder().id(1L).seller(Seller.builder().id(2L).build()).categories(new ArrayList<>()).build()).quantity(2).customer(Customer.builder().id(customerId).build()).build(),
-                    Order.builder().id(2L).status(Order.Status.DELIVERED).product(Product.builder().id(2L).seller(Seller.builder().id(2L).build()).categories(new ArrayList<>()).build()).quantity(1).customer(
+                    Order.builder().id(1L).status(Order.Status.CREATED).product(Product.builder().id(1L).seller(Seller.builder().id(2L).location(location).build()).categories(new ArrayList<>()).build()).quantity(2).customer(Customer.builder().id(customerId).build()).build(),
+                    Order.builder().id(2L).status(Order.Status.DELIVERED).product(Product.builder().id(2L).seller(Seller.builder().id(2L).location(location).build()).categories(new ArrayList<>()).build()).quantity(1).customer(
                             Customer.builder().id(customerId).build()).build(),
-                    Order.builder().id(3L).status(Order.Status.CANCELLED).product(Product.builder().id(3L).seller(Seller.builder().id(22L).build()).categories(new ArrayList<>()).build()).quantity(3).customer(
+                    Order.builder().id(3L).status(Order.Status.CANCELLED).product(Product.builder().id(3L).seller(Seller.builder().id(22L).location(location).build()).categories(new ArrayList<>()).build()).quantity(3).customer(
                             Customer.builder().id(customerId).build()).build()
             );
 
@@ -394,7 +400,17 @@ public class OrderServiceImplTest {
             Order order = Order.builder()
                     .id(orderId)
                     .status(Order.Status.CREATED)
-                    .product(Product.builder().id(1L).categories(new ArrayList<>()).seller(Seller.builder().id(sellerId).build()).build())
+                    .product(Product.builder()
+                            .id(1L).categories(new ArrayList<>())
+                            .seller(
+                                    Seller.builder()
+                                            .id(sellerId)
+                                            .location(
+                                                    Location.builder()
+                                                            .country("Россия")
+                                                            .city("Москва")
+                                                            .build())
+                                            .build()).build())
                     .quantity(2)
                     .customer(Customer.builder().id(1L).build())
                     .build();
@@ -487,7 +503,16 @@ public class OrderServiceImplTest {
             Order order = Order.builder()
                     .id(orderId)
                     .status(Order.Status.CREATED)
-                    .product(Product.builder().id(1L).seller(Seller.builder().id(1L).build())
+                    .product(Product.builder().id(1L)
+                            .seller(
+                            Seller.builder()
+                                    .id(1L)
+                                    .location(
+                                            Location.builder()
+                                                    .country("Россия")
+                                                    .city("Москва")
+                                                    .build())
+                                    .build())
                             .categories(new ArrayList<>()).price(300.0)
                             .build())
                     .quantity(2)
@@ -535,11 +560,12 @@ public class OrderServiceImplTest {
         @DisplayName("Should return all cancelled orders of a customer by given customer id")
         void get_cancelled_orders_by_customerId_success() {
             Long customerId = 1L;
+            Location location = Location.builder().country("Россия").city("Москва").build();
             List<Order> cancelledOrders = Arrays.asList(
-                    Order.builder().id(1L).status(Order.Status.CANCELLED).product(Product.builder().id(1L).seller(Seller.builder().id(2L).build()).categories(new ArrayList<>()).build()).quantity(2).customer(Customer.builder().id(customerId).build()).build(),
-                    Order.builder().id(2L).status(Order.Status.CANCELLED).product(Product.builder().id(2L).seller(Seller.builder().id(2L).build()).categories(new ArrayList<>()).build()).quantity(1).customer(
+                    Order.builder().id(1L).status(Order.Status.CANCELLED).product(Product.builder().id(1L).seller(Seller.builder().id(2L).location(location).build()).categories(new ArrayList<>()).build()).quantity(2).customer(Customer.builder().id(customerId).build()).build(),
+                    Order.builder().id(2L).status(Order.Status.CANCELLED).product(Product.builder().id(2L).seller(Seller.builder().id(2L).location(location).build()).categories(new ArrayList<>()).build()).quantity(1).customer(
                             Customer.builder().id(customerId).build()).build(),
-                    Order.builder().id(3L).status(Order.Status.CANCELLED).product(Product.builder().id(3L).seller(Seller.builder().id(22L).build()).categories(new ArrayList<>()).build()).quantity(3).customer(
+                    Order.builder().id(3L).status(Order.Status.CANCELLED).product(Product.builder().id(3L).seller(Seller.builder().id(22L).location(location).build()).categories(new ArrayList<>()).build()).quantity(3).customer(
                             Customer.builder().id(customerId).build()).build()
             );
 

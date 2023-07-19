@@ -12,6 +12,7 @@ import ru.tinkoff.storePrime.exceptions.not_found.CartItemNotFoundException;
 import ru.tinkoff.storePrime.exceptions.not_found.CustomerNotFoundException;
 import ru.tinkoff.storePrime.exceptions.not_found.ProductNotFoundException;
 import ru.tinkoff.storePrime.models.CartItem;
+import ru.tinkoff.storePrime.models.Location;
 import ru.tinkoff.storePrime.models.Product;
 import ru.tinkoff.storePrime.models.user.Customer;
 import ru.tinkoff.storePrime.models.user.Seller;
@@ -113,7 +114,7 @@ class CartServiceImplTest {
             Product product = Product.builder()
                     .id(productId)
                     .categories(new ArrayList<>())
-                    .seller(Seller.builder().id(1L).build())
+                    .seller(Seller.builder().id(1L).location(Location.builder().country("Россия").city("Казань").build()).build())
                     .build();
 
             CartItem existingCartItem = CartItem.builder()
@@ -146,6 +147,12 @@ class CartServiceImplTest {
                     .id(productId)
                     .seller(Seller.builder().id(1L).build())
                     .categories(new ArrayList<>())
+                    .seller(Seller.builder().id(1L).location(
+                            Location.builder()
+                                    .city("Москва")
+                                    .country("Россия")
+                                    .build()
+                    ).build())
                     .build();
 
             CartItem existingCartItem = CartItem.builder()
@@ -174,23 +181,7 @@ class CartServiceImplTest {
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     @DisplayName("getCustomerCart() is working")
-    public class GetCustomerCartTest {
-
-        @Test
-        @DisplayName("Should throw an exception when the customer id is not found")
-        void get_customer_cart_when_customerId_is_not_found() {
-            Long customerId = 1L;
-
-            when(customerRepository.findById(customerId)).thenReturn(Optional.empty());
-
-            assertThrows(CustomerNotFoundException.class, () -> {
-                cartService.getCustomerCart(customerId);
-            });
-
-            verify(customerRepository, times(1)).findById(customerId);
-            verifyNoMoreInteractions(customerRepository);
-        }
-
+    class GetCustomerCartTest {
 
         @Test
         @DisplayName("Should return the customer's cart when the customer id is valid")
@@ -203,10 +194,24 @@ class CartServiceImplTest {
             cartItems.add(CartItem.builder()
                     .id(1L)
                     .customer(customer)
-                    .product(Product.builder().id(productId).categories(new ArrayList<>()).seller(Seller.builder().id(sellerId).build()).build()).quantity(3)
+                    .product(Product
+                            .builder()
+                            .id(productId)
+                            .categories(new ArrayList<>())
+                            .seller(
+                                    Seller.builder()
+                                            .id(sellerId)
+                                            .location(
+                                                    Location.builder()
+                                                    .country("Россия")
+                                                            .city("Казань")
+                                                    .build())
+                                            .build())
+                            .build())
+                    .quantity(3)
                     .build());
             customer.setCart(cartItems);
-            when(customerRepository.findById(customerId)).thenReturn(Optional.of(customer));
+            when(cartRepository.findByCustomer_Id(customerId)).thenReturn(cartItems);
             Assert.assertEquals(CartItemDto.from(cartItems), cartService.getCustomerCart(customerId));
         }
 

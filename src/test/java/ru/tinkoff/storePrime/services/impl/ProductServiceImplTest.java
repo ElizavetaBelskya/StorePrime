@@ -11,6 +11,7 @@ import ru.tinkoff.storePrime.exceptions.ForbiddenException;
 import ru.tinkoff.storePrime.exceptions.not_found.ProductNotFoundException;
 import ru.tinkoff.storePrime.exceptions.not_found.SellerNotFoundException;
 import ru.tinkoff.storePrime.models.Category;
+import ru.tinkoff.storePrime.models.Location;
 import ru.tinkoff.storePrime.models.Product;
 import ru.tinkoff.storePrime.models.user.Account;
 import ru.tinkoff.storePrime.models.user.Seller;
@@ -45,7 +46,7 @@ class ProductServiceImplTest {
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     @DisplayName("getProductById() is working")
-    public class GetProductByIdTest {
+    class GetProductByIdTest {
         @Test
         @DisplayName("Should throw ProductNotFoundException when the product id does not exist")
         void get_product_by_id_when_product_id_does_not_exist() {
@@ -62,13 +63,14 @@ class ProductServiceImplTest {
         @Test
         @DisplayName("Should return the product when the product id exists")
         void get_product_by_id_success() {
+            Location location = Location.builder().country("Россия").city("Москва").build();
             Long productId = 123L;
             Product product = new Product();
             product.setId(productId);
             product.setTitle("Test Product");
             product.setDescription("This is a test product");
             product.setPrice(19.99);
-            product.setSeller(new Seller());
+            product.setSeller(Seller.builder().location(location).build());
             product.setCategories(new ArrayList<>());
             when(productRepository.findById(productId)).thenReturn(Optional.of(product));
 
@@ -89,7 +91,7 @@ class ProductServiceImplTest {
     @Nested
     @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
     @DisplayName("getProductById() is working")
-    public class AddProductTest {
+    class AddProductTest {
         @Test
         @DisplayName("Should throw a SellerNotFoundException when the seller does not exist")
         void add_product_when_seller_does_not_exist() {
@@ -113,6 +115,7 @@ class ProductServiceImplTest {
         @DisplayName("Should return a ProductDto when a product is added successfully")
         void add_product_success() {
             Long sellerId = 1L;
+            Location location = Location.builder().country("Россия").city("Москва").build();
             NewOrUpdateProductDto newProductDto = NewOrUpdateProductDto.builder()
                     .title("Test Product")
                     .description("This is a test product")
@@ -123,6 +126,7 @@ class ProductServiceImplTest {
 
             Seller seller = new Seller();
             seller.setId(sellerId);
+            seller.setLocation(location);
             when(sellerRepository.findById(sellerId)).thenReturn(Optional.of(seller));
             when(productRepository.save(any(Product.class))).thenAnswer(invocation -> {
                 Product savedProduct = invocation.getArgument(0);
@@ -147,6 +151,7 @@ class ProductServiceImplTest {
         @Test
         @DisplayName("Should set the categories of the product correctly when adding a product")
         void add_product_should_set_categories_correctly() {
+            Location location = Location.builder().country("Россия").city("Москва").build();
             Long sellerId = 1L;
             NewOrUpdateProductDto newProductDto = new NewOrUpdateProductDto();
             newProductDto.setTitle("Test Product");
@@ -157,6 +162,7 @@ class ProductServiceImplTest {
 
             Seller seller = new Seller();
             seller.setId(sellerId);
+            seller.setLocation(location);
             when(sellerRepository.findById(sellerId)).thenReturn(Optional.of(seller));
 
             Category category1 = new Category();
@@ -250,6 +256,7 @@ class ProductServiceImplTest {
         @Test
         @DisplayName("Should update the product when the product id and seller id are valid and the seller owns the product")
         void update_product_successful() {
+            Location location = Location.builder().country("Россия").city("Москва").build();
             Long productId = 123L;
             Long sellerId = 1L;
             NewOrUpdateProductDto updatedProductDto = NewOrUpdateProductDto.builder()
@@ -265,6 +272,7 @@ class ProductServiceImplTest {
                     .name("Tinkoff")
                     .email("email@mail.ru")
                     .cardBalance(66.0)
+                    .location(location)
                     .role(Account.Role.SELLER)
                     .state(Account.State.CONFIRMED)
                     .build();

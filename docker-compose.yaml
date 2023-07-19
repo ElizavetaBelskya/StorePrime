@@ -58,12 +58,38 @@ services:
       environment:
         - "MONGO_INITDB_ROOT_USERNAME=mongoadmin"
         - "MONGO_INITDB_ROOT_PASSWORD=1234"
+  zookeeper:
+    image: zookeeper
+    ports:
+      - '2181:2181'
+    container_name: zookeeper
+    networks:
+      - main
+    environment:
+      - "ZOOKEEPER_CLIENT_PORT=2181"
+      - "ZOOKEEPER_TICK_TIME=2000"
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - '9092:9092'
+    container_name: kafka
+    networks:
+      - main
+    environment:
+      - "KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181"
+      - "KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092"
+      - "KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1"
+    depends_on:
+      - zookeeper
 
 volumes:
   market_postgres_volume:
     external: true
   market_redis_volume:
     external: true
+  market_kafka_volume:
+    external: true
+
 
 networks:
   main:
