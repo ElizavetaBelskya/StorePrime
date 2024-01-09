@@ -7,7 +7,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.tinkoff.storePrime.chat.KafkaChatProducer;
 import ru.tinkoff.storePrime.dto.ChatDto;
 import ru.tinkoff.storePrime.dto.chat.ChatMessageDto;
 import ru.tinkoff.storePrime.models.user.Account;
@@ -20,7 +19,6 @@ import java.util.List;
 @RequestMapping("/chat")
 public class MessageController {
 
-    private final KafkaChatProducer kafkaChatProducer;
 
     @PreAuthorize("hasAnyAuthority('SELLER', 'CUSTOMER')")
     public ResponseEntity<ChatMessageDto> sendMessage(@RequestBody ChatMessageDto chatMessageDto,
@@ -29,7 +27,6 @@ public class MessageController {
         Account.Role role = userDetailsImpl.getAccount().getRole();
         chatMessageDto.setSenderId(senderId);
         chatMessageDto.setSenderRole(role.toString());
-        kafkaChatProducer.sendMessage(chatMessageDto);
         return ResponseEntity.ok(chatMessageDto);
     }
 
