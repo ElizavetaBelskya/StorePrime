@@ -1,11 +1,3 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
 name: auto
 
 on:
@@ -21,7 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set up JDK 17
+    - name: Set up JDK 17 and Maven
       uses: actions/setup-java@v3
       with:
         java-version: '17'
@@ -29,4 +21,19 @@ jobs:
         cache: maven
     - name: Test
       run: mvn test
+
+  prepare-environment:
+    runs-on: self-hosted
+    needs: test
+    steps:
+      - name: docker compose down
+        run: docker compose down
+  deploy:
+    runs-on: self-hosted
+    needs: prepare-environment
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v3
+      - name: deploy
+        run: ./deploy.sh
 
