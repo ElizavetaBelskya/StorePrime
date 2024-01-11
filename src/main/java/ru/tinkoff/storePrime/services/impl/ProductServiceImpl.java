@@ -97,26 +97,16 @@ public class ProductServiceImpl implements ProductService {
             throw new DisparateDataException("Минимальная цена больше максимальной");
         }
         Optional<Category> categoryToSearch = categoryRepository.findByName(category);
-        Collection<Category> categories = Collections.emptyList();
+        Collection<Category> categories;
         if (categoryToSearch.isPresent()) {
             categories = Collections.singleton(categoryToSearch.get());
         } else {
             throw new DisparateDataException("Эта категория не существует");
         }
-        if (sellerId != null && maxPrice != null) {
-            if (!categories.isEmpty()) {
-                return ProductConverter.getProductDtoFromProduct(productRepository.findBySellerAndPriceAndCategory(sellerId, minPrice, maxPrice, categories));
-            } else {
-                return ProductConverter.getProductDtoFromProduct(productRepository.findBySellerAndPrice(sellerId, minPrice, maxPrice));
-            }
-        } else if (maxPrice != null) {
-            return ProductConverter.getProductDtoFromProduct(productRepository.findByPriceAndCategory(minPrice, maxPrice, categories));
+        if (sellerId != null) {
+            return ProductConverter.getProductDtoFromProduct(productRepository.findBySellerAndPriceAndCategory(sellerId, minPrice, maxPrice, categories));
         } else {
-            if (!categories.isEmpty()) {
-                return ProductConverter.getProductDtoFromProduct(productRepository.findByCategory(categories));
-            } else {
-                return ProductConverter.getProductDtoFromProduct(productRepository.findAll());
-            }
+            return ProductConverter.getProductDtoFromProduct(productRepository.findByPriceAndCategory(minPrice, maxPrice, categories));
         }
     }
 
