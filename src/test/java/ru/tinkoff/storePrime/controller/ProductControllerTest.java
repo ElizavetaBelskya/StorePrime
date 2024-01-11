@@ -1,5 +1,6 @@
 package ru.tinkoff.storePrime.controller;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -52,12 +53,12 @@ public class ProductControllerTest {
                 .setControllerAdvice(new RestExceptionHandler())
                 .setCustomArgumentResolvers(new HandlerMethodArgumentResolver() {
                     @Override
-                    public boolean supportsParameter(MethodParameter parameter) {
+                    public boolean supportsParameter(@NotNull MethodParameter parameter) {
                         return parameter.getParameterType().isAssignableFrom(UserDetailsImpl.class);
                     }
 
                     @Override
-                    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+                    public Object resolveArgument(@NotNull MethodParameter parameter, ModelAndViewContainer mavContainer, @NotNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
                         return new UserDetailsImpl(
                                 Seller.builder()
                                         .id(1L).email("example@mail.ru")
@@ -145,15 +146,6 @@ public class ProductControllerTest {
                     .amount(6)
                     .build();
 
-            ProductDto expectedProductDto3 = ProductDto.builder()
-                    .id(14L)
-                    .title("Product 3")
-                    .description("Test Product Description 3")
-                    .price(14.40)
-                    .sellerId(1L)
-                    .categories(List.of("Test category"))
-                    .amount(499)
-                    .build();
             when(productService.getAllProductsByContentString("Test")).thenReturn(Arrays.asList(expectedProductDto, expectedProductDto2));
             String content = "Test";
             mockMvc.perform(get("/products/search?content=" + content))
@@ -355,24 +347,6 @@ public class ProductControllerTest {
                     .andExpect(status().isBadRequest());
         }
 
-        @Test
-        @DisplayName("Should throw an exception when invalid page number is provided")
-        void get_products_when_invalid_page_number_isProvided_then_throw_exception() throws Exception {
-//            int page = -1;
-//            Double minPrice = 10.0;
-//            Double maxPrice = 100.0;
-//            String category = "Electronics";
-//            Long sellerId = null;
-//
-//            mockMvc.perform(get("/products/pages")
-//                            .param("page", String.valueOf(page))
-//                            .param("minPrice", String.valueOf(minPrice))
-//                            .param("maxPrice", String.valueOf(maxPrice))
-//                            .param("category", category))
-//                    .andDo(print())
-//                    .andExpect(status().isBadRequest());
-        }
-
     }
 
 
@@ -495,16 +469,6 @@ public class ProductControllerTest {
                     .price(-1.4)
                     .imageIds(new ArrayList<>(Collections.singleton("21")))
                     .amount(10)
-                    .build();
-
-            ProductDto updatedProductDto = ProductDto.builder()
-                    .id(productId)
-                    .title("Книга")
-                    .description("Отличная книга для чтения")
-                    .price(19.99)
-                    .categories(Arrays.asList("Категория 1", "Категория 2"))
-                    .amount(10)
-                    .sellerId(1L)
                     .build();
 
             mockMvc.perform(put("/products/{id}", productId)

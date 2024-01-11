@@ -2,6 +2,7 @@ package ru.tinkoff.storePrime.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -49,12 +50,12 @@ class CustomerControllerTest {
                 .setControllerAdvice(new RestExceptionHandler())
                 .setCustomArgumentResolvers(new HandlerMethodArgumentResolver() {
                     @Override
-                    public boolean supportsParameter(MethodParameter parameter) {
+                    public boolean supportsParameter(@NotNull MethodParameter parameter) {
                         return parameter.getParameterType().isAssignableFrom(UserDetailsImpl.class);
                     }
 
                     @Override
-                    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+                    public Object resolveArgument(@NotNull MethodParameter parameter, ModelAndViewContainer mavContainer, @NotNull NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
                         return new UserDetailsImpl(
                                 Customer.builder()
                                         .id(1L).email("example@mail.ru")

@@ -27,7 +27,7 @@ public class Address {
     @Column(nullable = false)
     private Integer house;
 
-    @Column(nullable = true)
+    @Column
     private String apartment;
 
 

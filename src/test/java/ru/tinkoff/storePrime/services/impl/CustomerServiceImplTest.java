@@ -84,9 +84,7 @@ class CustomerServiceImplTest {
 
             when(accountService.isEmailUsed(customerDto.getEmail())).thenReturn(true);
 
-            assertThrows(AlreadyExistsException.class, () -> {
-                customerService.addCustomer(customerDto);
-            });
+            assertThrows(AlreadyExistsException.class, () -> customerService.addCustomer(customerDto));
 
             verify(accountService, times(1)).isEmailUsed(customerDto.getEmail());
             verifyNoMoreInteractions(accountService);
@@ -233,9 +231,7 @@ class CustomerServiceImplTest {
 
             when(customerRepository.findById(customerId)).thenReturn(Optional.empty());
 
-            assertThrows(CustomerNotFoundException.class, () -> {
-                customerService.updateCustomer(customerId, updatedCustomerDto);
-            });
+            assertThrows(CustomerNotFoundException.class, () -> customerService.updateCustomer(customerId, updatedCustomerDto));
 
             verify(customerRepository, times(1)).findById(customerId);
             verifyNoMoreInteractions(customerRepository);
@@ -282,9 +278,7 @@ class CustomerServiceImplTest {
 
             when(customerRepository.findById(id)).thenReturn(Optional.of(customer));
 
-            assertThrows(CustomerNotFoundException.class, () -> {
-                customerService.updateCustomer(id, updatedCustomerDto);
-            });
+            assertThrows(CustomerNotFoundException.class, () -> customerService.updateCustomer(id, updatedCustomerDto));
 
             verify(customerRepository, times(1)).findById(id);
             verifyNoMoreInteractions(customerRepository);
@@ -332,9 +326,7 @@ class CustomerServiceImplTest {
             when(customerRepository.findById(id)).thenReturn(Optional.of(existingCustomer));
             when(accountService.isEmailUsed(updatedCustomerDto.getEmail())).thenReturn(true);
 
-            assertThrows(AlreadyExistsException.class, () -> {
-                customerService.updateCustomer(id, updatedCustomerDto);
-            });
+            assertThrows(AlreadyExistsException.class, () -> customerService.updateCustomer(id, updatedCustomerDto));
 
             verify(customerRepository, times(1)).findById(id);
             verify(accountService, times(1)).isEmailUsed(updatedCustomerDto.getEmail());
@@ -357,9 +349,7 @@ class CustomerServiceImplTest {
 
             when(customerRepository.findById(customerId)).thenReturn(Optional.empty());
 
-            assertThrows(CustomerNotFoundException.class, () -> {
-                customerService.deleteCustomer(customerId);
-            });
+            assertThrows(CustomerNotFoundException.class, () -> customerService.deleteCustomer(customerId));
 
             verify(customerRepository, times(1)).findById(customerId);
             verifyNoMoreInteractions(customerRepository);
@@ -413,9 +403,7 @@ class CustomerServiceImplTest {
 
             when(customerRepository.findById(customerId)).thenReturn(Optional.empty());
 
-            assertThrows(CustomerNotFoundException.class, () -> {
-                customerService.updateCardBalance(customerId, replenishment);
-            });
+            assertThrows(CustomerNotFoundException.class, () -> customerService.updateCardBalance(customerId, replenishment));
 
             verify(customerRepository, times(1)).findById(customerId);
             verifyNoMoreInteractions(customerRepository);
@@ -448,9 +436,7 @@ class CustomerServiceImplTest {
 
             when(customerRepository.findById(customerId)).thenReturn(Optional.of(customer));
 
-            assertThrows(PaymentImpossibleException.class, () -> {
-                customerService.updateCardBalance(customerId, replenishment);
-            });
+            assertThrows(PaymentImpossibleException.class, () -> customerService.updateCardBalance(customerId, replenishment));
 
             verify(customerRepository, times(1)).findById(customerId);
             verifyNoMoreInteractions(customerRepository);
@@ -460,7 +446,7 @@ class CustomerServiceImplTest {
         @DisplayName("Should update the card balance when the replenishment is positive and does not exceed the current balance")
         void update_card_balance_success() {
             Long customerId = 1L;
-            Double replenishment = 100.0;
+            double replenishment = 100.0;
 
             Customer customer = Customer.builder()
                     .id(customerId)

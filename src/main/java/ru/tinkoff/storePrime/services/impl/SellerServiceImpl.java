@@ -54,7 +54,7 @@ public class SellerServiceImpl implements SellerService {
         seller.setState(Account.State.DELETED);
         sellerRepository.save(seller);
         if (cacheManager.getCache("account") != null) {
-            cacheManager.getCache("account").invalidate();
+            Objects.requireNonNull(cacheManager.getCache("account")).invalidate();
         }
     }
 
@@ -99,7 +99,7 @@ public class SellerServiceImpl implements SellerService {
         seller.setCardBalance(seller.getCardBalance() + replenishment);
         Seller updatedSeller = sellerRepository.save(seller);
         if (cacheManager.getCache("account") != null) {
-            cacheManager.getCache("account").put(updatedSeller.getId(), updatedSeller);
+            Objects.requireNonNull(cacheManager.getCache("account")).put(updatedSeller.getId(), updatedSeller);
         }
     }
 

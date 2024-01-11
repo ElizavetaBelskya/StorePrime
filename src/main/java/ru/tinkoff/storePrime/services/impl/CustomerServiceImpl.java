@@ -18,6 +18,8 @@ import ru.tinkoff.storePrime.services.AccountService;
 import ru.tinkoff.storePrime.services.CustomerService;
 import ru.tinkoff.storePrime.services.utils.AccountCachingUtil;
 
+import java.util.Objects;
+
 @RequiredArgsConstructor
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -68,7 +70,7 @@ public class CustomerServiceImpl implements CustomerService {
         updateCustomer.setId(customerId);
         Customer updatedCustomer = customerRepository.save(updateCustomer);
         if (cacheManager.getCache("account") != null) {
-            cacheManager.getCache("account").put(updatedCustomer.getId(), updatedCustomer);
+            Objects.requireNonNull(cacheManager.getCache("account")).put(updatedCustomer.getId(), updatedCustomer);
         }
         return CustomerConverter.getCustomerDtoFromCustomer(updatedCustomer);
     }
@@ -79,7 +81,7 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setState(Account.State.DELETED);
         customerRepository.save(customer);
         if (cacheManager.getCache("account") != null) {
-            cacheManager.getCache("account").invalidate();
+            Objects.requireNonNull(cacheManager.getCache("account")).invalidate();
         }
     }
 
@@ -92,7 +94,7 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setCardBalance(customer.getCardBalance() + replenishment);
         Customer updatedCustomer = customerRepository.save(customer);
         if (cacheManager.getCache("account") != null) {
-            cacheManager.getCache("account").put(customerId, updatedCustomer);
+            Objects.requireNonNull(cacheManager.getCache("account")).put(customerId, updatedCustomer);
         }
         return CustomerConverter.getCustomerDtoFromCustomer(updatedCustomer);
     }

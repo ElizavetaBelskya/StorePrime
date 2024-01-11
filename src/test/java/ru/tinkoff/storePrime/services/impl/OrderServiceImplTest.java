@@ -121,16 +121,12 @@ public class OrderServiceImplTest {
                     .customer(anotherCustomer)
                     .build();
 
-            List<CartItem> cartItems = Arrays.asList(cartItem1, cartItem2, cartItem3);
-
             when(customerRepository.findById(customerId)).thenReturn(Optional.of(customer));
             when(cartRepository.findById(1L)).thenReturn(Optional.of(cartItem1));
             when(cartRepository.findById(2L)).thenReturn(Optional.of(cartItem2));
             when(cartRepository.findById(3L)).thenReturn(Optional.of(cartItem3));
 
-            assertThrows(ForbiddenException.class, () -> {
-                orderService.createNewOrders(customerId, cartItemIdList);
-            });
+            assertThrows(ForbiddenException.class, () -> orderService.createNewOrders(customerId, cartItemIdList));
 
             verify(customerRepository, times(1)).findById(customerId);
             verify(cartRepository, times(1)).findById(1L);
@@ -156,12 +152,6 @@ public class OrderServiceImplTest {
                     .id(2L)
                     .customer(customer)
                     .build();
-
-            CartItem cartItem3 = CartItem.builder()
-                    .id(3L)
-                    .customer(customer)
-                    .build();
-            List<CartItem> cartItems = Arrays.asList(cartItem1, cartItem2, cartItem3);
 
             when(customerRepository.findById(customerId)).thenReturn(Optional.of(customer));
             when(cartRepository.findById(1L)).thenReturn(Optional.of(cartItem1));
@@ -228,7 +218,6 @@ public class OrderServiceImplTest {
                     .product(product3)
                     .build();
 
-            List<CartItem> cartItems = Arrays.asList(cartItem1, cartItem2, cartItem3);
 
             when(customerRepository.findById(customerId)).thenReturn(Optional.of(customer));
             when(cartRepository.findById(1L)).thenReturn(Optional.of(cartItem1));
@@ -305,8 +294,6 @@ public class OrderServiceImplTest {
                     .quantity(2)
                     .product(product3)
                     .build();
-
-            List<CartItem> cartItems = Arrays.asList(cartItem1, cartItem2, cartItem3);
 
             when(customerRepository.findById(customerId)).thenReturn(Optional.of(customer));
             when(cartRepository.findById(1L)).thenReturn(Optional.of(cartItem1));

@@ -11,6 +11,7 @@ import ru.tinkoff.storePrime.repository.CustomerRepository;
 import ru.tinkoff.storePrime.repository.SellerRepository;
 import ru.tinkoff.storePrime.services.AccountService;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -34,7 +35,7 @@ public class AccountServiceImpl implements AccountService {
         if (customer.isPresent()) {
             Customer notNullCustomer = customer.get();
             if (cacheManager.getCache("account") != null) {
-                cacheManager.getCache("account").put(notNullCustomer.getId(), notNullCustomer);
+                Objects.requireNonNull(cacheManager.getCache("account")).put(notNullCustomer.getId(), notNullCustomer);
             }
             return notNullCustomer;
         }
@@ -43,7 +44,7 @@ public class AccountServiceImpl implements AccountService {
         if (seller.isPresent()) {
             Seller notNullSeller = seller.get();
             if (cacheManager.getCache("account") != null) {
-                cacheManager.getCache("account").put(notNullSeller.getId(), notNullSeller);
+                Objects.requireNonNull(cacheManager.getCache("account")).put(notNullSeller.getId(), notNullSeller);
             }
             return notNullSeller;
         }

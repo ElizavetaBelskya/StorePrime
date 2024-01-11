@@ -81,7 +81,7 @@ public interface CartApi {
             @ApiResponse(responseCode = "204", description = "Товар удален из корзины",
                     content = {
                             @Content(mediaType = "application/json",
-                                    schema = @Schema(implementation = Void.class))
+                                    schema = @Schema)
                     }
             ),
             @ApiResponse(responseCode = "404", description = "Товар не найден в корзине",

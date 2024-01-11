@@ -18,7 +18,7 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("""
-        select p from Product p 
+        select p from Product p
         where p.seller.id = :sellerId
         """)
     List<Product> findAllBySellerId(@Param("sellerId") Long sellerId);

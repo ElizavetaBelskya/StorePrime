@@ -3,6 +3,7 @@ package ru.tinkoff.storePrime.converters;
 import ru.tinkoff.storePrime.dto.location.LocationDto;
 import ru.tinkoff.storePrime.dto.product.NewOrUpdateProductDto;
 import ru.tinkoff.storePrime.dto.product.ProductDto;
+import ru.tinkoff.storePrime.models.Category;
 import ru.tinkoff.storePrime.models.Product;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class ProductConverter {
                 .imageIds(product.getImagesIds())
                 .categories(
                         product.getCategories().stream()
-                                .map(x -> x.getName())
+                                .map(Category::getName)
                                 .collect(Collectors.toList())
                 )
                 .sellerName(product.getSeller().getName())
