@@ -13,8 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import ru.tinkoff.storePrime.security.filters.JwtAuthorizationFilter;
 import ru.tinkoff.storePrime.security.filters.JwtAuthenticationFilter;
+import ru.tinkoff.storePrime.security.filters.JwtAuthorizationFilter;
 import ru.tinkoff.storePrime.security.filters.JwtRevokeFilter;
 
 

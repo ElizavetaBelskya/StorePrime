@@ -3,7 +3,6 @@ package ru.tinkoff.storePrime.services.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.storePrime.dto.product.CategoryDto;
-import ru.tinkoff.storePrime.models.Category;
 import ru.tinkoff.storePrime.repository.CategoryRepository;
 import ru.tinkoff.storePrime.services.CategoryService;
 

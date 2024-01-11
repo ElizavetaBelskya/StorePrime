@@ -11,7 +11,6 @@ import ru.tinkoff.storePrime.dto.product.ProductsPage;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 import ru.tinkoff.storePrime.services.ProductService;
 
-import javax.validation.Valid;
 import java.util.List;
 
 

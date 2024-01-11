@@ -1,30 +1,22 @@
 package ru.tinkoff.storePrime.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.support.SimpleValueWrapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.storePrime.config.CacheConfig;
 import ru.tinkoff.storePrime.converters.CustomerConverter;
-import ru.tinkoff.storePrime.converters.SellerConverter;
 import ru.tinkoff.storePrime.dto.user.CustomerDto;
 import ru.tinkoff.storePrime.dto.user.NewOrUpdateCustomerDto;
 import ru.tinkoff.storePrime.exceptions.PaymentImpossibleException;
 import ru.tinkoff.storePrime.exceptions.not_found.CustomerNotFoundException;
-import ru.tinkoff.storePrime.exceptions.not_found.SellerNotFoundException;
 import ru.tinkoff.storePrime.models.user.Account;
 import ru.tinkoff.storePrime.models.user.Customer;
-import ru.tinkoff.storePrime.models.user.Seller;
 import ru.tinkoff.storePrime.repository.CustomerRepository;
 import ru.tinkoff.storePrime.security.exceptions.AlreadyExistsException;
 import ru.tinkoff.storePrime.services.AccountService;
 import ru.tinkoff.storePrime.services.CustomerService;
 import ru.tinkoff.storePrime.services.utils.AccountCachingUtil;
-
-import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service

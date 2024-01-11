@@ -1,9 +1,11 @@
 package ru.tinkoff.storePrime.dto.location;
 
 
-
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.tinkoff.storePrime.models.Location;
 
 import javax.validation.constraints.NotBlank;

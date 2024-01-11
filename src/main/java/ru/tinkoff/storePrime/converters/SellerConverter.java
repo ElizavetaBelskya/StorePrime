@@ -9,7 +9,8 @@ import ru.tinkoff.storePrime.models.user.Seller;
 
 public class SellerConverter {
 
-    private SellerConverter(){};
+    private SellerConverter(){}
+
     public static Seller getSellerFromNewOrUpdateSellerDto(NewOrUpdateSellerDto sellerDto) {
         return Seller.builder()
                 .description(sellerDto.getDescription())

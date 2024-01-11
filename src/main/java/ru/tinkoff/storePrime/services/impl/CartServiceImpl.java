@@ -1,18 +1,15 @@
 package ru.tinkoff.storePrime.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.storePrime.dto.cart.CartItemDto;
 import ru.tinkoff.storePrime.exceptions.not_found.CartItemNotFoundException;
-import ru.tinkoff.storePrime.exceptions.not_found.CustomerNotFoundException;
 import ru.tinkoff.storePrime.exceptions.not_found.ProductNotFoundException;
 import ru.tinkoff.storePrime.models.CartItem;
 import ru.tinkoff.storePrime.models.Product;
 import ru.tinkoff.storePrime.models.user.Customer;
 import ru.tinkoff.storePrime.repository.CartRepository;
-import ru.tinkoff.storePrime.repository.CustomerRepository;
 import ru.tinkoff.storePrime.repository.ProductRepository;
 import ru.tinkoff.storePrime.services.CartService;
 import ru.tinkoff.storePrime.services.utils.AccountCachingUtil;

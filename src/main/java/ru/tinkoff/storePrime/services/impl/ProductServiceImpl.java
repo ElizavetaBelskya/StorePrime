@@ -11,7 +11,6 @@ import ru.tinkoff.storePrime.dto.product.ProductDto;
 import ru.tinkoff.storePrime.dto.product.ProductsPage;
 import ru.tinkoff.storePrime.exceptions.DisparateDataException;
 import ru.tinkoff.storePrime.exceptions.ForbiddenException;
-import ru.tinkoff.storePrime.exceptions.not_found.CategoryNotFoundException;
 import ru.tinkoff.storePrime.exceptions.not_found.ProductNotFoundException;
 import ru.tinkoff.storePrime.exceptions.not_found.SellerNotFoundException;
 import ru.tinkoff.storePrime.models.Category;
@@ -21,7 +20,10 @@ import ru.tinkoff.storePrime.repository.ProductRepository;
 import ru.tinkoff.storePrime.repository.SellerRepository;
 import ru.tinkoff.storePrime.services.ProductService;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor

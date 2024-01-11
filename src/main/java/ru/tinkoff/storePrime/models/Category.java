@@ -1,11 +1,10 @@
 package ru.tinkoff.storePrime.models;
 
 
-import javax.persistence.*;
 import lombok.*;
-import ru.tinkoff.storePrime.dto.base.LongIdDto;
 import ru.tinkoff.storePrime.models.base.LongIdEntity;
 
+import javax.persistence.*;
 import java.util.List;
 
 

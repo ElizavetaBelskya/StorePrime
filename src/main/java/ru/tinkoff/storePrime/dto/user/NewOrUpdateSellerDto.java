@@ -1,7 +1,9 @@
 package ru.tinkoff.storePrime.dto.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ru.tinkoff.storePrime.dto.location.LocationDto;
 

@@ -15,10 +15,10 @@ import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
 import ru.tinkoff.storePrime.dto.product.NewOrUpdateProductDto;
 import ru.tinkoff.storePrime.dto.product.ProductDto;
 import ru.tinkoff.storePrime.dto.product.ProductsPage;
-import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 
 import javax.validation.Valid;
@@ -270,7 +270,7 @@ public interface ProductApi {
     })
     @GetMapping("/search")
     ResponseEntity<List<ProductDto>> getProductsByContentString(@Parameter(description = "Строка для поиска", example = "dress") @RequestParam("content") String content,
-                                                                @Parameter(description = "Категория для поиска", example = "toys", required = false) @Nullable @RequestParam("category") String category);
+                                                                @Parameter(description = "Категория для поиска", example = "toys") @Nullable @RequestParam("category") String category);
 
 
 }

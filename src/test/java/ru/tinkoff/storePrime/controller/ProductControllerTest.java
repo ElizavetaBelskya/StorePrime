@@ -2,11 +2,8 @@ package ru.tinkoff.storePrime.controller;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.MessageSource;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,25 +25,25 @@ import ru.tinkoff.storePrime.models.user.Seller;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 import ru.tinkoff.storePrime.services.ProductService;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ProductController is working when")
 public class ProductControllerTest {
 
     private MockMvc mockMvc;
 
-    @MockBean
+    @Mock
     private ProductService productService;
 
     @BeforeEach
@@ -79,9 +76,8 @@ public class ProductControllerTest {
     @DisplayName("getProductById() is working")
     class GetProductByIdTest {
 
-
-        @BeforeEach
-        public void setUp() {
+        @Test
+        public void return_product_by_id() throws Exception {
             ProductDto expectedProductDto = ProductDto.builder()
                     .id(12L)
                     .title("Test Product")
@@ -92,33 +88,7 @@ public class ProductControllerTest {
                     .amount(10)
                     .build();
 
-            ProductDto expectedProductDto2 = ProductDto.builder()
-                    .id(13L)
-                    .title("Test Product 2")
-                    .description("Test Product Description 2")
-                    .price(483.0)
-                    .sellerId(1L)
-                    .categories(Arrays.asList("Test category"))
-                    .amount(6)
-                    .build();
-
-            ProductDto expectedProductDto3 = ProductDto.builder()
-                    .id(14L)
-                    .title("Product 3")
-                    .description("Test Product Description 3")
-                    .price(14.40)
-                    .sellerId(1L)
-                    .categories(Arrays.asList("Test category"))
-                    .amount(499)
-                    .build();
-
             when(productService.getProductById(12L)).thenReturn(expectedProductDto);
-            when(productService.getProductById(23321L)).thenThrow(new ProductNotFoundException("Товар не найден"));
-            when(productService.getProductById(-12L)).thenThrow(new ProductNotFoundException("Товар не найден"));
-        }
-
-        @Test
-        public void return_product_by_id() throws Exception {
             mockMvc.perform(get("/products/12"))
                     .andDo(print()).andExpect(status().isOk())
                     .andExpect(jsonPath("$.title").value("Test Product"));
@@ -126,6 +96,7 @@ public class ProductControllerTest {
 
         @Test
         public void return_not_found_for_non_existent_product() throws Exception {
+            when(productService.getProductById(23321L)).thenThrow(new ProductNotFoundException("Товар не найден"));
             mockMvc.perform(get("/products/23321"))
                     .andDo(print()).andExpect(status().isNotFound());
         }
@@ -143,8 +114,17 @@ public class ProductControllerTest {
     @DisplayName("getProductByContent() is working")
     class GetProductByContentStringTest {
 
-        @BeforeEach
-        public void setUp() {
+        @Test
+        void get_products_by_content_string_when_no_products_match() throws Exception {
+            when(productService.getAllProductsByContentString("nonexistent")).thenReturn(new ArrayList<>());
+            mockMvc.perform(get("/products/search?content=nonexistent"))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$").isArray())
+                    .andExpect(jsonPath("$").isEmpty());
+        }
+
+        @Test
+        void get_products_by_content_string() throws Exception {
             ProductDto expectedProductDto = ProductDto.builder()
                     .id(12L)
                     .title("Test Product")
@@ -161,7 +141,7 @@ public class ProductControllerTest {
                     .description("Test Product Description 2")
                     .price(483.0)
                     .sellerId(1L)
-                    .categories(Arrays.asList("Test category"))
+                    .categories(List.of("Test category"))
                     .amount(6)
                     .build();
 
@@ -171,25 +151,10 @@ public class ProductControllerTest {
                     .description("Test Product Description 3")
                     .price(14.40)
                     .sellerId(1L)
-                    .categories(Arrays.asList("Test category"))
+                    .categories(List.of("Test category"))
                     .amount(499)
                     .build();
-
             when(productService.getAllProductsByContentString("Test")).thenReturn(Arrays.asList(expectedProductDto, expectedProductDto2));
-            when(productService.getAllProductsByContentString("nonexistent")).thenReturn(new ArrayList<>());
-
-        }
-
-        @Test
-        void get_products_by_content_string_when_no_products_match() throws Exception {
-            mockMvc.perform(get("/products/search?content=nonexistent"))
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$").isArray())
-                    .andExpect(jsonPath("$").isEmpty());
-        }
-
-        @Test
-        void get_products_by_content_string() throws Exception {
             String content = "Test";
             mockMvc.perform(get("/products/search?content=" + content))
                     .andDo(print())
@@ -220,7 +185,7 @@ public class ProductControllerTest {
                             .description("Description 1")
                             .price(50.0)
                             .sellerId(1L)
-                            .categories(Arrays.asList("Electronics"))
+                            .categories(List.of("Electronics"))
                             .amount(10)
                             .build(),
                     ProductDto.builder()
@@ -229,7 +194,7 @@ public class ProductControllerTest {
                             .description("Description 2")
                             .price(80.0)
                             .sellerId(1L)
-                            .categories(Arrays.asList("Electronics"))
+                            .categories(List.of("Electronics"))
                             .amount(5)
                             .build()
             );
@@ -279,7 +244,7 @@ public class ProductControllerTest {
                             .description("Test Product Description 2")
                             .price(483.0)
                             .sellerId(1L)
-                            .categories(Arrays.asList("Test category"))
+                            .categories(List.of("Test category"))
                             .amount(6)
                             .build()
             );
@@ -313,7 +278,7 @@ public class ProductControllerTest {
                             .description("Description 1")
                             .price(50.0)
                             .sellerId(1L)
-                            .categories(Arrays.asList("Electronics"))
+                            .categories(List.of("Electronics"))
                             .amount(10)
                             .build(),
                     ProductDto.builder()
@@ -322,7 +287,7 @@ public class ProductControllerTest {
                             .description("Description 2")
                             .price(80.0)
                             .sellerId(2L)
-                            .categories(Arrays.asList("Electronics"))
+                            .categories(List.of("Electronics"))
                             .amount(5)
                             .build()
             );
@@ -465,7 +430,6 @@ public class ProductControllerTest {
             addedProduct.setPrice(19.99);
             addedProduct.setCategories(Arrays.asList("Категория 1", "Категория 2"));
             addedProduct.setAmount(10);
-            when(productService.addProduct(1L, newProduct)).thenReturn(addedProduct);
 
             ObjectMapper objectMapper = new ObjectMapper();
             String jsonBody = objectMapper.writeValueAsString(newProduct);
@@ -486,7 +450,7 @@ public class ProductControllerTest {
     @DisplayName("updateProducts() is working")
     public class UpdateProductTest {
 
-        private ObjectMapper objectMapper = new ObjectMapper();
+        private final ObjectMapper objectMapper = new ObjectMapper();
 
         @Test
         public void test_update_correct_product() throws Exception {
@@ -525,7 +489,6 @@ public class ProductControllerTest {
         @Test
         public void test_update_incorrect_product() throws Exception {
             Long productId = 1L;
-            Long sellerId = 1L;
             NewOrUpdateProductDto updatedProduct =  NewOrUpdateProductDto.builder()
                     .title("Книга")
                     .description(null)
@@ -543,8 +506,6 @@ public class ProductControllerTest {
                     .amount(10)
                     .sellerId(1L)
                     .build();
-
-            when(productService.updateProduct(productId, sellerId, updatedProduct)).thenReturn(updatedProductDto);
 
             mockMvc.perform(put("/products/{id}", productId)
                             .contentType(MediaType.APPLICATION_JSON)

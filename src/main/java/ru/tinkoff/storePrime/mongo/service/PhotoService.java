@@ -1,16 +1,8 @@
 package ru.tinkoff.storePrime.mongo.service;
 
-import com.mongodb.client.gridfs.model.GridFSFile;
 import lombok.RequiredArgsConstructor;
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
-import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.gridfs.GridFsOperations;
-import org.springframework.data.mongodb.gridfs.GridFsResource;
-import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.tinkoff.storePrime.exceptions.not_found.PhotoNotFoundException;

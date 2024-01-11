@@ -6,10 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
-import org.hibernate.validator.constraints.Length;
-import ru.tinkoff.storePrime.models.Category;
-import ru.tinkoff.storePrime.models.user.Seller;
 
 import javax.validation.constraints.*;
 import java.util.List;

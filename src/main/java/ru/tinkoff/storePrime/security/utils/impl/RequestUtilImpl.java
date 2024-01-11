@@ -1,7 +1,6 @@
 package ru.tinkoff.storePrime.security.utils.impl;
 
 import org.springframework.stereotype.Component;
-
 import ru.tinkoff.storePrime.security.utils.AuthorizationHeaderUtil;
 
 import javax.servlet.http.HttpServletRequest;

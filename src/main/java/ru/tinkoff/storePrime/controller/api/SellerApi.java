@@ -13,9 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
 import ru.tinkoff.storePrime.dto.user.NewOrUpdateSellerDto;
 import ru.tinkoff.storePrime.dto.user.SellerDto;
-import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 
 import javax.validation.Valid;

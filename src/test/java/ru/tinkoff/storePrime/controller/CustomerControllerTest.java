@@ -1,20 +1,17 @@
 package ru.tinkoff.storePrime.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.json.JSONObject;
-import org.junit.Before;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -32,20 +29,18 @@ import ru.tinkoff.storePrime.services.CustomerService;
 
 import java.time.LocalDate;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(MockitoExtension.class)
 @DisplayName("CustomerController is working when")
 class CustomerControllerTest {
 
-    private MockMvc mockMvc;
-
-
-    @MockBean
+    private static MockMvc mockMvc;
+    @Mock
     private CustomerService customerService;
 
     @BeforeEach
@@ -59,7 +54,7 @@ class CustomerControllerTest {
                     }
 
                     @Override
-                    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+                    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
                         return new UserDetailsImpl(
                                 Customer.builder()
                                         .id(1L).email("example@mail.ru")
@@ -299,8 +294,7 @@ class CustomerControllerTest {
                             .build())
                     .build();
             savedCustomer.setCardBalance(savedCustomer.getCardBalance() + 30.0);
-            when(customerService.updateCardBalance(eq(1L), eq(30.0))).thenReturn(savedCustomer);
-            String jsonPayload = "{}";
+            String jsonPayload = "{ывапрол}";
             mockMvc.perform(MockMvcRequestBuilders.patch("/customer")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(jsonPayload))

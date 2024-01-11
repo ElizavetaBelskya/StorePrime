@@ -1,12 +1,12 @@
 package ru.tinkoff.storePrime.models.user;
 
 
-import javax.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ru.tinkoff.storePrime.models.Address;
 import ru.tinkoff.storePrime.models.CartItem;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 

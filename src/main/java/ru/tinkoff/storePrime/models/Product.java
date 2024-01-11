@@ -1,12 +1,14 @@
 package ru.tinkoff.storePrime.models;
 
-import javax.persistence.*;
-
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import ru.tinkoff.storePrime.models.base.LongIdEntity;
 import ru.tinkoff.storePrime.models.user.Seller;
 
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 

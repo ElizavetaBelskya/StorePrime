@@ -1,7 +1,6 @@
 package ru.tinkoff.storePrime.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,14 +9,12 @@ import ru.tinkoff.storePrime.dto.order.OrderDto;
 import ru.tinkoff.storePrime.exceptions.DisparateDataException;
 import ru.tinkoff.storePrime.exceptions.ForbiddenException;
 import ru.tinkoff.storePrime.exceptions.not_found.CartItemNotFoundException;
-import ru.tinkoff.storePrime.exceptions.not_found.CustomerNotFoundException;
 import ru.tinkoff.storePrime.exceptions.not_found.OrderNotFoundException;
 import ru.tinkoff.storePrime.models.CartItem;
 import ru.tinkoff.storePrime.models.Order;
 import ru.tinkoff.storePrime.models.Product;
 import ru.tinkoff.storePrime.models.user.Customer;
 import ru.tinkoff.storePrime.repository.CartRepository;
-import ru.tinkoff.storePrime.repository.CustomerRepository;
 import ru.tinkoff.storePrime.repository.OrderRepository;
 import ru.tinkoff.storePrime.services.CustomerService;
 import ru.tinkoff.storePrime.services.OrderService;
@@ -110,7 +107,8 @@ public class OrderServiceImpl implements OrderService {
         Product product = order.getProduct();
         if (product.getSeller().getId().equals(sellerId)) {
             order.setStatus(newStatus);
-            return OrderConverter.getOrderDtoFromOrder(orderRepository.save(order));
+            Order updatedOrder = orderRepository.save(order);
+            return OrderConverter.getOrderDtoFromOrder(updatedOrder);
         }
         throw new ForbiddenException("Этот продавец не имеет права на редактирование заказа с id " + orderId);
     }

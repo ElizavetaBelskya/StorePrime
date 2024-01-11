@@ -4,15 +4,9 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.tinkoff.storePrime.config.CacheConfig;
 import ru.tinkoff.storePrime.converters.AddressConverter;
 import ru.tinkoff.storePrime.converters.CustomerConverter;
 import ru.tinkoff.storePrime.dto.location.AddressDto;
@@ -32,8 +26,6 @@ import ru.tinkoff.storePrime.services.AccountService;
 import ru.tinkoff.storePrime.services.utils.AccountCachingUtil;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;

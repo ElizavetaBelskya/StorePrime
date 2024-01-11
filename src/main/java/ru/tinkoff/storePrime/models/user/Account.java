@@ -1,11 +1,13 @@
 package ru.tinkoff.storePrime.models.user;
 
-import javax.persistence.*;
-
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import ru.tinkoff.storePrime.dto.base.LongIdDto;
 import ru.tinkoff.storePrime.models.base.LongIdEntity;
+
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.MappedSuperclass;
 
 @SuperBuilder
 @Getter

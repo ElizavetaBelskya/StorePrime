@@ -1,15 +1,14 @@
 package ru.tinkoff.storePrime.dto.product;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import ru.tinkoff.storePrime.dto.base.LongIdDto;
-import ru.tinkoff.storePrime.dto.location.AddressDto;
 import ru.tinkoff.storePrime.dto.location.LocationDto;
-import ru.tinkoff.storePrime.models.Product;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor

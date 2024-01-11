@@ -1,11 +1,14 @@
 package ru.tinkoff.storePrime.models;
 
 
-import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 
 @Embeddable
 @Data

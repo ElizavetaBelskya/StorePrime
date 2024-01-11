@@ -6,8 +6,6 @@ import ru.tinkoff.storePrime.controller.api.AccountApi;
 import ru.tinkoff.storePrime.converters.CustomerConverter;
 import ru.tinkoff.storePrime.converters.SellerConverter;
 import ru.tinkoff.storePrime.dto.user.AccountDto;
-import ru.tinkoff.storePrime.dto.user.CustomerDto;
-import ru.tinkoff.storePrime.dto.user.SellerDto;
 import ru.tinkoff.storePrime.exceptions.ForbiddenException;
 import ru.tinkoff.storePrime.models.user.Account;
 import ru.tinkoff.storePrime.models.user.Customer;

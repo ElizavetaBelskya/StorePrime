@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class OrderConverter {
 
-    private OrderConverter(){};
+    private OrderConverter(){}
 
     public static OrderDto getOrderDtoFromOrder(Order order) {
 

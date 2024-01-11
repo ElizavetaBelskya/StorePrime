@@ -1,7 +1,6 @@
 package ru.tinkoff.storePrime.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +17,8 @@ import ru.tinkoff.storePrime.security.exceptions.AlreadyExistsException;
 import ru.tinkoff.storePrime.services.AccountService;
 import ru.tinkoff.storePrime.services.SellerService;
 import ru.tinkoff.storePrime.services.utils.AccountCachingUtil;
+
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -74,7 +75,7 @@ public class SellerServiceImpl implements SellerService {
         newSeller.setCardBalance(seller.getCardBalance());
         Seller updatedSeller = sellerRepository.save(newSeller);
         if (cacheManager.getCache("account") != null) {
-            cacheManager.getCache("account").put(updatedSeller.getId(), updatedSeller);
+            Objects.requireNonNull(cacheManager.getCache("account")).put(updatedSeller.getId(), updatedSeller);
         }
         return SellerConverter.getSellerDtoFromSeller(updatedSeller);
     }

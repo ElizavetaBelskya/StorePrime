@@ -5,17 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import ru.tinkoff.storePrime.converters.ProductConverter;
 import ru.tinkoff.storePrime.dto.base.LongIdDto;
-import ru.tinkoff.storePrime.dto.cart.CartItemDto;
 import ru.tinkoff.storePrime.dto.product.ProductDto;
-import ru.tinkoff.storePrime.models.Order;
-import ru.tinkoff.storePrime.models.Product;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor

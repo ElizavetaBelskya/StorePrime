@@ -2,11 +2,10 @@ package ru.tinkoff.storePrime.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import ru.tinkoff.storePrime.controller.api.PhotoApi;
 import ru.tinkoff.storePrime.mongo.model.Photo;

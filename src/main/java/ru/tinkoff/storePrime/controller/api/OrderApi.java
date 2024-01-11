@@ -13,10 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import ru.tinkoff.storePrime.dto.cart.CartItemDto;
 import ru.tinkoff.storePrime.dto.exception.ExceptionDto;
 import ru.tinkoff.storePrime.dto.order.OrderDto;
-import ru.tinkoff.storePrime.dto.product.ProductDto;
 import ru.tinkoff.storePrime.security.details.UserDetailsImpl;
 
 import java.util.List;

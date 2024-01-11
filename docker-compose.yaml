@@ -48,6 +48,10 @@ services:
       - "SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/store-prime"
       - "REDIS_HOST=redis"
       - "REDIS_PORT=6380"
+      - "MONGO_USERNAME=mongoadmin"
+      - "MONGO_PORT=27017"
+      - "MONGO_PASSWORD=1234"
+      - "MONGO_DATABASE=admin"
   mongo:
       image: mongo
       ports:

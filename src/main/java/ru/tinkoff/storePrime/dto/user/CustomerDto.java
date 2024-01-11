@@ -6,8 +6,6 @@ import lombok.experimental.SuperBuilder;
 import ru.tinkoff.storePrime.dto.location.AddressDto;
 import ru.tinkoff.storePrime.models.user.Customer;
 
-import java.time.LocalDate;
-
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Data

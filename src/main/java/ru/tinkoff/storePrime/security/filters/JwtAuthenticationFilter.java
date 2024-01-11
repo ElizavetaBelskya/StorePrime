@@ -1,10 +1,6 @@
 package ru.tinkoff.storePrime.security.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javax.servlet.FilterChain;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -17,7 +13,9 @@ import ru.tinkoff.storePrime.security.utils.AuthorizationHeaderUtil;
 import ru.tinkoff.storePrime.security.utils.JwtUtil;
 import ru.tinkoff.storePrime.security.utils.UnauthorizedUtil;
 
-
+import javax.servlet.FilterChain;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 

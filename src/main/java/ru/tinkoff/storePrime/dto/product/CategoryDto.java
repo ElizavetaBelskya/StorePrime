@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import ru.tinkoff.storePrime.dto.base.LongIdDto;
 
 @Data
 @AllArgsConstructor

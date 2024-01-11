@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class ProductConverter {
 
-    private ProductConverter(){};
+    private ProductConverter(){}
 
     public static Product getProductFromNewOrUpdateProductDto(NewOrUpdateProductDto productDto) {
         return Product.builder()

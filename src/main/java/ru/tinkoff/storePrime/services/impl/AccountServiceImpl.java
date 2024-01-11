@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.storePrime.exceptions.not_found.SellerNotFoundException;
 import ru.tinkoff.storePrime.models.user.Account;
 import ru.tinkoff.storePrime.models.user.Customer;
 import ru.tinkoff.storePrime.models.user.Seller;
@@ -12,7 +11,6 @@ import ru.tinkoff.storePrime.repository.CustomerRepository;
 import ru.tinkoff.storePrime.repository.SellerRepository;
 import ru.tinkoff.storePrime.services.AccountService;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor

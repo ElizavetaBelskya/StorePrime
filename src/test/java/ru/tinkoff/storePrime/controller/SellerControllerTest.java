@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -32,17 +31,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(MockitoExtension.class)
 @DisplayName("SellerController is working when")
 public class SellerControllerTest {
 
     private MockMvc mockMvc;
 
-    @MockBean
+    @Mock
     private SellerService sellerService;
 
-    @MockBean
+    @Mock
     private AccountService accountService;
 
     @BeforeEach
@@ -140,7 +138,6 @@ public class SellerControllerTest {
                     .name("45")
                     .description(null)
                     .build();
-            when(accountService.isEmailUsed(newSeller.getEmail())).thenReturn(false);
 
             mockMvc.perform(post("/seller")
                             .contentType(MediaType.APPLICATION_JSON)
@@ -198,11 +195,11 @@ public class SellerControllerTest {
                     .build();
 
             when(sellerService.updateSeller(1L, newSeller)).thenReturn(savedSeller);
-            mockMvc.perform(post("/seller")
+            mockMvc.perform(put("/seller")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(asJsonString(newSeller)))
                     .andDo(print())
-                    .andExpect(MockMvcResultMatchers.status().isCreated())
+                    .andExpect(MockMvcResultMatchers.status().isAccepted())
                     .andReturn();
         }
 

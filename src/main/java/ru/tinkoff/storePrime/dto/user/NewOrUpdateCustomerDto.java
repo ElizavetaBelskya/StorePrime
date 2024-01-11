@@ -2,7 +2,10 @@ package ru.tinkoff.storePrime.dto.user;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import ru.tinkoff.storePrime.dto.location.AddressDto;
 import ru.tinkoff.storePrime.models.user.Customer;
