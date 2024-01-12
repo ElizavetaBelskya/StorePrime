@@ -33,6 +33,10 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v3
-      - name: deploy
-        run: ./deploy.sh
+      - name: Build with Maven
+        run: mvn clean install -DskipTests
+      - name: Build Docker Image
+        run: docker build -t market_app_image .
+      - name: Docker Compose Up
+        run: docker-compose up
 
