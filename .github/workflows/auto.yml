@@ -33,6 +33,8 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v3
+      - name: Set up Maven environment
+        run: export MAVEN_OPTS="-Xmx4g -Xms1g"
       - name: Build with Maven
         run: mvn clean install -DskipTests
       - name: Build Docker Image
