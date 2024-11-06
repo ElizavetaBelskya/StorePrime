@@ -20,5 +20,4 @@ public class ExceptionDto {
     @Schema(description = "Константа, обозначающая вид ошибки", example = "CUSTOMER_NOT_FOUND")
     private String serviceMessage;
 
-
 }
