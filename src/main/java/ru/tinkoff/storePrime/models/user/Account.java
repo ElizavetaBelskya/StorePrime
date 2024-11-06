@@ -21,6 +21,7 @@ public abstract class Account extends LongIdEntity {
 
     public enum State {
         NOT_CONFIRMED, CONFIRMED, DELETED, BANNED
+
     }
 
     public enum Role {
