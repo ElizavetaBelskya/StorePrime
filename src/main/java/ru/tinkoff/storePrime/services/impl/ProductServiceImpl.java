@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto getProductById(Long id) {
-        return ProductConverter.getProductDtoFromProduct(productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Товар с id " + id + " не найден")));
+        return ProductConverter.getProductDtoFromProduct(productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(String.format("Товар с id %s не найден", id))));
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto updateProduct(Long productId, Long sellerId, NewOrUpdateProductDto updatedProductDto) {
         Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Товар с id " + productId + " не найден"));
         if (!product.getSeller().getId().equals(sellerId)) {
-            throw new ForbiddenException("Товар с id " + productId + " не доступен для редактирования данным продавцом");
+            throw new ForbiddenException(String.format("Товар с id %s не доступен для редактирования данным продавцом", productId));
         }
         Product updatedProduct = ProductConverter.getProductFromNewOrUpdateProductDto(updatedProductDto);
         updatedProduct.setId(productId);
@@ -78,9 +78,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long sellerId, Long productId) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Товар с id " + productId + " не найден"));
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException(String.format("Товар с id %s не найден", productId)));
         if (!product.getSeller().getId().equals(sellerId)) {
-            throw new ForbiddenException("Товар с id " + productId + " не доступен для удаления данным продавцом");
+            throw new ForbiddenException(String.format("Товар с id %s не доступен для редактирования данным продавцом", productId));
         }
         productRepository.delete(product);
     }

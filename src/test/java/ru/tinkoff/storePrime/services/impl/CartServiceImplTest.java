@@ -1,6 +1,5 @@
 package ru.tinkoff.storePrime.services.impl;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -203,16 +202,16 @@ class CartServiceImplTest {
                                             .id(sellerId)
                                             .location(
                                                     Location.builder()
-                                                    .country("Россия")
+                                                            .country("Россия")
                                                             .city("Казань")
-                                                    .build())
+                                                            .build())
                                             .build())
                             .build())
                     .quantity(3)
                     .build());
             customer.setCart(cartItems);
             when(cartRepository.findByCustomer_Id(customerId)).thenReturn(cartItems);
-            Assert.assertEquals(CartItemDto.from(cartItems), cartService.getCustomerCart(customerId));
+            assertEquals(CartItemDto.from(cartItems), cartService.getCustomerCart(customerId));
         }
 
     }

@@ -31,7 +31,4 @@ public final class ExceptionMessages {
 
     public static final String UNAUTHORIZED = "UNAUTHORIZED";
 
-
-
-
 }
